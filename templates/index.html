@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>digital design</title>
+  <link rel="icon" type="image/svg" href="/static/images/terminal_icon.svg">
+  <link type="text/css" rel="stylesheet" href="/static/css/style.css" />
+  <script src="/static/js/splitting.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/baffle@0.3.6/dist/baffle.min.js"></script>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div class="dd__logo">
+      <a href="./"><img src="/static/images/dd_logo.png" alt="dd_logo" width="300px"></a>
+    </div>
+    <div class="nt__logo">
+      <a href="https://www.nettletontribe.com.au"><img src="/static/images/nt_logo.png" alt="dd_logo" width="300px"></a>
+    </div>
+
+    <nav class="sidebar__nav">
+      <ul class="sidebar__menu">
+        <li>
+          <a href="{{ url_for('planning') }}"><img src="/static/images/building-solid.svg" alt="building icon"><p>PLANNING</p></a>
+        </li>
+        <li>
+          <a href="{{ url_for('carbon') }}"><img src="/static/images/industry-solid.svg" alt="industrial icon" ><p>CARBON</p></a>
+        </li>
+        <li>
+          <a href="{{ url_for('environmental') }}"><img src="/static/images/seedling-solid.svg" alt="tree icon"><p>ENVIRONMENTAL</p></a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container">
+    <div class="data">
+      <p>DIGITAL DESIGN</p>
+    </div>
+  </div>
+
+  
+  <div class="background"></div>
+
+  <script>
+    const text = baffle(".data")
+    text.set({
+      characters: '█▒< █▒▒▓▓ /░//▒ /<▓ ░>█░░ ░/▒▓ ▒░▒ >░░▒ █▓▒▒',
+      speed: 120
+    });
+    text.start();
+    text.reveal(4000);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,522 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+#map {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.address {
+  position: fixed;
+  margin-top: 160px;
+  margin-left: 25px;
+  z-index: 1;
+  border-color: var(--color-white);
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 3px;
+  background: var(--black-300);
+}
+
+.address input[type="text"] {
+  width: 300px;
+  padding: 5px;
+  font-weight: bold;
+}
+
+button {
+  display: none;
+}
+
+.planningLabel {
+  display: inline-block;
+  padding: 5px 40px;
+  margin-top: 210px;
+  margin-left: 25px;
+  z-index: 1;
+  width: 300px;
+  border-radius: 2px;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  user-select: none;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 3px;
+  cursor: pointer;
+  background: var(--black-300);
+  color: var(--color-white);
+  text-align: center;
+}
+
+.planningLabel:active {
+  transform: scale(0.9);
+}
+
+.geometryLabel {
+  display: inline-block;
+  padding: 5px 40px;
+  margin-top: 10px;
+  margin-left: 25px;
+  z-index: 1;
+  width: 300px;
+  border-radius: 2px;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  user-select: none;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 3px;
+  cursor: pointer;
+  background: var(--black-300);
+  color: var(--color-white);
+  text-align: center;
+}
+
+.geometry_button:active {
+  transform: scale(0.9);
+}
+
+.elevatedLabel {
+  display: inline-block;
+  padding: 5px 40px;
+  margin-top: 10px;
+  margin-left: 25px;
+  z-index: 1;
+  width: 300px;
+  border-radius: 2px;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  user-select: none;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 3px;
+  cursor: pointer;
+  background: var(--black-300);
+  color: var(--color-white);
+  text-align: center;
+}
+
+.elevated_button:active {
+  transform: scale(0.9);
+}
+
+.togglecontainer {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  margin-left: 25px;
+  flex-direction: column;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+  padding-right: 225px;
+  padding-left: 0px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  color: var(--black-300);
+  width: 300px;
+  text-align: left;
+  user-select: none;
+  cursor: pointer;
+  background: var(--black-300);
+  color: var(--color-white);
+}
+
+.togglecontainer .toggle {
+  position: relative;
+  width: 40px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 10px;
+  margin-right: 0px;
+  margin-left: 0px;
+  margin-bottom: 10px;
+
+}
+
+.togglecontainer .toggle .toggle-button {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.togglecontainer .toggle.active {
+  background-color: #4caf50;
+}
+
+.togglecontainer .toggle.active .toggle-button {
+  transform: translateX(20px);
+}
+
+.togglecontainer .toggle-text {
+  position: absolute;
+  margin-left: 45px;
+  margin-bottom: 10px;
+  color: var(--color-white);
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+#address_geometry {
+  display: none;
+}
+
+#address_elevated {
+  display: none;
+}
+
+.spinner {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+.spinner div {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: green;
+  animation: spin 1.2s linear infinite;
+}
+.spinner div:nth-child(1) {
+  top: 8px;
+  left: 8px;
+  animation-delay: 0s;
+}
+.spinner div:nth-child(2) {
+  top: 8px;
+  left: 32px;
+  animation-delay: -0.4s;
+}
+.spinner div:nth-child(3) {
+  top: 8px;
+  left: 56px;
+  animation-delay: -0.8s;
+}
+.spinner div:nth-child(4) {
+  top: 32px;
+  left: 8px;
+  animation-delay: -0.4s;
+}
+.spinner div:nth-child(5) {
+  top: 32px;
+  left: 32px;
+  animation-delay: -0.8s;
+}
+.spinner div:nth-child(6) {
+  top: 32px;
+  left: 56px;
+  animation-delay: -1.2s;
+}
+.spinner div:nth-child(7) {
+  top: 56px;
+  left: 8px;
+  animation-delay: -0.8s;
+}
+.spinner div:nth-child(8) {
+  top: 56px;
+  left: 32px;
+  animation-delay: -1.2s;
+}
+.spinner div:nth-child(9) {
+  top: 56px;
+  left: 56px;
+  animation-delay: -1.6s;
+}
+@keyframes spin {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.statePicker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+  background-color: var(--black-300);
+  width: 400px;
+  height: 100px;
+  z-index: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.statePicker ul {
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+}
+
+.statePicker li {
+  display: flex;
+  align-items: center;
+}
+
+.statePicker.hidden {
+  display: none;
+  opacity: 0;
+}
+
+.statePicker ul li {
+  color: var(--color-white);
+  padding: 10px;
+  text-align: center;
+}
+
+.statePicker a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.nsw-img {
+  width: 80px;
+  height: 60px;
+  margin: 10px;
+}
+
+.qld-img {
+  width: 60px;
+  height: 65px;
+  margin: 25px;
+}
+
+.vic-img {
+  width: 70px;
+  height: 60px;
+  margin: 25px;
+}
+
+.state img {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  z-index: 1;
+  width: 100px;
+  filter: grayscale(100%);
+  filter: brightness(100);
+}
+
+.errorPopup {
+  z-index: 1;
+  display: none;
+  position: fixed;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+  background-color: var(--black-300);
+  width: 400px;
+  height: 200px;
+  transition: opacity 0.3s ease-in-out;
+  text-align: center;
+  padding: 20px;
+}
+
+.errorPopup img {
+  width: 50px;
+}
+.errorPopup .firstLine {
+  font-weight: bolder;
+  font-size: 2.5rem;
+  color: var(--color-white);
+  margin: 0;
+  padding: 0;
+}
+
+.errorPopup .secondLine {
+  font-weight: bolder;
+  font-size: 1.5rem;
+  color: var(--color-white);
+  margin: 0;
+  padding: 0;
+}
+
+.errorPopup .thirdLine {
+  font-weight: bolder;
+  font-size: 1rem;
+  color: var(--color-white);
+  margin: 0;
+  padding: 0;
+}
+
+.mapbox-logo {
+  display: none;
+}
+.mapboxgl-ctrl-logo {
+  display: none !important;
+}
+.mapbox-improve-map {
+  display: none;
+}
+.mapboxgl-ctrl-compass {
+  display: none;
+}
+.mapboxgl-ctrl-bottom-right {
+  display: none;
+}
+
+#infoBox {
+  position: absolute;
+  bottom: 180px;
+  left: 40px;
+  width: 250px;
+  background-color: none ;
+  display: flex;
+  flex-direction: column;
+}
+
+.feature-container {
+  margin: 2px;
+  padding: 5px;
+  padding-left: 10px;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+  background-color: var(--black-300);
+  color: var(--color-white);
+  font-weight: bold;
+}
+
+.uploadMergeLabel {
+  display: flex;
+  position: fixed;
+  top: 200px;
+  right: 10px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  justify-content: center;
+  margin-left: 10px;
+  text-align: center;
+  width: 250px;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+  background: var(--black-300);
+  color: var(--color-white);
+  font-weight: bold;
+  z-index: 1;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-right: 35px;
+  padding-left: 5px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+}
+
+.uploadMergeLabel.green {
+  background: green;
+}
+
+label:active{
+  transform: scale(0.9);
+}
+
+#fileCount {
+  top: 205px;
+  right: 20px;
+  text-transform: uppercase;
+  background-color: yellow;
+  border-radius: 50%;
+  text-align: center;
+  position: fixed;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: black;
+  width: 20px;
+  height: 20px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+label i{
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.mergeLabel {
+  display: flex;
+  position: fixed;
+  justify-content: center;
+  top: 230px;
+  right: 0px;
+  height: 40px;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  text-align: center;
+  align-items: center;
+  width: 250px;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+  background: var(--black-300);
+  color: var(--color-white);
+  font-weight: bold;
+  z-index: 1;
+  padding: 5px 40px;
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+}
+
+.mergeLabel:active{
+  transform: scale(0.9);
+}
+
+.uploadGiraffeLabel{
+  position: fixed;
+  display: inline-block;
+  text-transform: uppercase;
+  color: var(--color-white);
+  background: var(--black-300);
+  margin-top: 50px;
+  right: 0;
+  margin-right: 10px;
+  text-align: center;
+  padding: 10px 10px;
+  font-size: 18px;
+  letter-spacing: 1.5px;
+  user-select: none;
+  cursor: pointer;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 3px;
+  width: 250px;
+}
+
+.uploadGiraffeLabel.green {
+  background: green;
+}

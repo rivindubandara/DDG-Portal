@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>early planning</title>
+    <link
+      rel="icon"
+      type="image/svg"
+      href="/static/images/industry-solid.svg"
+    />
+    <link rel="stylesheet" href="/static/css/style.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+  </head>
+  <script
+    async
+    src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
+  ></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.151.3/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.151.3/examples/jsm/"
+      }
+    }
+  </script>
+  <body>
+    <div class="sidebar">
+      <div class="dd__logo">
+        <a href="./"
+          ><img src="/static/images/dd_logo.png" alt="dd_logo" width="300px"
+        /></a>
+      </div>
+      <div class="nt__logo">
+        <a href="https://www.nettletontribe.com.au"
+          ><img src="/static/images/nt_logo.png" alt="dd_logo" width="300px"
+        /></a>
+      </div>
+
+      <nav class="sidebar__nav">
+        <form action="" method="POST" enctype="multipart/form-data">
+          <input type="file" id="uploadBtn" />
+          <label for="uploadBtn" class="uploadLabel"
+            ><i class="ri-upload-line"></i>Upload 3DM</label
+          >
+        </form>
+
+        <div class="selectors">
+          <div class="wallSelector">
+            <p>Wall Selection</p>
+
+            <div class="selectionContainer">
+              <label for="wallConcrete">Concrete:</label>
+              <select id="wallConcrete"></select>
+            </div>
+
+            <div class="selectionContainer">
+              <label for="wallRebar">Rebar:</label>
+              <select id="wallRebar"></select>
+            </div>
+          </div>
+
+          <div class="columnSelector">
+            <p>Column Selection</p>
+
+            <button id="btnColumnConcrete" type="button">Concrete</button>
+            <button id="btnColumnTimber" type="button">Timber</button>
+
+          </div>
+
+          <div class="beamSelector">
+            <p>Beam Selection</p>
+
+            <button id="btnBeamConcrete" type="button">Concrete</button>
+            <button id="btnBeamTimber" type="button">Timber</button>
+          </div>
+
+          <div class="slabSelector">
+            <p>Slab Selection</p>
+
+            <div class="selectionContainer">
+              <label for="slabConcrete">Concrete:</label>
+              <select id="slabConcrete"></select>
+            </div>
+
+            <div class="selectionContainer">
+              <label for="slabRebar">Rebar:</label>
+              <select id="slabRebar"></select>
+            </div>
+
+            <div class="selectionContainer">
+              <label for="slabTimber">Structural Timber:</label>
+              <select id="slabTimber"></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="submitContainer">
+          <button id="submitBtn" type="submit">
+            <i class="ri-send-plane-line"></i>Compute
+          </button>
+        </div>
+
+        <div class="carbonResultsContainer"></div>
+
+        <ul class="sidebar__menu">
+          <li>
+            <a href="{{ url_for('planning') }}"
+              ><img
+                src="/static/images/building-solid.svg"
+                alt="building icon"
+              />
+              <p>PLANNING</p></a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('carbon') }}"
+              ><img
+                src="/static/images/industry-solid.svg"
+                alt="industrial icon"
+              />
+              <p>CARBON</p></a
+            >
+          </li>
+          <li>
+            <a href="{{ url_for('environmental') }}"
+              ><img src="/static/images/seedling-solid.svg" alt="tree icon" />
+              <p>ENVIRONMENTAL</p></a
+            >
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <script
+      type="module"
+      src="{{ url_for('static', filename='js/carbon.js') }}"
+    ></script>
+
+    <script>
+      document
+        .getElementById("uploadBtn")
+        .addEventListener("change", function () {
+          if (this.value) {
+            document.querySelector(".uploadLabel").classList.add("green");
+          } else {
+            document.querySelector(".uploadLabel").classList.remove("green");
+          }
+        });
+    </script>
+
+    <script>
+      var concOptions = [
+        { value: "material1-option1", text: "Concrete 50 MPa - GGBS" },
+        { value: "material1-option2", text: "Concrete 50 MPa - Fly Ash" },
+        { value: "material1-option3", text: "Concrete 50 MPa" },
+        { value: "material1-option1", text: "Concrete 40 MPa - GGBS" },
+        { value: "material1-option2", text: "Concrete 40 MPa - Fly Ash" },
+        { value: "material1-option3", text: "Concrete 40 MPa" },
+        { value: "material1-option1", text: "Concrete 32 MPa - GGBS" },
+        { value: "material1-option2", text: "Concrete 32 MPa - Fly Ash" },
+        { value: "material1-option3", text: "Concrete 32 MPa" },
+      ];
+
+      var rebarOptions = [
+        { value: "material1-option1", text: "Steel Reinforcement Bar" },
+      ];
+
+      var steelOptions = [
+        { value: "material1-option1", text: "Steel Hollow Section" },
+        { value: "material1-option2", text: "Steel Universal Section" },
+      ];
+
+      var timberOptions = [
+        { value: "material1-option1", text: "Timber CLT" },
+        { value: "material1-option2", text: "Timber Glu-lam" },
+        { value: "material1-option3", text: "Timber LVL" },
+      ];
+
+      function addOptions(selectId, options) {
+        var selectBox = document.getElementById(selectId);
+        options.forEach(function (option) {
+          var opt = document.createElement("option");
+          opt.value = option.value;
+          opt.text = option.text;
+          selectBox.appendChild(opt);
+        });
+      }
+
+      addOptions("wallConcrete", concOptions);
+      addOptions("wallRebar", rebarOptions);
+
+      addOptions("slabConcrete", concOptions);
+      addOptions("slabRebar", rebarOptions);
+      addOptions("slabTimber", timberOptions);
+    </script>
+    
+  </body>
+</html>
