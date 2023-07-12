@@ -22,6 +22,15 @@
     <p class="secondLine">SOMETHING WENT WRONG</p>
     <p class="thirdLine">PLEASE TRY AGAIN OR CONTACT DDG</p>
   </div>
+
+  <form id="rhinoForm" action="/mergeRhino" enctype="multipart/form-data", method="POST">
+    <div class="mergeRhino">
+      <input type="file" id="uploadedMergeFile" name="uploadedMergeFile" multiple onchange="countFiles()"/>
+      <label for="uploadedMergeFile" class="uploadMergeLabel"><i class="ri-upload-line"></i>Upload Rhino Files</label>
+      <span id="fileCount">0</span>
+      <button type="submit" class="mergeLabel">Merge</button>
+    </div>
+  </form>
   
   <div class="sidebar">
 
@@ -43,6 +52,9 @@
         </div>
       </form>
       <form id="geometryForm" action="/qld_geometry" method="POST">
+        <input type="file" id="uploadGiraffeBtn" name="uploadGiraffeBtn" />
+          <label for="uploadGiraffeBtn" class="uploadGiraffeLabel"
+            ><i class="ri-upload-line"></i>Upload Giraffe</label>
         <div class="address">
           <input type="text" id="address_geometry" name="address" placeholder="Address will appear here" readonly>
         </div>
@@ -157,6 +169,43 @@
     toggle.classList.toggle("active");
   }
 
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      $('#rhinoForm').on('submit', function(event) {
+        event.preventDefault();
+
+        $('.spinner').css('display', 'block');
+
+        var formData = new FormData(this);
+
+        $.ajax({
+          type: 'POST',
+          url: '/mergeRhino',
+          data: formData,
+          processData: false,
+          contentType: false,
+          dataType: 'binary',
+          xhrFields: {
+            responseType: 'blob'
+          },
+          success: function(response) {
+            var blob = new Blob([response]);
+            var link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = "merged.3dm";
+            link.click();
+
+            $('.spinner').css('display', 'none');
+          },
+          error: function() {
+            $('.spinner').css('display', 'none');
+            $(".errorPopup").css('display', 'flex');
+          }
+        });
+      });
+    });
   </script>
 
   <script>

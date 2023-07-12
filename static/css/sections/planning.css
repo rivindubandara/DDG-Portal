@@ -299,6 +299,7 @@ button {
   width: 80px;
   height: 60px;
   margin: 10px;
+  cursor: pointer;
 }
 
 .qld-img {
