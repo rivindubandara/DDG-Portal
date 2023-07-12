@@ -920,87 +920,87 @@ def get_planning():
                         att.LayerIndex = road_layerIndex
                         planning_model.Objects.AddCurve(geo, att)
 
-    hob_data = get_data(hob_url, boundary_params)
-    if "features" in hob_data:
-        for feature in hob_data["features"]:
-            hob_num = feature['attributes']['MAX_B_H']
-            if hob_num is None:
-                hob_num = 3
-    else:
-        time.sleep(0)
+    # hob_data = get_data(hob_url, boundary_params)
+    # if "features" in hob_data:
+    #     for feature in hob_data["features"]:
+    #         hob_num = feature['attributes']['MAX_B_H']
+    #         if hob_num is None:
+    #             hob_num = 3
+    # else:
+    #     time.sleep(0)
 
-    fsr_data = get_data(fsr_url, boundary_params)
-    if "features" in fsr_data:
-        for feature in fsr_data["features"]:
-            fsr_num = feature['attributes']['FSR']
-            if fsr_num is None:
-                fsr_num = 0.5
-    else:
-        time.sleep(0)
+    # fsr_data = get_data(fsr_url, boundary_params)
+    # if "features" in fsr_data:
+    #     for feature in fsr_data["features"]:
+    #         fsr_num = feature['attributes']['FSR']
+    #         if fsr_num is None:
+    #             fsr_num = 0.5
+    # else:
+    #     time.sleep(0)
 
-    hob_list = [{"ParamName": "HOB", "InnerTree": {}}]
-    hobs_list = []
-    hobs_list.append(hob_num)
+    # hob_list = [{"ParamName": "HOB", "InnerTree": {}}]
+    # hobs_list = []
+    # hobs_list.append(hob_num)
 
-    fsr_list = [{"ParamName": "FSR", "InnerTree": {}}]
-    fsrs_list = []
-    fsrs_list.append(fsr_num)
+    # fsr_list = [{"ParamName": "FSR", "InnerTree": {}}]
+    # fsrs_list = []
+    # fsrs_list.append(fsr_num)
 
-    bound_list = [{"ParamName": "Boundary", "InnerTree": {}}]
-    bounds_list = []
-    bounds_list.append(bound_curve)
+    # bound_list = [{"ParamName": "Boundary", "InnerTree": {}}]
+    # bounds_list = []
+    # bounds_list.append(bound_curve)
 
-    for i, num in enumerate(hobs_list):
-        key = f"{{{i};0}}"
-        value = [
-            {
-                "type": "System.Float",
-                "data": num
-            }
-        ]
-        hob_list[0]["InnerTree"][key] = value
+    # for i, num in enumerate(hobs_list):
+    #     key = f"{{{i};0}}"
+    #     value = [
+    #         {
+    #             "type": "System.Float",
+    #             "data": num
+    #         }
+    #     ]
+    #     hob_list[0]["InnerTree"][key] = value
 
-    for i, num in enumerate(fsrs_list):
-        key = f"{{{i};0}}"
-        value = [
-            {
-                "type": "System.Float",
-                "data": num
-            }
-        ]
-        fsr_list[0]["InnerTree"][key] = value
+    # for i, num in enumerate(fsrs_list):
+    #     key = f"{{{i};0}}"
+    #     value = [
+    #         {
+    #             "type": "System.Float",
+    #             "data": num
+    #         }
+    #     ]
+    #     fsr_list[0]["InnerTree"][key] = value
 
-    for i, curve in enumerate(bounds_list):
-        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
-        key = f"{{{i};0}}"
-        value = [
-            {
-                "type": "Rhino.Geometry.Curve",
-                "data": serialized_curve
-            }
-        ]
-        bound_list[0]["InnerTree"][key] = value
+    # for i, curve in enumerate(bounds_list):
+    #     serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+    #     key = f"{{{i};0}}"
+    #     value = [
+    #         {
+    #             "type": "Rhino.Geometry.Curve",
+    #             "data": serialized_curve
+    #         }
+    #     ]
+    #     bound_list[0]["InnerTree"][key] = value
 
-    geo_payload = {
-        "algo": gh_procedural_decoded,
-        "pointer": None,
-        "values": bound_list + fsr_list + hob_list
-    }
+    # geo_payload = {
+    #     "algo": gh_procedural_decoded,
+    #     "pointer": None,
+    #     "values": bound_list + fsr_list + hob_list
+    # }
 
-    res = send_compute_post(geo_payload)
-    response_object = json.loads(res.content)['values']
-    for val in response_object:
-        paramName = val['ParamName']
-        if paramName == 'RH_OUT:Geometry':
-            innerTree = val['InnerTree']
-            for key, innerVals in innerTree.items():
-                for innerVal in innerVals:
-                    if 'data' in innerVal:
-                        data = json.loads(innerVal['data'])
-                        geo = rh.CommonObject.Decode(data)
-                        att = rh.ObjectAttributes()
-                        att.LayerIndex = procedural_layerIndex
-                        planning_model.Objects.AddBrep(geo, att)
+    # res = send_compute_post(geo_payload)
+    # response_object = json.loads(res.content)['values']
+    # for val in response_object:
+    #     paramName = val['ParamName']
+    #     if paramName == 'RH_OUT:Geometry':
+    #         innerTree = val['InnerTree']
+    #         for key, innerVals in innerTree.items():
+    #             for innerVal in innerVals:
+    #                 if 'data' in innerVal:
+    #                     data = json.loads(innerVal['data'])
+    #                     geo = rh.CommonObject.Decode(data)
+    #                     att = rh.ObjectAttributes()
+    #                     att.LayerIndex = procedural_layerIndex
+    #                     planning_model.Objects.AddBrep(geo, att)
 
     profile1 = 'mapbox/walking'
     profile2 = 'mapbox/cycling'
