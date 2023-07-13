@@ -45,16 +45,6 @@
   
   <div class="background"></div>
 
-  <script>
-    const text = baffle(".data")
-    text.set({
-      characters: '█▒< █▒▒▓▓ /░//▒ /<▓ ░>█░░ ░/▒▓ ▒░▒ >░░▒ █▓▒▒',
-      speed: 120
-    });
-    text.start();
-    text.reveal(4000);
-  </script>
-
   <script type="text/javascript">
     document.onreadystatechange = function () {
         if (document.readyState !== "complete") {
@@ -63,7 +53,17 @@
             }, 3000);
         }
     };
-  </script>
+
+    setTimeout(function() {
+        const text = baffle(".data");
+        text.set({
+          characters: '█▒< █▒▒▓▓ /░//▒ /<▓ ░>█░░ ░/▒▓ ▒░▒ >░░▒ █▓▒▒',
+          speed: 120
+        });
+        text.start();
+        text.reveal(4000);
+    }, 3000);
+</script>
 
 </body>
 </html>
