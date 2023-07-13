@@ -28,6 +28,7 @@
       }
     }
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <body>
     <div class="loadingScreen"></div>
 
@@ -41,6 +42,11 @@
       <div></div>
       <div></div>
       <div></div>
+    </div>
+
+    <div class="gwpContainer">
+      <h3>GWP</h3>
+      <p>{{ gwp }}</p>
     </div>
 
     <div class="resultsContainer">
@@ -242,7 +248,6 @@
               var blob = new Blob([response]);
               var link = document.createElement("a");
               link.href = window.URL.createObjectURL(blob);
-              link.download = "carbon_output.3dm";
               link.click();
 
               $(".spinner").css("display", "none");
@@ -331,7 +336,7 @@
           if (document.readyState !== "complete") {
               setTimeout(function(){
                   document.querySelector(".loadingScreen").style.display = "none";
-              }, 3000);
+              }, 1500);
           }
       };
     </script>

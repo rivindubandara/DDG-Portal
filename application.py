@@ -4578,6 +4578,7 @@ def get_carbon():
 def merge_3dms():
 
     merged_model = rh.File3dm()
+    merged_model.Settings.ModelUnitSystem = rh.UnitSystem.Meters
 
     input_files = request.files.getlist('uploadedMergeFile')
 
