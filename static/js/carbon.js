@@ -19,7 +19,7 @@ function init() {
   document.body.appendChild( renderer.domElement );
 
   camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
-  camera.position.set( 40, -40, 100 );
+  camera.position.set( 50, -150, 50 );
 
   scene = new THREE.Scene();
 
@@ -32,7 +32,7 @@ function init() {
 
   const loader = new Rhino3dmLoader();
   loader.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@7.15.0/' );
-  loader.load( '/static/carbon.3dm', function ( object ) {
+  loader.load( '/static/carbon_output.3dm', function ( object ) {
 
     scene.add( object );
     initGUI( object.userData.layers );

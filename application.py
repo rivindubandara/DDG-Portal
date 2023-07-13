@@ -4237,7 +4237,341 @@ def get_vic_elevated():
 
 @application.route('/carbon', methods=['GET', 'POST'])
 def carbon():
-    return render_template('carbon.html')
+    total_carbon = session.get('total_carbon')
+    roof_carbon = session.get('roof_carbon')
+    wall_carbon = session.get('wall_carbon')
+    slab_carbon = session.get('slab_carbon')
+    column_carbon = session.get('column_carbon')
+    beam_carbon = session.get('beam_carbon')
+    gwp = session.get('gwp')
+
+    return render_template('carbon.html', total_carbon=total_carbon, roof_carbon=roof_carbon, wall_carbon=wall_carbon, slab_carbon=slab_carbon, column_carbon=column_carbon, beam_carbon=beam_carbon, gwp=gwp)
+
+@application.route('/get_carbon', methods=['POST'])
+def get_carbon():
+
+    file = request.files['uploadCarbonFile']
+    if file:
+        file_path = 'tmp/files/' + file.filename
+        file.save(file_path)
+    else:
+        return jsonify({'error': True})
+    
+    gridU = int(request.form['gridU'])
+    gridV = int(request.form['gridV'])
+    
+    rhFile = rh.File3dm.Read(file_path)
+    layers = rhFile.Layers
+
+    shed = []
+    office = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "INDUSTRIAL SHED":
+            shed.append(obj)
+        if layers[layer_index].Name == "INDUSTRIAL OFFICE":
+            office.append(obj)
+
+    shed_breps = [obj.Geometry for obj in shed]
+    office_breps = [obj.Geometry for obj in office]
+
+    serialized_shed = []
+    for brep in shed_breps:
+        serialized_brep = json.dumps(brep, cls=__Rhino3dmEncoder)
+        serialized_shed.append(serialized_brep)
+
+    serialized_office = []
+    for brep in office_breps:
+        serialized_brep = json.dumps(brep, cls=__Rhino3dmEncoder)
+        serialized_office.append(serialized_brep)
+
+    shed_list = [{"ParamName": "Shed", "InnerTree": {}}]
+    for i, brep in enumerate(serialized_shed):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Brep",
+                "data": brep
+            }
+        ]
+        shed_list[0]["InnerTree"][key] = value
+
+    office_list = [{"ParamName": "Office", "InnerTree": {}}]
+    for i, brep in enumerate(serialized_office):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Brep",
+                "data": brep
+            }
+        ]
+        office_list[0]["InnerTree"][key] = value
+
+    office_floors_list = []
+    office_floors_list.append(2)
+
+    send_office_floors = [{"ParamName": "Office Floors", "InnerTree": {}}]
+    for i, num in enumerate(office_floors_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Int32",
+                "data": num
+            }
+        ]
+        send_office_floors[0]["InnerTree"][key] = value
+
+    gridU_list = []
+    gridU_list.append(gridU)
+
+    send_gridU_list = [{"ParamName": "Grid U", "InnerTree": {}}]
+    for i, num in enumerate(gridU_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Int32",
+                "data": num
+            }
+        ]
+        send_gridU_list[0]["InnerTree"][key] = value
+
+    gridV_list = []
+    gridV_list.append(gridV)
+
+    send_gridV_list = [{"ParamName": "Grid V", "InnerTree": {}}]
+    for i, num in enumerate(gridV_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Int32",
+                "data": num
+            }
+        ]
+        send_gridV_list[0]["InnerTree"][key] = value
+
+    roof_c = int(request.form['roofChoice'])
+    roof_c_list = []
+    roof_c_list.append(roof_c)
+
+    send_roof_c_list = [{"ParamName": "Roof Carbon", "InnerTree": {}}]
+    for i, num in enumerate(roof_c_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Float",
+                "data": num
+            }
+        ]
+        send_roof_c_list[0]["InnerTree"][key] = value
+
+    slab_c = int(request.form['slabConcrete'])
+    slab_c_list = []
+    slab_c_list.append(slab_c)
+
+    send_slab_c_list = [{"ParamName": "Slab Carbon", "InnerTree": {}}]
+    for i, num in enumerate(slab_c_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Float",
+                "data": num
+            }
+        ]
+        send_slab_c_list[0]["InnerTree"][key] = value
+
+    wall_c = int(request.form['wallConcrete'])
+    wall_c_list = []
+    wall_c_list.append(wall_c)
+
+    send_wall_c_list = [{"ParamName": "Wall Carbon", "InnerTree": {}}]
+    for i, num in enumerate(wall_c_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Float",
+                "data": num
+            }
+        ]
+        send_wall_c_list[0]["InnerTree"][key] = value
+
+    column_c = int(request.form['columnChoice'])
+    column_c_list = []
+    column_c_list.append(column_c)
+
+    send_column_c_list = [{"ParamName": "Column Carbon", "InnerTree": {}}]
+    for i, num in enumerate(column_c_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Float",
+                "data": num
+            }
+        ]
+        send_column_c_list[0]["InnerTree"][key] = value
+
+    beam_c = int(request.form['beamChoice'])
+    beam_c_list = []
+    beam_c_list.append(beam_c)
+
+    send_beam_c_list = [{"ParamName": "Beam Carbon", "InnerTree": {}}]
+    for i, num in enumerate(beam_c_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Float",
+                "data": num
+            }
+        ]
+        send_beam_c_list[0]["InnerTree"][key] = value
+
+    gh_carbon = open(r"./carbon.ghx", mode="r",
+                        encoding="utf-8-sig").read()
+    gh_carbon_bytes = gh_carbon.encode("utf-8")
+    gh_carbon_encoded = base64.b64encode(gh_carbon_bytes)
+    gh_carbon_decoded = gh_carbon_encoded.decode("utf-8")
+
+    geo_payload = {
+        "algo": gh_carbon_decoded,
+        "pointer": None,
+        "values": shed_list + office_list + send_office_floors + send_gridV_list + send_gridU_list + send_roof_c_list + send_beam_c_list + send_slab_c_list + send_wall_c_list + send_column_c_list
+    }
+
+    res = requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
+    response_object = json.loads(res.content)['values']
+
+
+    new_rhFile = rh.File3dm()
+    new_rhFile.Settings.ModelUnitSystem = rh.UnitSystem.Meters
+
+    roof_layer = rh.Layer()
+    roof_layer.Name = "Roof"
+    roof_layerIndex = new_rhFile.Layers.Add(roof_layer)
+
+    slab_layer = rh.Layer()
+    slab_layer.Name = "Slab"
+    slab_layerIndex = new_rhFile.Layers.Add(slab_layer)
+
+    wall_layer = rh.Layer()
+    wall_layer.Name = "Wall"
+    wall_layerIndex = new_rhFile.Layers.Add(wall_layer)
+
+    column_layer = rh.Layer()
+    column_layer.Name = "Column"
+    column_layerIndex = new_rhFile.Layers.Add(column_layer)
+
+    beam_layer = rh.Layer()
+    beam_layer.Name = "Beam"
+    beam_layerIndex = new_rhFile.Layers.Add(beam_layer)
+
+    for val in response_object:
+        paramName = val['ParamName']
+        if paramName == "RH_OUT:GFA":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        gfa = round(float(json.loads(innerVal['data'])), 2)
+        if paramName == "RH_OUT:Roof":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        roof_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['roof_carbon'] = roof_carbon
+        if paramName == "RH_OUT:Slabs":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        slab_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['slab_carbon'] = slab_carbon
+        if paramName == "RH_OUT:Walls":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        wall_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['wall_carbon'] = wall_carbon
+        if paramName == "RH_OUT:Columns":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        column_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['column_carbon'] = column_carbon
+        if paramName == "RH_OUT:Beams":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        beam_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['beam_carbon'] = beam_carbon
+        if paramName == "RH_OUT:TotalCarbon":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        total_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['total_carbon'] = total_carbon
+        if paramName == 'RH_OUT:MeshRoof':
+                innerTree = val['InnerTree']
+                for key, innerVals in innerTree.items():
+                    for innerVal in innerVals:
+                        if 'data' in innerVal:
+                            data = json.loads(innerVal['data'])
+                            geo = rh.CommonObject.Decode(data)
+                            att = rh.ObjectAttributes()
+                            att.LayerIndex = roof_layerIndex
+                            new_rhFile.Objects.AddMesh(geo, att)
+        if paramName == 'RH_OUT:MeshSlab':
+                innerTree = val['InnerTree']
+                for key, innerVals in innerTree.items():
+                    for innerVal in innerVals:
+                        if 'data' in innerVal:
+                            data = json.loads(innerVal['data'])
+                            geo = rh.CommonObject.Decode(data)
+                            att = rh.ObjectAttributes()
+                            att.LayerIndex = slab_layerIndex
+                            new_rhFile.Objects.AddMesh(geo, att)
+        if paramName == 'RH_OUT:MeshWall':
+                innerTree = val['InnerTree']
+                for key, innerVals in innerTree.items():
+                    for innerVal in innerVals:
+                        if 'data' in innerVal:
+                            data = json.loads(innerVal['data'])
+                            geo = rh.CommonObject.Decode(data)
+                            att = rh.ObjectAttributes()
+                            att.LayerIndex = wall_layerIndex
+                            new_rhFile.Objects.AddMesh(geo, att)
+        if paramName == 'RH_OUT:MeshColumn':
+                innerTree = val['InnerTree']
+                for key, innerVals in innerTree.items():
+                    for innerVal in innerVals:
+                        if 'data' in innerVal:
+                            data = json.loads(innerVal['data'])
+                            geo = rh.CommonObject.Decode(data)
+                            att = rh.ObjectAttributes()
+                            att.LayerIndex = column_layerIndex
+                            new_rhFile.Objects.AddMesh(geo, att)
+        if paramName == 'RH_OUT:MeshBeam':
+                innerTree = val['InnerTree']
+                for key, innerVals in innerTree.items():
+                    for innerVal in innerVals:
+                        if 'data' in innerVal:
+                            data = json.loads(innerVal['data'])
+                            geo = rh.CommonObject.Decode(data)
+                            att = rh.ObjectAttributes()
+                            att.LayerIndex = beam_layerIndex
+                            new_rhFile.Objects.AddMesh(geo, att)
+    
+    gwp = total_carbon/gfa
+    session['gwp'] = gwp
+
+    filename = "carbon_output.3dm"
+    new_rhFile.Write('./tmp/files/' + str(filename))
+    new_rhFile.Write('./static/' + str(filename))
+
+    return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
 
 @application.route('/mergeRhino', methods=['POST'])

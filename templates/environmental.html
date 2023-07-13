@@ -32,6 +32,8 @@
   <body>
     <canvas class="webgl"></canvas>
 
+    <div class="loadingScreen"></div>
+
     <div class="errorPopupEnv">
       <span><img src="/static/images/emoji.png" alt="emoji" /></span>
       <p class="firstLine">OOPS...</p>
@@ -123,7 +125,7 @@
           </div>
         </form>
 
-        <div class="resultsContainer">
+        <div class="resultsEnvContainer">
           <i class="ri-numbers-fill"></i>Results
           <h5>Total Sunlight Hours</h5>
           <p>{{ total_sunlight_hours }}</p>
@@ -140,7 +142,7 @@
             >
           </li>
           <li>
-            <a href=""
+            <a href="{{ url_for('carbon') }}"
               ><img
                 src="/static/images/industry-solid.svg"
                 alt="industrial icon"
@@ -256,5 +258,16 @@
       type="module"
       src="{{ url_for('static', filename='js/3dm.js') }}"
     ></script>
+
+    <script type="text/javascript">
+      document.onreadystatechange = function () {
+          if (document.readyState !== "complete") {
+              setTimeout(function(){
+                  document.querySelector(".loadingScreen").style.display = "none";
+              }, 3000);
+          }
+      };
+    </script>
+
   </body>
 </html>

@@ -19,6 +19,7 @@
     async
     src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
   ></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script type="importmap">
     {
       "imports": {
@@ -28,6 +29,36 @@
     }
   </script>
   <body>
+    <div class="loadingScreen"></div>
+
+    <div class="spinner" id="spinner">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+
+    <div class="resultsContainer">
+      <h3>Roof Carbon</h3>
+      <p>{{ roof_carbon }}</p>
+      <h3>Wall Carbon</h3>
+      <p>{{ wall_carbon }}</p>
+      <h3>Slab Carbon</h3>
+      <p>{{ slab_carbon }}</p>
+      <h3>Beam Carbon</h3>
+      <p>{{ beam_carbon }}</p>
+      <h3>Column Carbon</h3>
+      <p>{{ column_carbon }}</p>
+      <h3>Total Carbon</h3>
+      <p>{{ total_carbon }}</p>
+      <h3>GWP</h3>
+      <p>{{ gwp }}</p>
+    </div>
 
     <div class="sidebar">
       <div class="dd__logo">
@@ -42,12 +73,10 @@
       </div>
 
       <nav class="sidebar__nav">
-        <form action="" method="POST" enctype="multipart/form-data">
-          <input type="file" id="uploadBtn" />
-          <label for="uploadBtn" class="uploadLabel"
-            ><i class="ri-upload-line"></i>Upload 3DM</label
-          >
-        </form>
+        <form id="carbonForm" action="./get_carbon" method="POST" enctype="multipart/form-data">
+          <input type="file" id="uploadCarbonFile" name="uploadCarbonFile" />
+          <label for="uploadCarbonFile" class="uploadLabel"
+            ><i class="ri-upload-line"></i>Upload 3DM</label>
 
         <div class="selectors">
           <div class="wallSelector">
@@ -55,28 +84,33 @@
 
             <div class="selectionContainer">
               <label for="wallConcrete">Concrete:</label>
-              <select id="wallConcrete"></select>
+              <select id="wallConcrete" name="wallConcrete"></select>
             </div>
 
             <div class="selectionContainer">
               <label for="wallRebar">Rebar:</label>
-              <select id="wallRebar"></select>
+              <select id="wallRebar" name="wallRebar"></select>
             </div>
           </div>
 
           <div class="columnSelector">
             <p>Column Selection</p>
 
-            <button id="btnColumnConcrete" type="button">Concrete</button>
-            <button id="btnColumnTimber" type="button">Timber</button>
+            <div class="selectionContainer">
+              <label for="columnChoice">Column:</label>
+              <select id="columnChoice" name="columnChoice"></select>
+            </div>
 
           </div>
 
           <div class="beamSelector">
             <p>Beam Selection</p>
 
-            <button id="btnBeamConcrete" type="button">Concrete</button>
-            <button id="btnBeamTimber" type="button">Timber</button>
+            <div class="selectionContainer">
+              <label for="beamChoice">Beam:</label>
+              <select id="beamChoice" name="beamChoice"></select>
+            </div>
+
           </div>
 
           <div class="slabSelector">
@@ -84,17 +118,50 @@
 
             <div class="selectionContainer">
               <label for="slabConcrete">Concrete:</label>
-              <select id="slabConcrete"></select>
+              <select id="slabConcrete" name="slabConcrete"></select>
             </div>
 
             <div class="selectionContainer">
               <label for="slabRebar">Rebar:</label>
-              <select id="slabRebar"></select>
+              <select id="slabRebar" name="slabRebar"></select>
             </div>
 
             <div class="selectionContainer">
               <label for="slabTimber">Structural Timber:</label>
-              <select id="slabTimber"></select>
+              <select id="slabTimber" name="slabTimber"></select>
+            </div>
+          </div>
+
+          <div class="roofSelector">
+            <p>Roof Selection</p>
+
+            <div class="selectionContainer">
+              <label for="roofChoice">Roof:</label>
+              <select id="roofChoice" name="roofChoice"></select>
+            </div>
+          </div>
+
+          <div class="gridSelector">
+            <p>Grid Configuration</p>
+
+            <div class="gridContainer">
+              <span class="gridSliderText">Grid U</span>
+            <input
+              type="range"
+              min="3"
+              max="10"
+              id="gridU"
+              name="gridU"
+            />
+
+            <span class="gridSliderText">Grid V</span>
+            <input
+              type="range"
+              min="3"
+              max="10"
+              id="gridV"
+              name="gridV"
+            />
             </div>
           </div>
         </div>
@@ -104,6 +171,7 @@
             <i class="ri-send-plane-line"></i>Compute
           </button>
         </div>
+      </form>
 
         <ul class="sidebar__menu">
           <li>
@@ -116,7 +184,7 @@
             >
           </li>
           <li>
-            <a href=""
+            <a href="{{ url_for('carbon') }}"
               ><img
                 src="/static/images/industry-solid.svg"
                 alt="industrial icon"
@@ -152,31 +220,75 @@
     </script>
 
     <script>
+      $(document).ready(function () {
+        $("#carbonForm").on("submit", function (event) {
+          event.preventDefault();
+
+          $(".spinner").css("display", "block");
+
+          var formData = new FormData(this);
+
+          $.ajax({
+            type: "POST",
+            url: "/get_carbon",
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "binary",
+            xhrFields: {
+              responseType: "blob",
+            },
+            success: function (response) {
+              var blob = new Blob([response]);
+              var link = document.createElement("a");
+              link.href = window.URL.createObjectURL(blob);
+              link.download = "carbon_output.3dm";
+              link.click();
+
+              $(".spinner").css("display", "none");
+
+              location.reload();
+            },
+            error: function () {
+              $(".spinner").css("display", "none");
+              $(".errorPopup").css("display", "flex");
+            },
+          });
+        });
+      });
+    </script>
+
+    <script>
       var concOptions = [
-        { value: "material1-option1", text: "Concrete 50 MPa - GGBS" },
-        { value: "material1-option2", text: "Concrete 50 MPa - Fly Ash" },
-        { value: "material1-option3", text: "Concrete 50 MPa" },
-        { value: "material1-option1", text: "Concrete 40 MPa - GGBS" },
-        { value: "material1-option2", text: "Concrete 40 MPa - Fly Ash" },
-        { value: "material1-option3", text: "Concrete 40 MPa" },
-        { value: "material1-option1", text: "Concrete 32 MPa - GGBS" },
-        { value: "material1-option2", text: "Concrete 32 MPa - Fly Ash" },
-        { value: "material1-option3", text: "Concrete 32 MPa" },
+        { value: "492", text: "Concrete 50 MPa - GGBS" },
+        { value: "467", text: "Concrete 50 MPa - Fly Ash" },
+        { value: "600", text: "Concrete 50 MPa" },
+        { value: "392", text: "Concrete 40 MPa - GGBS" },
+        { value: "373", text: "Concrete 40 MPa - Fly Ash" },
+        { value: "497", text: "Concrete 40 MPa" },
+        { value: "331", text: "Concrete 32 MPa - GGBS" },
+        { value: "314", text: "Concrete 32 MPa - Fly Ash" },
+        { value: "416", text: "Concrete 32 MPa" },
+      ];
+
+      var colbeamOptions = [
+        { value: "492", text: "Timber Framing" },
+        { value: "467", text: "Steel Framing" },
       ];
 
       var rebarOptions = [
-        { value: "material1-option1", text: "Steel Reinforcement Bar" },
+        { value: "2.6", text: "Steel Reinforcement Bar" },
       ];
 
       var steelOptions = [
-        { value: "material1-option1", text: "Steel Hollow Section" },
-        { value: "material1-option2", text: "Steel Universal Section" },
+        { value: "4.6", text: "Steel Hollow Section" },
+        { value: "2.9", text: "Steel Universal Section" },
       ];
 
       var timberOptions = [
-        { value: "material1-option1", text: "Timber CLT" },
-        { value: "material1-option2", text: "Timber Glu-lam" },
-        { value: "material1-option3", text: "Timber LVL" },
+        { value: "6.77", text: "Timber CLT" },
+        { value: "1718", text: "Timber Glu-lam" },
+        { value: "1059", text: "Timber LVL" },
       ];
 
       function addOptions(selectId, options) {
@@ -195,7 +307,34 @@
       addOptions("slabConcrete", concOptions);
       addOptions("slabRebar", rebarOptions);
       addOptions("slabTimber", timberOptions);
+
+      addOptions("columnChoice", colbeamOptions);
+      addOptions("beamChoice", colbeamOptions);
+
+      addOptions("roofChoice", colbeamOptions);
     </script>
-    
+
+    <script>
+      document
+        .getElementById("uploadCarbonFile")
+        .addEventListener("change", function () {
+          if (this.value) {
+            document.querySelector(".uploadLabel").classList.add("green");
+          } else {
+            document.querySelector(".uploadLabel").classList.remove("green");
+          }
+        });
+    </script>
+
+    <script type="text/javascript">
+      document.onreadystatechange = function () {
+          if (document.readyState !== "complete") {
+              setTimeout(function(){
+                  document.querySelector(".loadingScreen").style.display = "none";
+              }, 3000);
+          }
+      };
+    </script>
+        
   </body>
 </html>
