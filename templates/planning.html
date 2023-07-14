@@ -159,6 +159,12 @@
             <div class="toggle-text">Buildings</div>
           </div>
         </div>
+
+        <div id="nativelandsToggle" class="toggle">
+          <div class="toggle-button" onclick="Animatedtoggle(this)">
+            <div class="toggle-text">Native Land</div>
+          </div>
+        </div>
   
       </div>
 
@@ -900,8 +906,49 @@
           visibility: 'visible'
         }
       });
+
+      map.addSource('nativelands-source', {
+        type: 'vector',
+        url: 'mapbox://nativeland.cjh3mywgg04aaahpidhgio50e-9ctzy'
+      });
+
+      map.addLayer({
+        id: 'nativelands-layer',
+        type: 'fill',
+        source: 'nativelands-source',
+        'source-layer': 'Territories',
+        paint: {
+          'fill-color': ['get', 'color'],
+          'fill-opacity': 0.8
+        },
+        minzoom: 0,
+        maxzoom: 22,
+        layout: {
+          visibility: 'none',
+        }
+      });
+      map.addLayer({
+        id: 'nativelands-layer-symbol',
+        type: 'symbol',
+        source: 'nativelands-source',
+        'source-layer': 'Territories',
+        layout: {
+          'text-field': ['get', 'Name'], 
+          'text-size': 12,
+          'text-anchor': 'center',
+          'text-allow-overlap': true
+        },
+        paint: {
+          'text-color': '#fff'
+        },
+        minzoom: 0,
+        maxzoom: 22
+      });
+
       buildingsToggleBtn.classList.add('active');
+
     });
+
 
     const geocoder = new MapboxGeocoder({
       accessToken: mapboxgl.accessToken,
@@ -961,6 +1008,7 @@
   const bushfireToggleBtn = document.getElementById('bushfireToggle');
   const heritageToggleBtn = document.getElementById('heritageToggle');
   const buildingsToggleBtn = document.getElementById('buildingsToggle');
+  const nativelandsToggleBtn = document.getElementById('nativelandsToggle')
 
   cadastreToggleBtn.addEventListener('click', function() {
     const layerId = 'cadastre-raster-layer';
@@ -1007,15 +1055,22 @@
     toggleLayerVisibility(layerId, buildingsToggleBtn);
   });
 
-  function toggleLayerVisibility(layerId, toggleBtn) {
-    const visibility = map.getLayoutProperty(layerId, 'visibility');
-    if (visibility === 'visible') {
-      map.setLayoutProperty(layerId, 'visibility', 'none');
-      toggleBtn.classList.remove('active');
-    } else {
-      map.setLayoutProperty(layerId, 'visibility', 'visible');
-      toggleBtn.classList.add('active');
+  nativelandsToggleBtn.addEventListener('click', function() {
+    const layerIds = ['nativelands-layer', 'nativelands-layer-symbol'];
+    toggleLayerVisibility(layerIds, nativelandsToggleBtn);
+  });
+
+  function toggleLayerVisibility(layerIds, toggleBtn) {
+    for (const layerId of layerIds) {
+      const visibility = map.getLayoutProperty(layerId, 'visibility');
+      if (visibility === 'visible') {
+        map.setLayoutProperty(layerId, 'visibility', 'none');
+      } else {
+        map.setLayoutProperty(layerId, 'visibility', 'visible');
+      }
     }
+
+    toggleBtn.classList.toggle('active');
   }
   
   </script>
@@ -1049,16 +1104,6 @@
           document.querySelector(".uploadGiraffeLabel").classList.remove("green");
         }
       });
-  </script>
-
-  <script type="text/javascript">
-    document.onreadystatechange = function () {
-        if (document.readyState !== "complete") {
-            setTimeout(function(){
-                document.querySelector(".loadingScreen").style.display = "none";
-            }, 1500);
-        }
-    };
   </script>
 
   <script>

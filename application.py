@@ -4244,8 +4244,9 @@ def carbon():
     column_carbon = session.get('column_carbon')
     beam_carbon = session.get('beam_carbon')
     gwp = session.get('gwp')
+    carbon_file_data = session.get('carbon_file_data')
 
-    return render_template('carbon.html', total_carbon=total_carbon, roof_carbon=roof_carbon, wall_carbon=wall_carbon, slab_carbon=slab_carbon, column_carbon=column_carbon, beam_carbon=beam_carbon, gwp=gwp)
+    return render_template('carbon.html', total_carbon=total_carbon, roof_carbon=roof_carbon, wall_carbon=wall_carbon, slab_carbon=slab_carbon, column_carbon=column_carbon, beam_carbon=beam_carbon, gwp=gwp,carbon_file_data=carbon_file_data)
 
 @application.route('/get_carbon', methods=['POST'])
 def get_carbon():
@@ -4254,6 +4255,8 @@ def get_carbon():
     if file:
         file_path = 'tmp/files/' + file.filename
         file.save(file_path)
+        file_data = file.read() 
+        session['carbon_file_data'] = file_data
     else:
         return jsonify({'error': True})
     
@@ -4802,6 +4805,9 @@ def submit_environmental():
         new_rhFile, "Sunlight", (129, 168, 0, 255))
     shadow_layerIndex = create_layer(
         new_rhFile, "Shadow", (129, 168, 0, 255))
+    
+    legendrhFile = rh.File3dm()
+    legendrhFile.Settings.ModelUnitSystem = rh.UnitSystem.Meters
 
     for val in response_object:
         paramName = val['ParamName']
@@ -4833,6 +4839,14 @@ def submit_environmental():
                         att = rh.ObjectAttributes()
                         att.LayerIndex = shadow_layerIndex
                         new_rhFile.Objects.AddMesh(geo, att)
+        elif paramName == 'RH_OUT:legend_mesh':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        legendrhFile.Objects.AddMesh(geo)
 
     layers = new_rhFile.Layers
 
@@ -4841,8 +4855,10 @@ def submit_environmental():
             layer.Visible = False
 
     filename = "environmental.3dm"
+    filename_2 = "environmental_2.3dm"
     new_rhFile.Write('./tmp/files/' + str(filename))
     new_rhFile.Write('./static/' + str(filename))
+    legendrhFile.Write('./static/' + str(filename_2))
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 

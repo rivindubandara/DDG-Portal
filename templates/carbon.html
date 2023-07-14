@@ -46,22 +46,36 @@
 
     <div class="gwpContainer">
       <h3>GWP</h3>
+      {% if gwp is not none %}
       <p>{{ gwp }} kgCO2e/m2</p>
+      {% endif %}
     </div>
 
     <div class="resultsContainer">
+      {% if roof_carbon is not none %}
       <h3>Roof Carbon</h3>
       <p>{{ roof_carbon }}</p>
+      {% endif %}
+      {% if wall_carbon is not none %}
       <h3>Wall Carbon</h3>
       <p>{{ wall_carbon }}</p>
+      {% endif %}
+      {% if slab_carbon is not none %}
       <h3>Slab Carbon</h3>
       <p>{{ slab_carbon }}</p>
+      {% endif %}
+      {% if beam_carbon is not none %}
       <h3>Beam Carbon</h3>
       <p>{{ beam_carbon }}</p>
+      {% endif %}
+      {% if column_carbon is not none %}
       <h3>Column Carbon</h3>
       <p>{{ column_carbon }}</p>
+      {% endif %}
+      {% if total_carbon is not none %}
       <h3>Total Carbon</h3>
       <p>{{ total_carbon }}</p>
+      {% endif %}
     </div>
 
     <div class="sidebar">
@@ -81,6 +95,12 @@
           <input type="file" id="uploadCarbonFile" name="uploadCarbonFile" />
           <label for="uploadCarbonFile" class="uploadLabel"
             ><i class="ri-upload-line"></i>Upload 3DM</label>
+            {% if carbon_file_data %}
+            <div class="uploadedFileData">
+              <h3>Uploaded File Data:</h3>
+              <p>{{ carbon_file_data }}</p>
+            </div>
+            {% endif %}
 
         <div class="selectors">
           <div class="wallSelector">
@@ -243,10 +263,6 @@
               responseType: "blob",
             },
             success: function (response) {
-              var blob = new Blob([response]);
-              var link = document.createElement("a");
-              link.href = window.URL.createObjectURL(blob);
-              link.click();
 
               $(".spinner").css("display", "none");
 

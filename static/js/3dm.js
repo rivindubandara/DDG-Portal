@@ -57,21 +57,31 @@ function init() {
   // Secondary Scene
   scene2 = new THREE.Scene();
   camera2 = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera2.position.z = 5; 
+  camera2.position.z = 220; 
   renderer2 = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer2.setClearColor( 0x000000, 0 );
   renderer2.setPixelRatio( window.devicePixelRatio );
-  renderer2.setSize( window.innerWidth / 4, window.innerHeight / 4 ); 
+  renderer2.setSize( window.innerWidth / 2, window.innerHeight / 2 ); 
   document.body.appendChild( renderer2.domElement );
   renderer2.domElement.style.position = 'absolute';
-  renderer2.domElement.style.bottom = '0px';
-  renderer2.domElement.style.right = '0px';
+  renderer2.domElement.style.bottom = '-100px';
+  renderer2.domElement.style.right = '-350px';
 
-  // Create a rotating cube (to be replaced by legend mesh)
-  const geometry = new THREE.BoxGeometry(3, 3, 3);
-  const material = new THREE.MeshBasicMaterial({ color: 0x41999c });
-  cube = new THREE.Mesh(geometry, material);
-  scene2.add(cube);
+  const ambientLight2 = new THREE.AmbientLight(0xffffff, 0.5);
+  scene2.add(ambientLight2);
+  
+  // Adding directional light to the secondary scene
+  const directionalLight2 = new THREE.DirectionalLight(0xffffff, 2);
+  directionalLight2.position.set(20, 40, 100);
+  scene2.add(directionalLight2);
+
+  // Load a different 3DM file for the second scene
+  const loader2 = new Rhino3dmLoader();
+  loader2.setLibraryPath( 'https://cdn.jsdelivr.net/npm/rhino3dm@7.15.0/' );
+  loader2.load( '/static/environmental_2.3dm', function ( object ) {
+    object.scale.set(4, 4, 4);
+    scene2.add( object );
+  } );
 
   window.addEventListener( 'resize', resize );
   
@@ -95,9 +105,6 @@ function resize() {
 }
 
 function animate() {
-
-  cube.rotation.x += 0.01;
-  cube.rotation.y += 0.01;
 
   controls.update();
   renderer.render( scene, camera );
