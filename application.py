@@ -4424,7 +4424,7 @@ def get_carbon():
         ]
         send_beam_c_list[0]["InnerTree"][key] = value
 
-    gh_carbon = open(r"./carbon.ghx", mode="r",
+    gh_carbon = open(r"./gh_scripts/carbon.ghx", mode="r",
                         encoding="utf-8-sig").read()
     gh_carbon_bytes = gh_carbon.encode("utf-8")
     gh_carbon_encoded = base64.b64encode(gh_carbon_bytes)
@@ -4564,7 +4564,7 @@ def get_carbon():
                             att.LayerIndex = beam_layerIndex
                             new_rhFile.Objects.AddMesh(geo, att)
     
-    gwp = total_carbon/gfa
+    gwp = round(float(total_carbon)/float(gfa),2)
     session['gwp'] = gwp
 
     filename = "carbon_output.3dm"

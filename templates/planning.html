@@ -16,10 +16,24 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css"
       rel="stylesheet"
     />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js"></script>
 </head>
 <body>
 
-  <div class="loadingScreen"></div>
+  <div class="counter">0</div>
+
+  <div class="overlay">
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+    <div class="bar"></div>
+  </div>
 
   <div class="statePicker">
     <ul>
@@ -139,6 +153,13 @@
             <div class="toggle-text">Heritage</div>
           </div>
         </div>
+
+        <div id="buildingsToggle" class="toggle">
+          <div class="toggle-button" onclick="Animatedtoggle(this)">
+            <div class="toggle-text">Buildings</div>
+          </div>
+        </div>
+  
       </div>
 
       <ul class="sidebar__menu">
@@ -361,7 +382,7 @@
 
     const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/rivindub/clfssusxp000j01os78ge7l2t',
+    style: 'mapbox://styles/mapbox/dark-v10',
     center: [lon, lat],
     zoom: 10
     });
@@ -861,6 +882,25 @@
           visibility: 'none'
         }
       });
+
+      map.addLayer({
+        'id': '3d-buildings',
+        'source': 'composite',
+        'source-layer': 'building',
+        'filter': ['==', 'extrude', 'true'],
+        'type': 'fill-extrusion',
+        'minzoom': 15,
+        'paint': {
+          'fill-extrusion-color': '#aaa',
+          'fill-extrusion-height': ['get', 'height'],
+          'fill-extrusion-base': ['get', 'min_height'],
+          'fill-extrusion-opacity': 1.0
+        },
+        layout: {
+          visibility: 'visible'
+        }
+      });
+      buildingsToggleBtn.classList.add('active');
     });
 
     const geocoder = new MapboxGeocoder({
@@ -920,6 +960,7 @@
   const hobToggleBtn = document.getElementById('hobToggle');
   const bushfireToggleBtn = document.getElementById('bushfireToggle');
   const heritageToggleBtn = document.getElementById('heritageToggle');
+  const buildingsToggleBtn = document.getElementById('buildingsToggle');
 
   cadastreToggleBtn.addEventListener('click', function() {
     const layerId = 'cadastre-raster-layer';
@@ -961,6 +1002,11 @@
     toggleLayerVisibility(layerId, heritageToggleBtn);
   });
 
+  buildingsToggleBtn.addEventListener('click', function() {
+    const layerId = '3d-buildings';
+    toggleLayerVisibility(layerId, buildingsToggleBtn);
+  });
+
   function toggleLayerVisibility(layerId, toggleBtn) {
     const visibility = map.getLayoutProperty(layerId, 'visibility');
     if (visibility === 'visible') {
@@ -971,6 +1017,7 @@
       toggleBtn.classList.add('active');
     }
   }
+  
   </script>
 
   <script>
@@ -1012,6 +1059,43 @@
             }, 1500);
         }
     };
+  </script>
+
+  <script>
+    function startLoader() {
+      let counterElement = document.querySelector(".counter");
+      let currentValue = 0;
+
+      function updateCounter() {
+        if (currentValue === 100) {
+          return;
+        }
+        currentValue += Math.floor(Math.random() * 10) + 1;
+
+        if (currentValue > 100) {
+          currentValue = 100;
+        }
+        counterElement.textContent = currentValue;
+
+        let delay = Math.floor(Math.random() * 200) + 50;
+        setTimeout(updateCounter, delay);
+      }
+      updateCounter();
+    }
+    startLoader();
+
+    gsap.to(".counter", 0.25, {
+      delay: 3.5,
+      opacity: 0,
+    });
+    gsap.to(".bar", 1.5, {
+      delay: 3.5,
+      height: 0,
+      stagger: {
+        amount: 0.5,
+      },
+      ease: "power4.inOut",
+    });
   </script>
 
 </body>

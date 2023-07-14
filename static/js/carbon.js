@@ -18,8 +18,8 @@ function init() {
   renderer.outputEncoding = THREE.sRGBEncoding;
   document.body.appendChild( renderer.domElement );
 
-  camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
-  camera.position.set( 50, -150, 50 );
+  camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+  camera.position.set(100, -120, 40);
 
   scene = new THREE.Scene();
 

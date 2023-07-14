@@ -107,6 +107,12 @@
             <div class="toggle-text">Heritage</div>
           </div>
         </div>
+
+        <div id="buildingsToggle" class="toggle">
+          <div class="toggle-button" onclick="Animatedtoggle(this)">
+            <div class="toggle-text">Buildings</div>
+          </div>
+        </div>
       </div>
 
       <ul class="sidebar__menu">
@@ -303,7 +309,7 @@
 
     const map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/rivindub/clfssusxp000j01os78ge7l2t',
+    style: 'mapbox://styles/mapbox/dark-v10',
     center: [lon, lat],
     zoom: 10
     });
@@ -406,6 +412,25 @@
           visibility: 'none'
         }
       });
+
+      map.addLayer({
+        'id': '3d-buildings',
+        'source': 'composite',
+        'source-layer': 'building',
+        'filter': ['==', 'extrude', 'true'],
+        'type': 'fill-extrusion',
+        'minzoom': 15,
+        'paint': {
+          'fill-extrusion-color': '#aaa',
+          'fill-extrusion-height': ['get', 'height'],
+          'fill-extrusion-base': ['get', 'min_height'],
+          'fill-extrusion-opacity': 1.0
+        },
+        layout: {
+          visibility: 'visible'
+        }
+      });
+      buildingsToggleBtn.classList.add('active');
     });
 
     const geocoder = new MapboxGeocoder({
@@ -462,6 +487,8 @@
   const adminToggleBtn = document.getElementById('adminToggle');
   const bushfireToggleBtn = document.getElementById('bushfireToggle');
   const heritageToggleBtn = document.getElementById('heritageToggle');
+  const buildingsToggleBtn = document.getElementById('buildingsToggle');
+
 
   cadastreToggleBtn.addEventListener('click', function() {
     const layerId = 'cadastre-raster-layer';
@@ -488,6 +515,11 @@
     toggleLayerVisibility(layerId, heritageToggleBtn);
   });
 
+  buildingsToggleBtn.addEventListener('click', function() {
+    const layerId = '3d-buildings';
+    toggleLayerVisibility(layerId, buildingsToggleBtn);
+  });
+  
   function toggleLayerVisibility(layerId, toggleBtn) {
     const visibility = map.getLayoutProperty(layerId, 'visibility');
     if (visibility === 'visible') {
