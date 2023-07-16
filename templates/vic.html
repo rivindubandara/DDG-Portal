@@ -568,22 +568,39 @@
   });
 
   nativelandsToggleBtn.addEventListener('click', function() {
-    const layerIds = ['nativelands-layer', 'nativelands-layer-symbol'];
-    toggleLayerVisibility(layerIds, nativelandsToggleBtn);
+    const layerId = 'nativelands-layer';
+    toggleLayerVisibility(layerId, nativelandsToggleBtn);
   });
 
-  function toggleLayerVisibility(layerIds, toggleBtn) {
-    for (const layerId of layerIds) {
+  function toggleLayerVisibility(layerId, toggleBtn) {
       const visibility = map.getLayoutProperty(layerId, 'visibility');
       if (visibility === 'visible') {
         map.setLayoutProperty(layerId, 'visibility', 'none');
+        toggleBtn.classList.remove('active');
       } else {
         map.setLayoutProperty(layerId, 'visibility', 'visible');
+        toggleBtn.classList.add('active');
       }
     }
+  </script>
 
-    toggleBtn.classList.toggle('active');
-  }
+  <script>
+    document
+        .getElementById("uploadedMergeFile")
+        .addEventListener("change", function () {
+          if (this.value) {
+            document.querySelector(".uploadMergeLabel").classList.add("green");
+          } else {
+            document.querySelector(".uploadMergeLabel").classList.remove("green");
+          }
+        });
+
+        function countFiles() {
+          var input = document.getElementById('uploadedMergeFile');
+          var fileCount = input.files.length;
+          var countDisplay = document.getElementById('fileCount');
+          countDisplay.textContent = fileCount.toString();
+        }
   </script>
   
 </body>

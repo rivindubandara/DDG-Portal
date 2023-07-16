@@ -4621,12 +4621,12 @@ def environmental():
     total_sunlight_hours = session.get('total_sunlight_hours', None)
     start_month = session.get('start_month')
     end_month = session.get('end_month')
-    start_day = session.get('start_day')
-    end_day = session.get('end_day')
+    start_hour = session.get('start_hour')
+    end_hour = session.get('end_hour')
 
     return render_template('environmental.html', total_sunlight_hours=total_sunlight_hours,
                            start_month=start_month, end_month=end_month,
-                           start_day=start_day, end_day=end_day)
+                           start_hour=start_hour, end_hour=end_hour)
 
 @application.route('/submit_environmental', methods=['POST'])
 def submit_environmental():
@@ -4639,13 +4639,13 @@ def submit_environmental():
     
     start_m = int(request.form['minMonth'])
     end_m = int(request.form['maxMonth'])
-    start_d = int(request.form['minDay'])
-    end_d = int(request.form['maxDay'])
+    start_h = int(request.form['minHour'])
+    end_h = int(request.form['maxHour'])
     
     session['start_month'] = start_m
     session['end_month'] = end_m
-    session['start_day'] = start_d
-    session['end_day'] = end_d
+    session['start_hour'] = start_h
+    session['end_hour'] = end_h
 
     rhFile = rh.File3dm.Read(file_path)
     layers = rhFile.Layers
@@ -4709,7 +4709,7 @@ def submit_environmental():
         start_m_dict[0]["InnerTree"][key] = value
 
     start_d_list = []
-    start_d_list.append(start_d)
+    start_d_list.append(21)
 
     start_d_dict = [{"ParamName": "Start_D", "InnerTree": {}}]
     for i, s_day in enumerate(start_d_list):
@@ -4723,7 +4723,7 @@ def submit_environmental():
         start_d_dict[0]["InnerTree"][key] = value
 
     start_h_list = []
-    start_h_list.append(8)
+    start_h_list.append(start_h)
 
     start_h_dict = [{"ParamName": "Start_H", "InnerTree": {}}]
     for i, s_hour in enumerate(start_h_list):
@@ -4751,7 +4751,7 @@ def submit_environmental():
         end_m_dict[0]["InnerTree"][key] = value
 
     end_d_list = []
-    end_d_list.append(end_d)
+    end_d_list.append(21)
 
     end_d_dict = [{"ParamName": "End_D", "InnerTree": {}}]
     for i, e_day in enumerate(end_d_list):
@@ -4765,7 +4765,7 @@ def submit_environmental():
         end_d_dict[0]["InnerTree"][key] = value
 
     end_h_list = []
-    end_h_list.append(20)
+    end_h_list.append(end_h)
 
     end_h_dict = [{"ParamName": "End_H", "InnerTree": {}}]
     for i, e_hour in enumerate(end_h_list):
