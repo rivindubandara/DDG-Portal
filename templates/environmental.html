@@ -88,7 +88,7 @@
               id="minHour"
               name="minHour"
             />
-            <span id="minDayValue" class="sliderValue">16</span>
+            <span id="minHourValue" class="sliderValue">12</span>
             <span class="sliderText">End Hour</span>
             <input
               type="range"
@@ -97,25 +97,17 @@
               id="maxHour"
               name="maxHour"
             />
-            <span id="maxDayValue" class="sliderValue">16</span>
-            <span class="sliderText">Start Month</span>
+            <span id="maxHourValue" class="sliderValue">12</span>
+            <span class="sliderText">Month</span>
             <input
               type="range"
-              min="1"
+              min="6"
               max="12"
-              id="minMonth"
-              name="minMonth"
+              id="Month"
+              name="Month"
+              step="6"
             />
-            <span id="minMonthValue" class="sliderValue">7</span>
-            <span class="sliderText">End Month</span>
-            <input
-              type="range"
-              min="1"
-              max="12"
-              id="maxMonth"
-              name="maxMonth"
-            />
-            <span id="maxMonthValue" class="sliderValue">7</span>
+            <span id="MonthValue" class="sliderValue">6</span>
           </div>
 
           <div class="submitContainer">
@@ -125,11 +117,13 @@
           </div>
         </form>
 
+        {% if total_sunlight_hours is not none %}
         <div class="resultsEnvContainer">
-          <i class="ri-numbers-fill"></i>Results
-          <h5>Total Sunlight Hours</h5>
-          <p>{{ total_sunlight_hours }}</p>
+            <i class="ri-numbers-fill"></i>Results
+            <h5>Total Sunlight Hours</h5>
+            <p>{{ total_sunlight_hours }}</p>
         </div>
+        {% endif %}
 
         <ul class="sidebar__menu">
           <li>
@@ -161,30 +155,24 @@
     </div>
 
     <script>
-      const minDaySlider = document.getElementById("minDay");
-      const maxDaySlider = document.getElementById("maxDay");
-      const minMonthSlider = document.getElementById("minMonth");
-      const maxMonthSlider = document.getElementById("maxMonth");
+      const minHourSlider = document.getElementById("minHour");
+      const maxHourSlider = document.getElementById("maxHour");
+      const MonthSlider = document.getElementById("Month");
 
       const minDayValue = document.getElementById("minDayValue");
       const maxDayValue = document.getElementById("maxDayValue");
-      const minMonthValue = document.getElementById("minMonthValue");
-      const maxMonthValue = document.getElementById("maxMonthValue");
+      const MonthValue = document.getElementById("MonthValue");
 
-      minDaySlider.addEventListener("input", function () {
-        minDayValue.textContent = minDaySlider.value;
+      minHourSlider.addEventListener("input", function () {
+        minHourValue.textContent = minHourSlider.value;
       });
 
-      maxDaySlider.addEventListener("input", function () {
-        maxDayValue.textContent = maxDaySlider.value;
+      maxHourSlider.addEventListener("input", function () {
+        maxHourValue.textContent = maxHourSlider.value;
       });
 
-      minMonthSlider.addEventListener("input", function () {
-        minMonthValue.textContent = minMonthSlider.value;
-      });
-
-      maxMonthSlider.addEventListener("input", function () {
-        maxMonthValue.textContent = maxMonthSlider.value;
+      MonthSlider.addEventListener("input", function () {
+        MonthValue.textContent = MonthSlider.value;
       });
     </script>
 
@@ -248,10 +236,9 @@
     </script>
 
     <script>
-      var minDay = document.getElementById("minDay").value;
-      var maxDay = document.getElementById("maxDay").value;
-      var minMonth = document.getElementById("minMonth").value;
-      var maxMonth = document.getElementById("maxMonth").value;
+      var minHour = document.getElementById("minHour").value;
+      var maxHour = document.getElementById("maxHour").value;
+      var Month = document.getElementById("Month").value;
     </script>
 
     <script

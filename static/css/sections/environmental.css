@@ -45,7 +45,7 @@ label:active{
   position: relative;
   color: var(--color-white);
   background: var(--black-300);
-  margin-top: 20px;
+  margin-top: 10px;
   margin-left: 25px;
   padding: 20px;
   border-radius: 5px;
@@ -175,7 +175,7 @@ input[type="range"]::after {
   text-transform: uppercase;
   color: var(--color-white);
   background: var(--black-300);
-  margin-top: 15px;
+  margin-top: 10px;
   margin-left: 25px;
   text-align: center;
   padding: 10px 40px;
@@ -349,7 +349,7 @@ input[type="range"]::after {
   margin-top: 0px;
   margin-left: 25px;
   text-align: center;
-  padding: 10px 40px;
+  padding: 10px 20px;
   font-size: 18px;
   letter-spacing: 1.5px;
   user-select: none;

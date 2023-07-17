@@ -4637,8 +4637,8 @@ def submit_environmental():
     else:
         return jsonify({'error': True})
     
-    start_m = int(request.form['minMonth'])
-    end_m = int(request.form['maxMonth'])
+    start_m = int(request.form['Month'])
+    end_m = int(request.form['Month'])
     start_h = int(request.form['minHour'])
     end_h = int(request.form['maxHour'])
     
