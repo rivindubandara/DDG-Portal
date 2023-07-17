@@ -15,7 +15,7 @@ html {
 
 .address {
   position: fixed;
-  margin-top: 160px;
+  margin-top: 80px;
   margin-left: 25px;
   z-index: 1;
   border-color: var(--color-white);
@@ -37,7 +37,7 @@ button {
 .planningLabel {
   display: inline-block;
   padding: 5px 40px;
-  margin-top: 210px;
+  margin-top: 120px;
   margin-left: 25px;
   z-index: 1;
   width: 300px;

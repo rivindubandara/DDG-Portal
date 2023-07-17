@@ -34,18 +34,11 @@ html {
   margin-top: auto;
 }
 
-.dd__logo {
-  position: absolute;
-  z-index: 2;
-  margin-left: 40px;
-  margin-top: 40px;
-}
-
 .nt__logo {
   position: absolute;
   z-index: 2;
   margin-left: 40px;
-  margin-top: 120px;
+  margin-top: 40px;
 }
 
 .sidebar__menu li {
