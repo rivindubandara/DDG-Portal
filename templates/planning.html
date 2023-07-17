@@ -928,23 +928,23 @@
         }
       });
       
-      // map.addLayer({
-      //   id: 'nativelands-layer-symbol',
-      //   type: 'symbol',
-      //   source: 'nativelands-source',
-      //   'source-layer': 'Territories',
-      //   layout: {
-      //     'text-field': ['get', 'Name'], 
-      //     'text-size': 12,
-      //     'text-anchor': 'center',
-      //     'text-allow-overlap': true
-      //   },
-      //   paint: {
-      //     'text-color': '#fff'
-      //   },
-      //   minzoom: 0,
-      //   maxzoom: 22
-      // });
+      map.addLayer({
+        id: 'nativelands-layer-symbol',
+        type: 'symbol',
+        source: 'nativelands-source',
+        'source-layer': 'Territories',
+        layout: {
+          'text-field': ['get', 'Name'], 
+          'text-size': 12,
+          'text-anchor': 'center',
+          'text-allow-overlap': true
+        },
+        paint: {
+          'text-color': '#fff'
+        },
+        minzoom: 0,
+        maxzoom: 22
+      });
 
       buildingsToggleBtn.classList.add('active');
 
@@ -1057,8 +1057,10 @@
   });
 
   nativelandsToggleBtn.addEventListener('click', function() {
-    const layerId = 'nativelands-layer';
-    toggleLayerVisibility(layerId, nativelandsToggleBtn);
+    const layerId1 = 'nativelands-layer';
+    const layerId2 = 'nativelands-layer-symbol';
+    toggleLayerVisibility(layerId1, nativelandsToggleBtn);
+    toggleLayerVisibility(layerId2, nativelandsToggleBtn);
   });
 
   function toggleLayerVisibility(layerId, toggleBtn) {

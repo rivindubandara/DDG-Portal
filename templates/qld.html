@@ -868,8 +868,10 @@
   });
 
   nativelandsToggleBtn.addEventListener('click', function() {
-    const layerId = 'nativelands-layer';
-    toggleLayerVisibility(layerId, nativelandsToggleBtn);
+    const layerId1 = 'nativelands-layer';
+    const layerId2 = 'nativelands-layer-symbol';
+    toggleLayerVisibility(layerId1, nativelandsToggleBtn);
+    toggleLayerVisibility(layerId2, nativelandsToggleBtn);
   });
 
   function toggleLayerVisibility(layerId, toggleBtn) {
