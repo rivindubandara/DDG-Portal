@@ -297,7 +297,7 @@ def get_planning():
 
     xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
     z_xmin_LL, z_xmax_LL, z_ymin_LL, z_ymax_LL = create_boundary(
-        lat, lon, 40000)
+        lat, lon, 30000)
     b_xmin_LL, b_xmax_LL, b_ymin_LL, b_ymax_LL = create_boundary(
         lat, lon, 50000)
     p_xmin_LL, p_xmax_LL, p_ymin_LL, p_ymax_LL = create_boundary(
@@ -384,7 +384,7 @@ def get_planning():
         'where': '1=1',
         'geometry': f'{z_xmin_LL}, {z_ymin_LL},{z_xmax_LL},{z_ymax_LL}',
         'geometryType': 'esriGeometryEnvelope',
-        'spatialRel': 'esriSpatialRelContains',
+        'spatialRel': 'esriSpatialRelIntersects',
         'returnGeometry': 'true',
         'f': 'json',
         'outFields': '*',
@@ -1064,11 +1064,11 @@ def get_planning():
     translation_vector = rh.Vector3d(-centroid.X, -
                                      centroid.Y, -centroid.Z)
 
-    if bound_curve is not None:  # Check if bound_curve is not None
+    if bound_curve is not None:  
         bound_curve.Translate(translation_vector)
 
     for obj in planning_model.Objects:
-        if obj.Geometry != bound_curve and obj.Geometry is not None:  # Check if obj.Geometry is not None
+        if obj.Geometry != bound_curve and obj.Geometry is not None:  
             obj.Geometry.Translate(translation_vector)
 
     filename = "planning.3dm"
