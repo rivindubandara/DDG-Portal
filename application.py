@@ -5018,6 +5018,73 @@ def submitImages():
 
     heritage_curves = [obj.Geometry for obj in heritage]
 
+    buildings = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Buildings":
+            buildings.append(obj)
+
+    buildings_curves = [obj.Geometry for obj in buildings]
+
+    def s_b_compute(breps, fileName, ghx_file_path):
+        list = [{"ParamName": "Geometry", "InnerTree": {}}]
+        for i, mesh in enumerate(breps):
+            serialized_mesh = json.dumps(mesh, cls=__Rhino3dmEncoder)
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "Rhino.Geometry.Brep",
+                    "data": serialized_mesh
+                }
+            ]
+            list[0]["InnerTree"][key] = value
+
+
+        file_name_list = []
+        file_name_list.append(fileName)
+
+        filename_send = [{"ParamName": "FileName", "InnerTree": {}}]
+        for i, val in enumerate(file_name_list):
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "System.String",
+                    "data": val
+                }
+            ]
+            filename_send[0]["InnerTree"][key] = value
+
+        folder_name_list = []
+        folder_name_list.append(folderName)
+
+        foldername_send = [{"ParamName": "FolderName", "InnerTree": {}}]
+        for i, val in enumerate(folder_name_list):
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "System.String",
+                    "data": val
+                }
+            ]
+            foldername_send[0]["InnerTree"][key] = value
+
+
+        gh_graphics = open(ghx_file_path, mode="r",
+                        encoding="utf-8-sig").read()
+        gh_graphics_bytes = gh_graphics.encode("utf-8")
+        gh_graphics_encoded = base64.b64encode(gh_graphics_bytes)
+        gh_graphics_decoded = gh_graphics_encoded.decode("utf-8")
+
+        geo_payload = {
+            "algo": gh_graphics_decoded,
+            "pointer": None,
+            "values":  list + filename_send + foldername_send
+        }
+
+        requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        return None
+
     def s_compute(meshes, vals_list, fileName, ghx_file_path):
         list = [{"ParamName": "Geometry", "InnerTree": {}}]
         for i, mesh in enumerate(meshes):
@@ -5163,6 +5230,7 @@ def submitImages():
     s_l_compute(plan_extent_curves, 'Plan Extent')
     s_l_compute(roads_curves, 'Roads')
     s_l_compute(heritage_curves, 'Heritage')
+    #s_b_compute(buildings_curves, 'Buildings','./gh_scripts/buildingsColor.ghx')
 
     return render_template('tools.html')
 
