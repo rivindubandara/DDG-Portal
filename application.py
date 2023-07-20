@@ -4866,5 +4866,305 @@ def submit_environmental():
 def tools():
     return render_template('tools.html')
 
+@application.route('/submitImages', methods=['POST'])
+def submitImages():
+    file = request.files['uploadedImageFile']
+    if file:
+        file_path = 'tmp/files/' + file.filename
+        file.save(file_path)
+    else:
+        return jsonify({'error': True})
+    
+    folderName = request.form['folderNameInput']
+    rhFile = rh.File3dm.Read(file_path)
+    layers = rhFile.Layers
+
+    admin = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Administrative Boundaries":
+            admin.append(obj)
+
+    admin_curves = [obj.Geometry for obj in admin]
+
+    admin_values = []
+    for obj in admin:
+        user_strings = obj.Attributes.GetUserStrings()
+        for user_string in user_strings:
+            vals = user_string[1]
+            admin_values.append(vals)
+
+    zoning = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Zoning":
+            zoning.append(obj)
+
+    zoning_curves = [obj.Geometry for obj in zoning]
+
+    zoning_values = []
+    for obj in zoning:
+        user_strings = obj.Attributes.GetUserStrings()
+        for user_string in user_strings:
+            vals = user_string[1]
+            zoning_values.append(vals)
+
+    hob = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "HoB":
+            hob.append(obj)
+
+    hob_curves = [obj.Geometry for obj in hob]
+
+    hob_values = []
+    for obj in hob:
+        user_strings = obj.Attributes.GetUserStrings()
+        for user_string in user_strings:
+            vals = user_string[1]
+            hob_values.append(vals)
+
+    mls = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Minimum Lot Size":
+            mls.append(obj)
+
+    mls_curves = [obj.Geometry for obj in mls]
+
+    mls_values = []
+    for obj in mls:
+        user_strings = obj.Attributes.GetUserStrings()
+        for user_string in user_strings:
+            vals = user_string[1]
+            mls_values.append(vals)
+
+    fsr = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "FSR":
+            fsr.append(obj)
+
+    fsr_curves = [obj.Geometry for obj in fsr]
+
+    fsr_values = []
+    for obj in fsr:
+        user_strings = obj.Attributes.GetUserStrings()
+        for user_string in user_strings:
+            vals = user_string[1]
+            fsr_values.append(vals)
+
+    boundary = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Boundary":
+            boundary.append(obj)
+
+    boundary_curves = [obj.Geometry for obj in boundary]
+
+    driving_isochrone = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Driving Isochrones":
+            driving_isochrone.append(obj)
+
+    driving_isochrone_curves = [obj.Geometry for obj in driving_isochrone]
+
+    walking_isochrone = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Walking Isochrones":
+            walking_isochrone.append(obj)
+
+    walking_isochrone_curves = [obj.Geometry for obj in walking_isochrone]
+
+    cycling_isochrone = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Cycling Isochrones":
+            cycling_isochrone.append(obj)
+
+    cycling_isochrone_curves = [obj.Geometry for obj in cycling_isochrone]
+
+    lots = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Lots":
+            lots.append(obj)
+
+    lots_curves = [obj.Geometry for obj in lots]
+
+    plan_extent = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Plan Extent":
+            plan_extent.append(obj)
+
+    plan_extent_curves = [obj.Geometry for obj in plan_extent]
+
+    roads = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Roads":
+            roads.append(obj)
+
+    roads_curves = [obj.Geometry for obj in roads]
+
+    heritage = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Heritage":
+            heritage.append(obj)
+
+    heritage_curves = [obj.Geometry for obj in heritage]
+
+    def s_compute(meshes, vals_list, fileName, ghx_file_path):
+        list = [{"ParamName": "Geometry", "InnerTree": {}}]
+        for i, mesh in enumerate(meshes):
+            serialized_mesh = json.dumps(mesh, cls=__Rhino3dmEncoder)
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "Rhino.Geometry.Mesh",
+                    "data": serialized_mesh
+                }
+            ]
+            list[0]["InnerTree"][key] = value
+
+        val_list_send = [{"ParamName": "Vals", "InnerTree": {}}]
+        for i, val in enumerate(vals_list):
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "System.String",
+                    "data": val
+                }
+            ]
+            val_list_send[0]["InnerTree"][key] = value
+
+
+        file_name_list = []
+        file_name_list.append(fileName)
+
+        filename_send = [{"ParamName": "FileName", "InnerTree": {}}]
+        for i, val in enumerate(file_name_list):
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "System.String",
+                    "data": val
+                }
+            ]
+            filename_send[0]["InnerTree"][key] = value
+
+        folder_name_list = []
+        folder_name_list.append(folderName)
+
+        foldername_send = [{"ParamName": "FolderName", "InnerTree": {}}]
+        for i, val in enumerate(folder_name_list):
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "System.String",
+                    "data": val
+                }
+            ]
+            foldername_send[0]["InnerTree"][key] = value
+
+
+        gh_graphics = open(ghx_file_path, mode="r",
+                        encoding="utf-8-sig").read()
+        gh_graphics_bytes = gh_graphics.encode("utf-8")
+        gh_graphics_encoded = base64.b64encode(gh_graphics_bytes)
+        gh_graphics_decoded = gh_graphics_encoded.decode("utf-8")
+
+        geo_payload = {
+            "algo": gh_graphics_decoded,
+            "pointer": None,
+            "values":  list + val_list_send + filename_send + foldername_send
+        }
+
+        requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        return None
+
+    def s_l_compute(curves, fileName):
+        serialized_curves = []
+        for curve in curves:
+            serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+            serialized_curves.append(serialized_curve)
+
+        list_send = [{"ParamName": "Geometry", "InnerTree": {}}]
+        for i, curve in enumerate(serialized_curves):
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "Rhino.Geometry.Curve",
+                    "data": curve
+                }
+            ]
+            list_send[0]["InnerTree"][key] = value
+
+        file_name_list = []
+        file_name_list.append(fileName)
+
+        filename_send = [{"ParamName": "FileName", "InnerTree": {}}]
+        for i, val in enumerate(file_name_list):
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "System.String",
+                    "data": val
+                }
+            ]
+            filename_send[0]["InnerTree"][key] = value
+
+        folder_name_list = []
+        folder_name_list.append(folderName)
+
+        foldername_send = [{"ParamName": "FolderName", "InnerTree": {}}]
+        for i, val in enumerate(folder_name_list):
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "System.String",
+                    "data": val
+                }
+            ]
+            foldername_send[0]["InnerTree"][key] = value
+
+        gh_graphics = open('./gh_scripts/lineColors.ghx', mode="r",
+                        encoding="utf-8-sig").read()
+        gh_graphics_bytes = gh_graphics.encode("utf-8")
+        gh_graphics_encoded = base64.b64encode(gh_graphics_bytes)
+        gh_graphics_decoded = gh_graphics_encoded.decode("utf-8")
+
+        geo_payload = {
+            "algo": gh_graphics_decoded,
+            "pointer": None,
+            "values": list_send + filename_send + foldername_send
+        }
+
+        requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        return None
+    
+    s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx')
+    s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx')
+    # s_compute(zoning_curves, zoning_values, 'Zoning','./gh_scripts/adminColors.ghx')
+    s_compute(hob_curves, hob_values, 'HoB','./gh_scripts/hobColors.ghx')
+    s_compute(mls_curves, mls_values, 'MLS','./gh_scripts/mlsColors.ghx')
+    s_compute(fsr_curves, fsr_values, 'FSR','./gh_scripts/fsrColors.ghx')
+    s_l_compute(boundary_curves, 'Boundary')
+    s_l_compute(driving_isochrone_curves, 'Driving Isochrone')
+    s_l_compute(walking_isochrone_curves, 'Walking Isochrone')
+    s_l_compute(cycling_isochrone_curves, 'Cycling Isochrone')
+    s_l_compute(lots_curves, 'Lots')
+    s_l_compute(plan_extent_curves, 'Plan Extent')
+    s_l_compute(roads_curves, 'Roads')
+    s_l_compute(heritage_curves, 'Heritage')
+
+    return render_template('tools.html')
+
 if __name__ == '__main__':
     application.run(host='0.0.0.0', port=5000, debug=True)

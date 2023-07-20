@@ -7,6 +7,7 @@
 @import url("sections/planning.css");
 @import url("sections/environmental.css");
 @import url("sections/carbon.css");
+@import url("sections/tools.css");
 
 :root {
   --open-sans: "Open Sans", sans-serif;

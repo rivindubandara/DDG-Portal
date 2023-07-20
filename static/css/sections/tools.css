@@ -1,0 +1,94 @@
+.planningImages {
+  position: fixed;
+  background-color: var(--black-300);
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+  width: 300px;
+  height: 250px;
+  margin-top: 150px;
+  margin-left: 100px;
+  color: var(--color-white);
+  padding: 5px;
+  z-index: 2;
+}
+
+.planningImages h2 {
+  text-align: center;
+}
+
+.uploadedImageFile {
+  display: flex;
+  position: relative;
+  top: 10px;
+  left: 20px;
+  height: 50px;
+  text-transform: uppercase;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 250px;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+  background: var(--black-300);
+  color: var(--color-white);
+  font-weight: bold;
+  z-index: 1;
+  padding: 5px;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+}
+
+.folderName {
+  display: flex;
+  position: relative;
+  top: 20px;
+  left: 20px;
+  text-transform: uppercase;
+  justify-content: center;
+  text-align: center;
+  width: 250px;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+  background: var(--black-300);
+  color: var(--color-white);
+  font-weight: bold;
+  z-index: 1;
+  padding: 5px;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+}
+
+.uploadedImageFile.green {
+  background: green;
+  color: white;
+}
+
+#submitBtnImages {
+  display: flex;
+  position: relative;
+  top: 20px;
+  left: 10px;
+  height: 50px;
+  text-transform: uppercase;
+  justify-content: center;
+  text-align: center;
+  width: 250px;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+  background: var(--black-300);
+  color: var(--color-white);
+  font-weight: bold;
+  z-index: 1;
+  padding: 5px;
+  font-size: 20px;
+  font-weight: bolder;
+  letter-spacing: 1.5px;
+}
+
+#submitBtnImages:active{
+  transform: scale(0.9);
+}
+
