@@ -5218,7 +5218,7 @@ def submitImages():
     
     s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx')
     s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx')
-    # s_compute(zoning_curves, zoning_values, 'Zoning','./gh_scripts/adminColors.ghx')
+    s_compute(zoning_curves, zoning_values, 'Zoning','./gh_scripts/zoningColors.ghx')
     s_compute(hob_curves, hob_values, 'HoB','./gh_scripts/hobColors.ghx')
     s_compute(mls_curves, mls_values, 'MLS','./gh_scripts/mlsColors.ghx')
     s_compute(fsr_curves, fsr_values, 'FSR','./gh_scripts/fsrColors.ghx')
