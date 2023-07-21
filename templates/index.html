@@ -6,132 +6,207 @@
     <title>digital design</title>
     <link rel="icon" type="image/svg" href="/static/images/terminal_icon.svg" />
     <link type="text/css" rel="stylesheet" href="/static/css/style.css" />
-    <script src="/static/js/splitting.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/baffle@0.3.6/dist/baffle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js"></script>
   </head>
   <body>
-    <div class="counter">0</div>
 
-    <div class="overlay">
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
+    <div class="loader" id="preloader">
+      <div class="loader-clip clip-top">
+        <div class="marquee">
+          <div class="marquee-container">
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+          </div>
+        </div>
+      </div>
+      <div class="loader-clip clip-bottom">
+        <div class="marquee">
+          <div class="marquee-container">
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+          </div>
+        </div>
+      </div>
+      <div class="clip-center">
+        <div class="marquee">
+          <div class="marquee-container">
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <span><img src="/static/images/dd_logo.png" alt=""></span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="sidebar">
       <div class="nt__logo">
-        <a href="https://www.nettletontribe.com.au"
-          ><img src="/static/images/nt_logo.png" alt="dd_logo" width="300px"
-        /></a>
+        <a href="https://www.nettletontribe.com.au"><img src="/static/images/nt_logo.png" alt="dd_logo" width="300px"></a>
       </div>
-
-      <nav class="sidebar__nav">
-        <ul class="sidebar__menu">
-          <li>
-            <a href="{{ url_for('planning') }}"
-              ><img
-                src="/static/images/building-solid.svg"
-                alt="building icon"
-              />
-              <p>PLANNING</p></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('carbon') }}"
-              ><img
-                src="/static/images/industry-solid.svg"
-                alt="industrial icon"
-              />
-              <p>CARBON</p></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('environmental') }}"
-              ><img src="/static/images/seedling-solid.svg" alt="tree icon" />
-              <p>ENVIRONMENTAL</p></a
-            >
-          </li>
-          <li>
-            <a href="{{ url_for('tools') }}"
-              ><img src="/static/images/screwdriver-wrench-solid.svg" alt="terminal icon" />
-              <p>TOOLS</p></a
-            >
-          </li>
-        </ul>
-      </nav>
+  
     </div>
 
-    <div class="container">
-      <div class="data">
-        <p>DIGITAL DESIGN</p>
+    <div class="wrapper">
+      <div class="header-container">
+        <div class="header"><a href="https://digitaldesign.nettletontribe.com.au/"><img src="/static/images/dd_logo.png" alt=""></a></div>
+      </div>
+
+      <div class="nav-container">
+        <div class="nav-left">
+          <div class="services nav-item">
+            <a href="{{ url_for('planning') }}">
+            <div class="card-container">
+              <div class="shapes-container">
+                <div class="shapes">
+                  <div id="square"></div>
+                  <div id="circle"></div>
+                  <div id="triangle"></div>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-icon">
+                  <ion-icon name="business-sharp"></ion-icon>
+                </div>
+                <div class="preview-text">PLANNING</div>
+                <div class="text-wrapper">
+                  PLANNING. PLANNING. PLANNING. PLANNING. PLANNING. PLANNING.
+                  PLANNING. PLANNING. PLANNING. PLANNING. PLANNING. PLANNING.
+                  PLANNING. PLANNING. PLANNING. PLANNING. PLANNING. PLANNING.
+                </div>
+              </div>
+            </div>
+            </a>
+          </div>
+        </div>
+        <div class="nav-right">
+          <div class="nav-top">
+            <div class="work nav-item">
+              <a href="{{ url_for('environmental') }}">
+                <div class="card-container">
+                  <div class="card-icon">
+                    <ion-icon name="leaf-sharp"></ion-icon>
+                  </div>
+                  <div class="preview-text">ENVIRONMENTAL</div>
+                  <div class="text-wrapper">
+                    ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS.
+                    ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS.
+                    ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS.
+                  </div>
+                </div>
+              </a>
+            </div>
+            <div class="about nav-item">
+              <a href="{{ url_for('carbon') }}">
+                <div class="card-container">
+                  <div class="card">
+                    <div class="card-icon">
+                      <ion-icon name="flame-sharp"></ion-icon>
+                    </div>
+                    <div class="preview-text">CARBON</div>
+                    <div class="text-wrapper">
+                      EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON.
+                      EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON. 
+                      EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON. 
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+          <div class="nav-bottom">
+            <div class="contact nav-item">
+              <a href="{{ url_for('tools') }}">
+                <div class="card-container">
+                  <div class="card">
+                    <div class="card-icon">
+                      <ion-icon name="hammer-sharp"></ion-icon>
+                    </div>
+                    <div class="preview-text">TOOLS</div>
+                    <div class="text-wrapper">
+                      TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS.
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="background"></div>
+    <script>
+      gsap.from(".clip-top, .clip-bottom", 2, {
+        delay: 1,
+        height: "50vh",
+        ease:"power4.inOut",
+      });
+      
+      gsap.to(".marquee", 3.5, {
+        delay: 0.75,
+        height: "50%",
+        ease:"power4.inOut",
+      });
 
-    <script type="text/javascript">
-      document.onreadystatechange = function () {
-        if (document.readyState !== "complete") {
-          setTimeout(function () {
-            document.querySelector(".loadingScreen").style.display = "none";
-          }, 4000);
-        }
-      };
+      gsap.from(".clip-top .marquee, .clip-bottom .marquee", 5, {
+        delay: 1,
+        left: "100%",
+        ease:"power3.inOut",
+      });
 
-      setTimeout(function () {
-        const text = baffle(".data");
-        text.set({
-          characters: "█▒< █▒▒▓▓ /░//▒ /<▓ ░>█░░ ░/▒▓ ▒░▒ >░░▒ █▓▒▒",
-          speed: 120,
-        });
-        text.start();
-        text.reveal(2000);
-      }, 4000);
+      gsap.from(".clip-center .marquee", 5, {
+        delay: 1,
+        left: "-50%",
+        ease:"power3.inOut",
+      });
+
+      gsap.to(".clip-top", 2, {
+        delay: 6,
+        clipPath: "inset(0 0 100% 0)",
+        ease:"power4.inOut",
+      });
+
+      gsap.to(".clip-bottom", 2, {
+        delay: 6,
+        clipPath: "inset(100% 0 0 0)",
+        ease: "power4.inOut",
+      });
+
+      gsap.to(".clip-top .marquee, .clip-bottom .marquee, .clip-center .marquee span", 1, {
+        delay: 6,
+        opacity: 0,
+        ease:"power2.inOut",
+      });
     </script>
 
     <script>
-      function startLoader() {
-        let counterElement = document.querySelector(".counter");
-        let currentValue = 0;
-
-        function updateCounter() {
-          if (currentValue === 100) {
-            return;
-          }
-          currentValue += Math.floor(Math.random() * 25) + 1;
-
-          if (currentValue > 100) {
-            currentValue = 100;
-          }
-          counterElement.textContent = currentValue;
-
-          let delay = Math.floor(Math.random() * 200) + 50;
-          setTimeout(updateCounter, delay);
-        }
-        updateCounter();
+      function fadeOutPreloader() {
+        gsap.to("#preloader", {
+          duration: 1,
+          opacity: 0,
+          ease: "power1.out",
+          onComplete: function () {
+            document.getElementById("preloader").remove();
+          },
+        });
       }
-      startLoader();
 
-      gsap.to(".counter", 0.25, {
-        delay: 3.5,
-        opacity: 0,
-      });
-      gsap.to(".bar", 1.5, {
-        delay: 3.5,
-        height: 0,
-        stagger: {
-          amount: 0.5,
-        },
-        ease: "power4.inOut",
-      });
+      function startFadeOut() {
+        setTimeout(fadeOutPreloader, 6000);
+      }
+
+      window.onload = function () {
+        startFadeOut();
+      };
     </script>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>  
   </body>
 </html>

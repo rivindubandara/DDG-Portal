@@ -19,22 +19,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js"></script>
 </head>
 <body>
-
-  <div class="counter">0</div>
-
-  <div class="overlay">
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-    <div class="bar"></div>
-  </div>
-
   <div class="statePicker">
     <ul>
       <li><img src="/static/images/nsw_outline.png" alt="" class="state-img nsw-img"></li>
@@ -1076,7 +1060,6 @@
         toggleBtn.classList.add('active');
       }
     }
-
   </script>
 
   <script>
@@ -1108,43 +1091,6 @@
           document.querySelector(".uploadGiraffeLabel").classList.remove("green");
         }
       });
-  </script>
-
-  <script>
-    function startLoader() {
-      let counterElement = document.querySelector(".counter");
-      let currentValue = 0;
-
-      function updateCounter() {
-        if (currentValue === 100) {
-          return;
-        }
-        currentValue += Math.floor(Math.random() * 25) + 1;
-
-        if (currentValue > 100) {
-          currentValue = 100;
-        }
-        counterElement.textContent = currentValue;
-
-        let delay = Math.floor(Math.random() * 200) + 50;
-        setTimeout(updateCounter, delay);
-      }
-      updateCounter();
-    }
-    startLoader();
-
-    gsap.to(".counter", 0.25, {
-      delay: 3.5,
-      opacity: 0,
-    });
-    gsap.to(".bar", 1.5, {
-      delay: 3.5,
-      height: 0,
-      stagger: {
-        amount: 0.5,
-      },
-      ease: "power4.inOut",
-    });
   </script>
 
 </body>
