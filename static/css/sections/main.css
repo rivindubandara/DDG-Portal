@@ -404,6 +404,8 @@ html {
    width: 100vw;
    height: 33.3vh;
    top: 33.3vh;
+   z-index: 2;
+   background: #fff;
  }
  
  .marquee {
