@@ -125,3 +125,16 @@ html {
    align-items: baseline; 
  }
  
+ .enter {
+  display: none;
+  position: absolute;
+  top: 58%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center; 
+  z-index: 2;
+}
+ .enter h3 {
+  color: var(--color-white);
+  text-transform: uppercase;
+ }
