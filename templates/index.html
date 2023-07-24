@@ -16,7 +16,7 @@
           <div class="marquee-container">
             <span><img src="/static/images/dd_logo.png" alt=""></span>
             <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <img src="/static/images/dd_logo.png" alt="">
             <span><img src="/static/images/dd_logo.png" alt=""></span>
             <span><img src="/static/images/dd_logo.png" alt=""></span>
           </div>
@@ -27,7 +27,7 @@
           <div class="marquee-container">
             <span><img src="/static/images/dd_logo.png" alt=""></span>
             <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <img src="/static/images/dd_logo.png" alt="">
             <span><img src="/static/images/dd_logo.png" alt=""></span>
             <span><img src="/static/images/dd_logo.png" alt=""></span>
           </div>
@@ -38,7 +38,7 @@
           <div class="marquee-container">
             <span><img src="/static/images/dd_logo.png" alt=""></span>
             <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
+            <a href="{{ url_for('planning') }}"><img src="/static/images/dd_logo.png" alt=""></a>
             <span><img src="/static/images/dd_logo.png" alt=""></span>
             <span><img src="/static/images/dd_logo.png" alt=""></span>
           </div>
@@ -51,94 +51,6 @@
         <a href="https://www.nettletontribe.com.au"><img src="/static/images/nt_logo.png" alt="dd_logo" width="300px"></a>
       </div>
   
-    </div>
-
-    <div class="wrapper">
-      <div class="header-container">
-        <div class="header"><a href="https://digitaldesign.nettletontribe.com.au/"><img src="/static/images/dd_logo.png" alt=""></a></div>
-      </div>
-
-      <div class="nav-container">
-        <div class="nav-left">
-          <div class="services nav-item">
-            <a href="{{ url_for('planning') }}">
-            <div class="card-container">
-              <div class="shapes-container">
-                <div class="shapes">
-                  <div id="square"></div>
-                  <div id="circle"></div>
-                  <div id="triangle"></div>
-                </div>
-              </div>
-              <div class="card">
-                <div class="card-icon">
-                  <ion-icon name="business-sharp"></ion-icon>
-                </div>
-                <div class="preview-text">PLANNING</div>
-                <div class="text-wrapper">
-                  PLANNING. PLANNING. PLANNING. PLANNING. PLANNING. PLANNING.
-                  PLANNING. PLANNING. PLANNING. PLANNING. PLANNING. PLANNING.
-                  PLANNING. PLANNING. PLANNING. PLANNING. PLANNING. PLANNING.
-                </div>
-              </div>
-            </div>
-            </a>
-          </div>
-        </div>
-        <div class="nav-right">
-          <div class="nav-top">
-            <div class="work nav-item">
-              <a href="{{ url_for('environmental') }}">
-                <div class="card-container">
-                  <div class="card-icon">
-                    <ion-icon name="leaf-sharp"></ion-icon>
-                  </div>
-                  <div class="preview-text">ENVIRONMENTAL</div>
-                  <div class="text-wrapper">
-                    ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS.
-                    ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS.
-                    ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS. ENVIRONMENTAL ANALYSIS.
-                  </div>
-                </div>
-              </a>
-            </div>
-            <div class="about nav-item">
-              <a href="{{ url_for('carbon') }}">
-                <div class="card-container">
-                  <div class="card">
-                    <div class="card-icon">
-                      <ion-icon name="flame-sharp"></ion-icon>
-                    </div>
-                    <div class="preview-text">CARBON</div>
-                    <div class="text-wrapper">
-                      EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON.
-                      EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON. 
-                      EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON. EMBODIED CARBON. 
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-          <div class="nav-bottom">
-            <div class="contact nav-item">
-              <a href="{{ url_for('tools') }}">
-                <div class="card-container">
-                  <div class="card">
-                    <div class="card-icon">
-                      <ion-icon name="hammer-sharp"></ion-icon>
-                    </div>
-                    <div class="preview-text">TOOLS</div>
-                    <div class="text-wrapper">
-                      TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS. TOOLS.
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <script>
@@ -183,27 +95,6 @@
         opacity: 0,
         ease:"power2.inOut",
       });
-    </script>
-
-    <script>
-      function fadeOutPreloader() {
-        gsap.to("#preloader", {
-          duration: 1,
-          opacity: 0,
-          ease: "power1.out",
-          onComplete: function () {
-            document.getElementById("preloader").remove();
-          },
-        });
-      }
-
-      function startFadeOut() {
-        setTimeout(fadeOutPreloader, 6000);
-      }
-
-      window.onload = function () {
-        startFadeOut();
-      };
     </script>
 
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>

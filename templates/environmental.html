@@ -33,42 +33,6 @@
   <body>
     <canvas class="webgl"></canvas>
 
-    <div class="loader" id="preloader">
-      <div class="loader-clip clip-top">
-        <div class="marquee">
-          <div class="marquee-container">
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-          </div>
-        </div>
-      </div>
-      <div class="loader-clip clip-bottom">
-        <div class="marquee">
-          <div class="marquee-container">
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-          </div>
-        </div>
-      </div>
-      <div class="clip-center">
-        <div class="marquee">
-          <div class="marquee-container">
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="errorPopupEnv">
       <span><img src="/static/images/emoji.png" alt="emoji" /></span>
       <p class="firstLine">OOPS...</p>
@@ -289,71 +253,6 @@
                   document.querySelector(".loadingScreen").style.display = "none";
               }, 1500);
           }
-      };
-    </script>
-
-    <script>
-      gsap.from(".clip-top, .clip-bottom", 2, {
-        delay: 1,
-        height: "50vh",
-        ease:"power4.inOut",
-      });
-      
-      gsap.to(".marquee", 3.5, {
-        delay: 0.75,
-        height: "50%",
-        ease:"power4.inOut",
-      });
-
-      gsap.from(".clip-top .marquee, .clip-bottom .marquee", 5, {
-        delay: 1,
-        left: "100%",
-        ease:"power3.inOut",
-      });
-
-      gsap.from(".clip-center .marquee", 5, {
-        delay: 1,
-        left: "-50%",
-        ease:"power3.inOut",
-      });
-
-      gsap.to(".clip-top", 2, {
-        delay: 6,
-        clipPath: "inset(0 0 100% 0)",
-        ease:"power4.inOut",
-      });
-
-      gsap.to(".clip-bottom", 2, {
-        delay: 6,
-        clipPath: "inset(100% 0 0 0)",
-        ease: "power4.inOut",
-      });
-
-      gsap.to(".clip-top .marquee, .clip-bottom .marquee, .clip-center .marquee span", 1, {
-        delay: 6,
-        opacity: 0,
-        ease:"power2.inOut",
-      });
-    </script>
-
-    <script>
-      function fadeOutPreloader() {
-        gsap.to("#preloader", {
-          duration: 1,
-          opacity: 0,
-          ease: "power1.out",
-          onComplete: function () {
-            document.getElementById("preloader").remove();
-          },
-        });
-      }
-
-      function startFadeOut() {
-        setTimeout(fadeOutPreloader, 5000);
-      }
-
-      window.onload = function () {
-        startFadeOut();
       };
     </script>
 
