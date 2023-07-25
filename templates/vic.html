@@ -142,6 +142,14 @@
     <div id="map"></div>
   </section>
 
+  <div id="infoBox">
+    <div id="cadastreInfo"></div>
+    <div id="adminInfo"></div>
+    <div id="zoningInfo"></div>
+    <div id="bushfireInfo"></div>
+  </div>
+
+
   <script>
     $(document).ready(function() {
       $(".errorPopup").click(function() {
@@ -321,6 +329,237 @@
     style: 'mapbox://styles/mapbox/dark-v10',
     center: [lon, lat],
     zoom: 10
+    });
+
+    function queryCadastreLayer(lat, lon) {
+      var queryUrl = 'https://enterprise.mapshare.vic.gov.au/server/rest/services/V_PARCEL_MP/MapServer/0/query';
+      var params = {
+        distance: 10,
+        units: 'esriSRUnit_Meter',
+        geometry: lon + ',' + lat,
+        geometryType: 'esriGeometryPoint',
+        inSR: 4326,
+        spatialRel: 'esriSpatialRelIntersects',
+        returnGeometry: true,
+        returnTrueCurves: false,
+        returnIdsOnly: false,
+        returnCountOnly: false,
+        returnZ: false,
+        returnM: false,
+        returnDistinctValues: false,
+        returnExtentsOnly: false,
+        outFields: '*',
+        f: 'geojson'
+      };
+    
+      $.ajax({
+        url: queryUrl,
+        data: params,
+        dataType: 'json',
+        success: function (response) {
+          var featureInfoElement = document.getElementById('cadastreInfo');
+
+          featureInfoElement.innerHTML = '';
+
+          if (response.features.length > 0) {
+            var feature = response.features[0];
+            var properties = feature.properties;
+            var featureContainer = document.createElement('div');
+            featureContainer.className = 'feature-container';
+
+            var featureTitle = document.createElement('p');
+            featureTitle.textContent = 'LOT ID: ' + properties.PARCEL_SPI;
+
+            featureContainer.appendChild(featureTitle);
+
+            featureInfoElement.appendChild(featureContainer);
+
+            featureInfoElement.style.display = 'block';
+
+          } else {
+
+          }
+        },
+        error: function () {
+          console.log('Error occurred during the query.');
+        }
+      });
+    }
+
+    function queryAdminLayer(lat, lon) {
+      var queryUrl = 'https://enterprise.mapshare.vic.gov.au/server/rest/services/Vicmap_Admin/MapServer/9/query';
+      var params = {
+        distance: 10,
+        units: 'esriSRUnit_Meter',
+        geometry: lon + ',' + lat,
+        geometryType: 'esriGeometryPoint',
+        inSR: 4326,
+        spatialRel: 'esriSpatialRelIntersects',
+        returnGeometry: true,
+        returnTrueCurves: false,
+        returnIdsOnly: false,
+        returnCountOnly: false,
+        returnZ: false,
+        returnM: false,
+        returnDistinctValues: false,
+        returnExtentsOnly: false,
+        outFields: '*',
+        f: 'geojson'
+      };
+    
+      $.ajax({
+        url: queryUrl,
+        data: params,
+        dataType: 'json',
+        success: function (response) {
+          var featureInfoElement = document.getElementById('adminInfo');
+
+          featureInfoElement.innerHTML = '';
+
+          if (response.features.length > 0) {
+              var feature = response.features[0];
+              var properties = feature.properties;
+              var featureContainer = document.createElement('div');
+              featureContainer.className = 'feature-container';
+
+              var featureTitle = document.createElement('p');
+              featureTitle.textContent = 'SUBURB: ' + properties.lga_name;  
+
+              featureContainer.appendChild(featureTitle);
+              
+              featureInfoElement.appendChild(featureContainer);
+            
+            featureInfoElement.style.display = 'block';
+
+          } else {
+
+          }
+        },
+        error: function () {
+          console.log('Error occurred during the query.');
+        }
+      });
+    }
+
+    function queryZoningLayer(lat, lon) {
+      var queryUrl = 'https://plan-gis.mapshare.vic.gov.au/arcgis/rest/services/Planning/Vicplan_PlanningSchemeZones/MapServer/0/query';
+      var params = {
+        distance: 10,
+        units: 'esriSRUnit_Meter',
+        geometry: lon + ',' + lat,
+        geometryType: 'esriGeometryPoint',
+        inSR: 4326,
+        spatialRel: 'esriSpatialRelIntersects',
+        returnGeometry: true,
+        returnTrueCurves: false,
+        returnIdsOnly: false,
+        returnCountOnly: false,
+        returnZ: false,
+        returnM: false,
+        returnDistinctValues: false,
+        returnExtentsOnly: false,
+        outFields: '*',
+        f: 'geojson'
+      };
+    
+      $.ajax({
+        url: queryUrl,
+        data: params,
+        dataType: 'json',
+        success: function (response) {
+          var featureInfoElement = document.getElementById('zoningInfo');
+
+          featureInfoElement.innerHTML = '';
+
+          if (response.features.length > 0) {
+              var feature = response.features[0];
+              var properties = feature.properties;
+              var featureContainer = document.createElement('div');
+              featureContainer.className = 'feature-container';
+
+              var featureTitle = document.createElement('p');
+              featureTitle.textContent = 'ZONING: ' + properties.ZONE_CODE;  
+
+              featureContainer.appendChild(featureTitle);
+              
+              featureInfoElement.appendChild(featureContainer);
+            
+            featureInfoElement.style.display = 'block';
+
+          } else {
+
+          }
+        },
+        error: function () {
+          console.log('Error occurred during the query.');
+        }
+      });
+    }
+
+    function queryBushfireLayer(lat, lon) {
+      var queryUrl = 'https://enterprise.mapshare.vic.gov.au/server/rest/services/Zones_and_Overlays/MapServer/16/query';
+      var params = {
+        distance: 10,
+        units: 'esriSRUnit_Meter',
+        geometry: lon + ',' + lat,
+        geometryType: 'esriGeometryPoint',
+        inSR: 4326,
+        spatialRel: 'esriSpatialRelIntersects',
+        returnGeometry: true,
+        returnTrueCurves: false,
+        returnIdsOnly: false,
+        returnCountOnly: false,
+        returnZ: false,
+        returnM: false,
+        returnDistinctValues: false,
+        returnExtentsOnly: false,
+        outFields: '*',
+        f: 'geojson'
+      };
+    
+      $.ajax({
+        url: queryUrl,
+        data: params,
+        dataType: 'json',
+        success: function (response) {
+          var featureInfoElement = document.getElementById('bushfireInfo');
+
+          featureInfoElement.innerHTML = '';
+
+          if (response.features.length > 0) {
+              var feature = response.features[0];
+              var properties = feature.properties;
+              var featureContainer = document.createElement('div');
+              featureContainer.className = 'feature-container';
+
+              var featureTitle = document.createElement('p');
+              featureTitle.textContent = 'Bushfire: ' + properties.ZONE_CODE;  
+
+              featureContainer.appendChild(featureTitle);
+              
+              featureInfoElement.appendChild(featureContainer);
+            
+            featureInfoElement.style.display = 'block';
+
+          } else {
+
+          }
+        },
+        error: function () {
+          console.log('Error occurred during the query.');
+        }
+      });
+    }
+
+    map.on('click', function (e) {
+      var lat = e.lngLat.lat;
+      var lon = e.lngLat.lng;
+
+      queryCadastreLayer(lat, lon);
+      queryAdminLayer(lat, lon);
+      queryZoningLayer(lat, lon);
+      queryBushfireLayer(lat, lon);
+
     });
 
     map.on('load', function() {
