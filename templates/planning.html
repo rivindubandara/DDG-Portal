@@ -1031,9 +1031,14 @@
 
         buildingsToggleBtn.classList.add("active");
 
-        fetch("https://cdn.wsiflightpaths.aerlabs.com/swathes/departures_night_23.geojson")
-          .then((response) => response.json())
-          .then((geojsonData) => {
+        const axios = require("axios");
+        
+        axios
+          .get("https://cdn.wsiflightpaths.aerlabs.com/swathes/departures_night_23.geojson")
+          .then((response) => {
+            const geojsonData = response.data;
+
+            // Add the GeoJSON as a source
             map.addSource("geojson-source", {
               type: "geojson",
               data: geojsonData,
@@ -1048,6 +1053,7 @@
                 "fill-opacity": 0.8,
               },
             });
+           
           })
       });
 
