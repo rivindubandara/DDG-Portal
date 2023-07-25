@@ -3910,6 +3910,9 @@ def get_vic_elevated():
     t_params = create_parameters(
         '', 'esriGeometryEnvelope', t_xmin_LL, t_ymin_LL, t_xmax_LL, t_ymax_LL)
 
+    vic_e = rh.File3dm()
+    vic_e.Settings.ModelUnitSystem = rh.UnitSystem.Meters
+
     boundary_data = get_data(boundary_url, boundary_params)
     bound_curve = add_bound_curve_to_model(
         boundary_data, vic_e, boundary_layerIndex)
@@ -3917,9 +3920,6 @@ def get_vic_elevated():
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
     zoom = 16
-
-    vic_e = rh.File3dm()
-    vic_e.Settings.ModelUnitSystem = rh.UnitSystem.Meters
 
     boundary_layerIndex = create_layer(vic_e, "Boundary", (237, 0, 194, 255))
     building_layer_EIndex = create_layer(
