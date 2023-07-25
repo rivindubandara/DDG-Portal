@@ -1801,7 +1801,7 @@ def get_qld_planning():
     river_layerIndex = create_layer(qld, "River Flood", (255, 106, 0, 255))
 
     gh_admin_decoded = encode_ghx_file(r"./gh_scripts/admin.ghx")
-    gh_zoning_decoded = encode_ghx_file(r"./gh_scripts/zoning.ghx")
+    gh_zoning_decoded = encode_ghx_file(r"./gh_scripts/vic_qld_zoning.ghx")
     gh_interpolate_decoded = encode_ghx_file(r"./gh_scripts/interpolate.ghx")
     gh_roads_decoded = encode_ghx_file(r"./gh_scripts/roads.ghx")
     gh_bushfire_decoded = encode_ghx_file(r"./gh_scripts/bushfire.ghx")
@@ -3055,7 +3055,7 @@ def get_vic_planning():
     native_url = 'https://native-land.ca/wp-json/nativeland/v1/api/index.php'
 
     gh_admin_decoded = encode_ghx_file(r"./gh_scripts/admin.ghx")
-    gh_zoning_decoded = encode_ghx_file(r"./gh_scripts/zoning.ghx")
+    gh_zoning_decoded = encode_ghx_file(r"./gh_scripts/vic_qld_zoning.ghx")
     gh_interpolate_decoded = encode_ghx_file(r"./gh_scripts/interpolate.ghx")
     gh_roads_decoded = encode_ghx_file(r"./gh_scripts/roads.ghx")
     gh_lots_decoded = encode_ghx_file(r"./gh_scripts/vic_lots.ghx")

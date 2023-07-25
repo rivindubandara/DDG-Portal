@@ -1031,30 +1031,20 @@
 
         buildingsToggleBtn.classList.add("active");
 
-        const axios = require("axios");
-        
-        axios
-          .get("https://cdn.wsiflightpaths.aerlabs.com/swathes/departures_night_23.geojson")
-          .then((response) => {
-            const geojsonData = response.data;
-
-            // Add the GeoJSON as a source
-            map.addSource("geojson-source", {
-              type: "geojson",
-              data: geojsonData,
-            });
-
-            map.addLayer({
-              id: "geojson-layer",
-              type: "fill",
-              source: "geojson-source",
-              paint: {
-                "fill-color": "#0000ff", 
-                "fill-opacity": 0.8,
-              },
-            });
-           
-          })
+        map.addSource('geojson-source', {
+          type: 'geojson',
+          data: "https://cdn.wsiflightpaths.aerlabs.com/swathes/departures_night_23.geojson"
+          });
+          
+          map.addLayer({
+          'id': 'geojson-layer',
+          'type': 'circle',
+          'source': 'geojson-source',
+          paint: {
+            "fill-color": "#0000ff", 
+            "fill-opacity": 0.8,
+          },
+          });
       });
 
       const geocoder = new MapboxGeocoder({
