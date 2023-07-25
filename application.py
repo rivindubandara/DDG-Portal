@@ -3134,7 +3134,7 @@ def get_vic_planning():
 
     boundary_data = get_data(
         boundary_url, boundary_params)
-    bound_curve = add_bound_curve_to_model(boundary_data, vic)
+    bound_curve = add_bound_curve_to_model(boundary_data, vic, boundary_layerIndex)
 
     counter = 0
     while True:
