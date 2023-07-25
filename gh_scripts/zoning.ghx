@@ -49,10 +49,10 @@
             <chunk name="Projection">
               <items count="2">
                 <item name="Target" type_name="gh_drawing_point" type_code="30">
-                  <X>-473</X>
-                  <Y>-10</Y>
+                  <X>399</X>
+                  <Y>-125</Y>
                 </item>
-                <item name="Zoom" type_name="gh_single" type_code="5">1</item>
+                <item name="Zoom" type_name="gh_single" type_code="5">0.85</item>
               </items>
             </chunk>
             <chunk name="Views">
@@ -115,222 +115,6 @@
             </chunk>
             <chunk name="Object" index="1">
               <items count="2">
-                <item name="GUID" type_name="gh_guid" type_code="9">6da9f120-3ad0-4b6e-9fe0-f8cde3a649b7</item>
-                <item name="Name" type_name="gh_string" type_code="10">Gradient</item>
-              </items>
-              <chunks count="1">
-                <chunk name="Container">
-                  <items count="5">
-                    <item name="Description" type_name="gh_string" type_code="10">Represents a multiple colour gradient</item>
-                    <item name="Hidden" type_name="gh_bool" type_code="1">true</item>
-                    <item name="InstanceGuid" type_name="gh_guid" type_code="9">6bd17a70-4d4d-4f68-9dee-8e7130fa7a47</item>
-                    <item name="Name" type_name="gh_string" type_code="10">Gradient</item>
-                    <item name="NickName" type_name="gh_string" type_code="10">Gradient</item>
-                  </items>
-                  <chunks count="6">
-                    <chunk name="Gradient">
-                      <items count="3">
-                        <item name="GripCount" type_name="gh_int32" type_code="3">3</item>
-                        <item name="Linear" type_name="gh_bool" type_code="1">false</item>
-                        <item name="Locked" type_name="gh_bool" type_code="1">false</item>
-                      </items>
-                      <chunks count="3">
-                        <chunk name="Grip" index="0">
-                          <items count="4">
-                            <item name="Colour" index="0" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;0;128;0</ARGB>
-                            </item>
-                            <item name="Colour" index="1" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;0;128;0</ARGB>
-                            </item>
-                            <item name="Factor" type_name="gh_double" type_code="6">0</item>
-                            <item name="Id" type_name="gh_guid" type_code="9">f106fe33-1655-403d-a905-7ddb2e9f69ad</item>
-                          </items>
-                        </chunk>
-                        <chunk name="Grip" index="1">
-                          <items count="4">
-                            <item name="Colour" index="0" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;255;255;0</ARGB>
-                            </item>
-                            <item name="Colour" index="1" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;255;255;0</ARGB>
-                            </item>
-                            <item name="Factor" type_name="gh_double" type_code="6">0.5</item>
-                            <item name="Id" type_name="gh_guid" type_code="9">1f48fa2e-9d75-4bac-a8d8-f38ebd65e1fa</item>
-                          </items>
-                        </chunk>
-                        <chunk name="Grip" index="2">
-                          <items count="4">
-                            <item name="Colour" index="0" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;255;0;0</ARGB>
-                            </item>
-                            <item name="Colour" index="1" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;255;0;0</ARGB>
-                            </item>
-                            <item name="Factor" type_name="gh_double" type_code="6">1</item>
-                            <item name="Id" type_name="gh_guid" type_code="9">d0ab48cf-f170-4115-84f3-d43b4ac4ecf2</item>
-                          </items>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                    <chunk name="Attributes">
-                      <items count="1">
-                        <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                          <X>627</X>
-                          <Y>460</Y>
-                          <W>250</W>
-                          <H>64</H>
-                        </item>
-                      </items>
-                    </chunk>
-                    <chunk name="param_input" index="0">
-                      <items count="6">
-                        <item name="Description" type_name="gh_string" type_code="10">Lower limit of gradient range</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">544dbcdf-906f-4634-bb92-5c61bd25f1c7</item>
-                        <item name="Name" type_name="gh_string" type_code="10">Lower limit</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">L0</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
-                      </items>
-                      <chunks count="2">
-                        <chunk name="Attributes">
-                          <items count="2">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>630</X>
-                              <Y>462</Y>
-                              <W>18</W>
-                              <H>20</H>
-                            </item>
-                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>640.5</X>
-                              <Y>472</Y>
-                            </item>
-                          </items>
-                        </chunk>
-                        <chunk name="PersistentData">
-                          <items count="1">
-                            <item name="Count" type_name="gh_int32" type_code="3">1</item>
-                          </items>
-                          <chunks count="1">
-                            <chunk name="Branch" index="0">
-                              <items count="2">
-                                <item name="Count" type_name="gh_int32" type_code="3">1</item>
-                                <item name="Path" type_name="gh_string" type_code="10">{0}</item>
-                              </items>
-                              <chunks count="1">
-                                <chunk name="Item" index="0">
-                                  <items count="1">
-                                    <item name="number" type_name="gh_double" type_code="6">0</item>
-                                  </items>
-                                </chunk>
-                              </chunks>
-                            </chunk>
-                          </chunks>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                    <chunk name="param_input" index="1">
-                      <items count="7">
-                        <item name="Description" type_name="gh_string" type_code="10">Upper limit of gradient range</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">d98e2ac8-3c40-494c-b51d-fd004e7ff5ef</item>
-                        <item name="Name" type_name="gh_string" type_code="10">Upper limit</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">L1</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="Source" index="0" type_name="gh_guid" type_code="9">567d0d00-3f60-4ec2-96cf-a61e3a858b2c</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
-                      </items>
-                      <chunks count="2">
-                        <chunk name="Attributes">
-                          <items count="2">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>630</X>
-                              <Y>482</Y>
-                              <W>18</W>
-                              <H>20</H>
-                            </item>
-                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>640.5</X>
-                              <Y>492</Y>
-                            </item>
-                          </items>
-                        </chunk>
-                        <chunk name="PersistentData">
-                          <items count="1">
-                            <item name="Count" type_name="gh_int32" type_code="3">1</item>
-                          </items>
-                          <chunks count="1">
-                            <chunk name="Branch" index="0">
-                              <items count="2">
-                                <item name="Count" type_name="gh_int32" type_code="3">1</item>
-                                <item name="Path" type_name="gh_string" type_code="10">{0}</item>
-                              </items>
-                              <chunks count="1">
-                                <chunk name="Item" index="0">
-                                  <items count="1">
-                                    <item name="number" type_name="gh_double" type_code="6">1</item>
-                                  </items>
-                                </chunk>
-                              </chunks>
-                            </chunk>
-                          </chunks>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                    <chunk name="param_input" index="2">
-                      <items count="7">
-                        <item name="Description" type_name="gh_string" type_code="10">Parameter along gradient range</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">af6aae6b-b051-4c3d-9f47-8daac758c9b0</item>
-                        <item name="Name" type_name="gh_string" type_code="10">Parameter</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">t</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="Source" index="0" type_name="gh_guid" type_code="9">14f5d729-b30e-4447-90c4-94c823635fec</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
-                      </items>
-                      <chunks count="1">
-                        <chunk name="Attributes">
-                          <items count="2">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>630</X>
-                              <Y>502</Y>
-                              <W>18</W>
-                              <H>20</H>
-                            </item>
-                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>640.5</X>
-                              <Y>512</Y>
-                            </item>
-                          </items>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                    <chunk name="param_output" index="0">
-                      <items count="6">
-                        <item name="Description" type_name="gh_string" type_code="10">Colour along gradient at parameter</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">aa0e72d4-2361-495a-a3f3-0c10b4116255</item>
-                        <item name="Name" type_name="gh_string" type_code="10">Colour</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">C</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
-                      </items>
-                      <chunks count="1">
-                        <chunk name="Attributes">
-                          <items count="1">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>877</X>
-                              <Y>460</Y>
-                              <W>0</W>
-                              <H>64</H>
-                            </item>
-                          </items>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                  </chunks>
-                </chunk>
-              </chunks>
-            </chunk>
-            <chunk name="Object" index="2">
-              <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">6f93d366-919f-4dda-a35e-ba03dd62799b</item>
                 <item name="Name" type_name="gh_string" type_code="10">Sort List</item>
               </items>
@@ -348,9 +132,9 @@
                       <items count="2">
                         <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
                           <X>351</X>
-                          <Y>394</Y>
+                          <Y>384</Y>
                           <W>65</W>
-                          <H>64</H>
+                          <H>84</H>
                         </item>
                         <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
                           <X>382</X>
@@ -359,17 +143,19 @@
                       </items>
                     </chunk>
                     <chunk name="ParameterData">
-                      <items count="8">
-                        <item name="InputCount" type_name="gh_int32" type_code="3">3</item>
+                      <items count="10">
+                        <item name="InputCount" type_name="gh_int32" type_code="3">4</item>
                         <item name="InputId" index="0" type_name="gh_guid" type_code="9">3e8ca6be-fda8-4aaf-b5c0-3c54c8bb7312</item>
                         <item name="InputId" index="1" type_name="gh_guid" type_code="9">8ec86459-bf01-4409-baee-174d0d2b13d0</item>
                         <item name="InputId" index="2" type_name="gh_guid" type_code="9">8ec86459-bf01-4409-baee-174d0d2b13d0</item>
-                        <item name="OutputCount" type_name="gh_int32" type_code="3">3</item>
+                        <item name="InputId" index="3" type_name="gh_guid" type_code="9">8ec86459-bf01-4409-baee-174d0d2b13d0</item>
+                        <item name="OutputCount" type_name="gh_int32" type_code="3">4</item>
                         <item name="OutputId" index="0" type_name="gh_guid" type_code="9">3e8ca6be-fda8-4aaf-b5c0-3c54c8bb7312</item>
                         <item name="OutputId" index="1" type_name="gh_guid" type_code="9">8ec86459-bf01-4409-baee-174d0d2b13d0</item>
                         <item name="OutputId" index="2" type_name="gh_guid" type_code="9">8ec86459-bf01-4409-baee-174d0d2b13d0</item>
+                        <item name="OutputId" index="3" type_name="gh_guid" type_code="9">8ec86459-bf01-4409-baee-174d0d2b13d0</item>
                       </items>
-                      <chunks count="6">
+                      <chunks count="8">
                         <chunk name="InputParam" index="0">
                           <items count="8">
                             <item name="Access" type_name="gh_int32" type_code="3">1</item>
@@ -386,13 +172,13 @@
                               <items count="2">
                                 <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
                                   <X>353</X>
-                                  <Y>396</Y>
+                                  <Y>386</Y>
                                   <W>14</W>
                                   <H>20</H>
                                 </item>
                                 <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
                                   <X>361.5</X>
-                                  <Y>406</Y>
+                                  <Y>396</Y>
                                 </item>
                               </items>
                             </chunk>
@@ -414,13 +200,13 @@
                               <items count="2">
                                 <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
                                   <X>353</X>
-                                  <Y>416</Y>
+                                  <Y>406</Y>
                                   <W>14</W>
                                   <H>20</H>
                                 </item>
                                 <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
                                   <X>361.5</X>
-                                  <Y>426</Y>
+                                  <Y>416</Y>
                                 </item>
                               </items>
                             </chunk>
@@ -442,13 +228,41 @@
                               <items count="2">
                                 <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
                                   <X>353</X>
-                                  <Y>436</Y>
+                                  <Y>426</Y>
                                   <W>14</W>
                                   <H>20</H>
                                 </item>
                                 <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
                                   <X>361.5</X>
+                                  <Y>436</Y>
+                                </item>
+                              </items>
+                            </chunk>
+                          </chunks>
+                        </chunk>
+                        <chunk name="InputParam" index="3">
+                          <items count="8">
+                            <item name="Access" type_name="gh_int32" type_code="3">1</item>
+                            <item name="Description" type_name="gh_string" type_code="10">Optional list of values to sort synchronously</item>
+                            <item name="InstanceGuid" type_name="gh_guid" type_code="9">7904e884-cc50-4895-8869-518d23c5e68e</item>
+                            <item name="Name" type_name="gh_string" type_code="10">Values B</item>
+                            <item name="NickName" type_name="gh_string" type_code="10">B</item>
+                            <item name="Optional" type_name="gh_bool" type_code="1">true</item>
+                            <item name="Source" index="0" type_name="gh_guid" type_code="9">fd33bd4b-c838-4624-8c0f-6bf46cf00f91</item>
+                            <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
+                          </items>
+                          <chunks count="1">
+                            <chunk name="Attributes">
+                              <items count="2">
+                                <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                                  <X>353</X>
                                   <Y>446</Y>
+                                  <W>14</W>
+                                  <H>20</H>
+                                </item>
+                                <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                                  <X>361.5</X>
+                                  <Y>456</Y>
                                 </item>
                               </items>
                             </chunk>
@@ -469,13 +283,13 @@
                               <items count="2">
                                 <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
                                   <X>397</X>
-                                  <Y>396</Y>
+                                  <Y>386</Y>
                                   <W>17</W>
                                   <H>20</H>
                                 </item>
                                 <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
                                   <X>405.5</X>
-                                  <Y>406</Y>
+                                  <Y>396</Y>
                                 </item>
                               </items>
                             </chunk>
@@ -496,13 +310,13 @@
                               <items count="2">
                                 <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
                                   <X>397</X>
-                                  <Y>416</Y>
+                                  <Y>406</Y>
                                   <W>17</W>
                                   <H>20</H>
                                 </item>
                                 <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
                                   <X>405.5</X>
-                                  <Y>426</Y>
+                                  <Y>416</Y>
                                 </item>
                               </items>
                             </chunk>
@@ -523,13 +337,40 @@
                               <items count="2">
                                 <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
                                   <X>397</X>
-                                  <Y>436</Y>
+                                  <Y>426</Y>
                                   <W>17</W>
                                   <H>20</H>
                                 </item>
                                 <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
                                   <X>405.5</X>
+                                  <Y>436</Y>
+                                </item>
+                              </items>
+                            </chunk>
+                          </chunks>
+                        </chunk>
+                        <chunk name="OutputParam" index="3">
+                          <items count="7">
+                            <item name="Access" type_name="gh_int32" type_code="3">1</item>
+                            <item name="Description" type_name="gh_string" type_code="10">Synchronous values in B</item>
+                            <item name="InstanceGuid" type_name="gh_guid" type_code="9">e81f7d51-8b91-4769-9b31-d617c1c39e65</item>
+                            <item name="Name" type_name="gh_string" type_code="10">Values B</item>
+                            <item name="NickName" type_name="gh_string" type_code="10">B</item>
+                            <item name="Optional" type_name="gh_bool" type_code="1">false</item>
+                            <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
+                          </items>
+                          <chunks count="1">
+                            <chunk name="Attributes">
+                              <items count="2">
+                                <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                                  <X>397</X>
                                   <Y>446</Y>
+                                  <W>17</W>
+                                  <H>20</H>
+                                </item>
+                                <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                                  <X>405.5</X>
+                                  <Y>456</Y>
                                 </item>
                               </items>
                             </chunk>
@@ -541,7 +382,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="3">
+            <chunk name="Object" index="2">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">f80cfe18-9510-4b89-8301-8e58faf423bb</item>
                 <item name="Name" type_name="gh_string" type_code="10">Flatten Tree</item>
@@ -675,210 +516,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="4">
-              <items count="2">
-                <item name="GUID" type_name="gh_guid" type_code="9">98c3c63a-e78a-43ea-a111-514fcf312c95</item>
-                <item name="Name" type_name="gh_string" type_code="10">Create Set</item>
-              </items>
-              <chunks count="1">
-                <chunk name="Container">
-                  <items count="5">
-                    <item name="Description" type_name="gh_string" type_code="10">Creates the valid set from a list of items (a valid set only contains distinct elements).</item>
-                    <item name="Hidden" type_name="gh_bool" type_code="1">true</item>
-                    <item name="InstanceGuid" type_name="gh_guid" type_code="9">f81ea2d5-3ab0-4131-a19d-80892a16d478</item>
-                    <item name="Name" type_name="gh_string" type_code="10">Create Set</item>
-                    <item name="NickName" type_name="gh_string" type_code="10">CSet</item>
-                  </items>
-                  <chunks count="4">
-                    <chunk name="Attributes">
-                      <items count="2">
-                        <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                          <X>424</X>
-                          <Y>470</Y>
-                          <W>66</W>
-                          <H>44</H>
-                        </item>
-                        <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                          <X>453</X>
-                          <Y>492</Y>
-                        </item>
-                      </items>
-                    </chunk>
-                    <chunk name="param_input" index="0">
-                      <items count="8">
-                        <item name="Access" type_name="gh_int32" type_code="3">1</item>
-                        <item name="Description" type_name="gh_string" type_code="10">List of data.</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">106cd9f2-3a81-44a0-8295-5e8ab88cb8fb</item>
-                        <item name="Name" type_name="gh_string" type_code="10">List</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">L</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="Source" index="0" type_name="gh_guid" type_code="9">b7723273-8bbb-46bb-84cf-a56ae37b4ea4</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
-                      </items>
-                      <chunks count="1">
-                        <chunk name="Attributes">
-                          <items count="2">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>426</X>
-                              <Y>472</Y>
-                              <W>12</W>
-                              <H>40</H>
-                            </item>
-                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>433.5</X>
-                              <Y>492</Y>
-                            </item>
-                          </items>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                    <chunk name="param_output" index="0">
-                      <items count="7">
-                        <item name="Access" type_name="gh_int32" type_code="3">1</item>
-                        <item name="Description" type_name="gh_string" type_code="10">A set of all the distincts values in L</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">0052e164-bc8a-4a8e-a09f-aa0b150a83b1</item>
-                        <item name="Name" type_name="gh_string" type_code="10">Set</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">S</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
-                      </items>
-                      <chunks count="1">
-                        <chunk name="Attributes">
-                          <items count="2">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>468</X>
-                              <Y>472</Y>
-                              <W>20</W>
-                              <H>20</H>
-                            </item>
-                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>478</X>
-                              <Y>482</Y>
-                            </item>
-                          </items>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                    <chunk name="param_output" index="1">
-                      <items count="7">
-                        <item name="Access" type_name="gh_int32" type_code="3">1</item>
-                        <item name="Description" type_name="gh_string" type_code="10">An index map from original indices to set indices</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">14f5d729-b30e-4447-90c4-94c823635fec</item>
-                        <item name="Name" type_name="gh_string" type_code="10">Map</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">M</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
-                      </items>
-                      <chunks count="1">
-                        <chunk name="Attributes">
-                          <items count="2">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>468</X>
-                              <Y>492</Y>
-                              <W>20</W>
-                              <H>20</H>
-                            </item>
-                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>478</X>
-                              <Y>502</Y>
-                            </item>
-                          </items>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                  </chunks>
-                </chunk>
-              </chunks>
-            </chunk>
-            <chunk name="Object" index="5">
-              <items count="2">
-                <item name="GUID" type_name="gh_guid" type_code="9">1817fd29-20ae-4503-b542-f0fb651e67d7</item>
-                <item name="Name" type_name="gh_string" type_code="10">List Length</item>
-              </items>
-              <chunks count="1">
-                <chunk name="Container">
-                  <items count="5">
-                    <item name="Description" type_name="gh_string" type_code="10">Measure the length of a list.</item>
-                    <item name="Hidden" type_name="gh_bool" type_code="1">true</item>
-                    <item name="InstanceGuid" type_name="gh_guid" type_code="9">2c184ed1-52e7-41da-be01-4cd569ff1f13</item>
-                    <item name="Name" type_name="gh_string" type_code="10">List Length</item>
-                    <item name="NickName" type_name="gh_string" type_code="10">Lng</item>
-                  </items>
-                  <chunks count="3">
-                    <chunk name="Attributes">
-                      <items count="2">
-                        <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                          <X>518</X>
-                          <Y>463</Y>
-                          <W>77</W>
-                          <H>28</H>
-                        </item>
-                        <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                          <X>547</X>
-                          <Y>477</Y>
-                        </item>
-                      </items>
-                    </chunk>
-                    <chunk name="param_input" index="0">
-                      <items count="8">
-                        <item name="Access" type_name="gh_int32" type_code="3">1</item>
-                        <item name="Description" type_name="gh_string" type_code="10">Base list</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">273c18e0-e885-48ed-99bc-e6ab26a03bbe</item>
-                        <item name="Name" type_name="gh_string" type_code="10">List</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">L</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="Source" index="0" type_name="gh_guid" type_code="9">0052e164-bc8a-4a8e-a09f-aa0b150a83b1</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
-                      </items>
-                      <chunks count="1">
-                        <chunk name="Attributes">
-                          <items count="2">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>520</X>
-                              <Y>465</Y>
-                              <W>12</W>
-                              <H>24</H>
-                            </item>
-                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>527.5</X>
-                              <Y>477</Y>
-                            </item>
-                          </items>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                    <chunk name="param_output" index="0">
-                      <items count="7">
-                        <item name="Description" type_name="gh_string" type_code="10">Number of items in L</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">567d0d00-3f60-4ec2-96cf-a61e3a858b2c</item>
-                        <item name="InternalExpression" type_name="gh_string" type_code="10">x-1</item>
-                        <item name="Name" type_name="gh_string" type_code="10">Length</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">L</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
-                      </items>
-                      <chunks count="1">
-                        <chunk name="Attributes">
-                          <items count="2">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>562</X>
-                              <Y>465</Y>
-                              <W>31</W>
-                              <H>24</H>
-                            </item>
-                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>569.5</X>
-                              <Y>477</Y>
-                            </item>
-                          </items>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                  </chunks>
-                </chunk>
-              </chunks>
-            </chunk>
-            <chunk name="Object" index="6">
+            <chunk name="Object" index="3">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">fed87bdd-8327-49cd-949c-09d70f3c345c</item>
                 <item name="Name" type_name="gh_string" type_code="10">Get String</item>
@@ -917,7 +555,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="7">
+            <chunk name="Object" index="4">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">f80cfe18-9510-4b89-8301-8e58faf423bb</item>
                 <item name="Name" type_name="gh_string" type_code="10">Flatten Tree</item>
@@ -1051,7 +689,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="8">
+            <chunk name="Object" index="5">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">3ede854e-c753-40eb-84cb-b48008f14fd4</item>
                 <item name="Name" type_name="gh_string" type_code="10">Text</item>
@@ -1087,7 +725,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="9">
+            <chunk name="Object" index="6">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">c552a431-af5b-46a9-a8a4-0fcbc27ef596</item>
                 <item name="Name" type_name="gh_string" type_code="10">Group</item>
@@ -1112,7 +750,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="10">
+            <chunk name="Object" index="7">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">e64c5fb1-845c-4ab1-8911-5f338516ba67</item>
                 <item name="Name" type_name="gh_string" type_code="10">Series</item>
@@ -1312,7 +950,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="11">
+            <chunk name="Object" index="8">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">1817fd29-20ae-4503-b542-f0fb651e67d7</item>
                 <item name="Name" type_name="gh_string" type_code="10">List Length</item>
@@ -1330,14 +968,14 @@
                     <chunk name="Attributes">
                       <items count="2">
                         <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                          <X>314</X>
-                          <Y>524</Y>
+                          <X>291</X>
+                          <Y>349</Y>
                           <W>61</W>
                           <H>28</H>
                         </item>
                         <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                          <X>343</X>
-                          <Y>538</Y>
+                          <X>320</X>
+                          <Y>363</Y>
                         </item>
                       </items>
                     </chunk>
@@ -1356,14 +994,14 @@
                         <chunk name="Attributes">
                           <items count="2">
                             <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>316</X>
-                              <Y>526</Y>
+                              <X>293</X>
+                              <Y>351</Y>
                               <W>12</W>
                               <H>24</H>
                             </item>
                             <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>323.5</X>
-                              <Y>538</Y>
+                              <X>300.5</X>
+                              <Y>363</Y>
                             </item>
                           </items>
                         </chunk>
@@ -1382,14 +1020,14 @@
                         <chunk name="Attributes">
                           <items count="2">
                             <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>358</X>
-                              <Y>526</Y>
+                              <X>335</X>
+                              <Y>351</Y>
                               <W>15</W>
                               <H>24</H>
                             </item>
                             <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>365.5</X>
-                              <Y>538</Y>
+                              <X>342.5</X>
+                              <Y>363</Y>
                             </item>
                           </items>
                         </chunk>
@@ -1399,7 +1037,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="12">
+            <chunk name="Object" index="9">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">e9eb1dcf-92f6-4d4d-84ae-96222d60f56b</item>
                 <item name="Name" type_name="gh_string" type_code="10">Move</item>
@@ -1562,7 +1200,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="13">
+            <chunk name="Object" index="10">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">9103c240-a6a9-4223-9b42-dbd19bf38e2b</item>
                 <item name="Name" type_name="gh_string" type_code="10">Unit Z</item>
@@ -1669,7 +1307,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="14">
+            <chunk name="Object" index="11">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">57da07bd-ecab-415d-9d86-af36d7073abc</item>
                 <item name="Name" type_name="gh_string" type_code="10">Number Slider</item>
@@ -1714,7 +1352,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="15">
+            <chunk name="Object" index="12">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">d2cedf38-1149-4adc-8dbf-b06571cb5106</item>
                 <item name="Name" type_name="gh_string" type_code="10">Mesh Colours</item>
@@ -1780,7 +1418,7 @@
                         <item name="Name" type_name="gh_string" type_code="10">Colours</item>
                         <item name="NickName" type_name="gh_string" type_code="10">C</item>
                         <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="Source" index="0" type_name="gh_guid" type_code="9">aa0e72d4-2361-495a-a3f3-0c10b4116255</item>
+                        <item name="Source" index="0" type_name="gh_guid" type_code="9">e81f7d51-8b91-4769-9b31-d617c1c39e65</item>
                         <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
                       </items>
                       <chunks count="2">
@@ -1901,7 +1539,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="16">
+            <chunk name="Object" index="13">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">1e936df3-0eea-4246-8549-514cb8862b7a</item>
                 <item name="Name" type_name="gh_string" type_code="10">Mesh</item>
@@ -1936,7 +1574,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="17">
+            <chunk name="Object" index="14">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">c552a431-af5b-46a9-a8a4-0fcbc27ef596</item>
                 <item name="Name" type_name="gh_string" type_code="10">Group</item>
@@ -1961,6 +1599,1875 @@
                 </chunk>
               </chunks>
             </chunk>
+            <chunk name="Object" index="15">
+              <items count="2">
+                <item name="GUID" type_name="gh_guid" type_code="9">8ec86459-bf01-4409-baee-174d0d2b13d0</item>
+                <item name="Name" type_name="gh_string" type_code="10">Data</item>
+              </items>
+              <chunks count="1">
+                <chunk name="Container">
+                  <items count="7">
+                    <item name="Description" type_name="gh_string" type_code="10">Contains a collection of generic data</item>
+                    <item name="Hidden" type_name="gh_bool" type_code="1">true</item>
+                    <item name="InstanceGuid" type_name="gh_guid" type_code="9">5484b531-e1b8-4ad9-aaef-53a2d037763a</item>
+                    <item name="Name" type_name="gh_string" type_code="10">Data</item>
+                    <item name="NickName" type_name="gh_string" type_code="10">Data</item>
+                    <item name="Optional" type_name="gh_bool" type_code="1">false</item>
+                    <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
+                  </items>
+                  <chunks count="2">
+                    <chunk name="Attributes">
+                      <items count="2">
+                        <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                          <X>239</X>
+                          <Y>547</Y>
+                          <W>50</W>
+                          <H>24</H>
+                        </item>
+                        <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                          <X>264.117</X>
+                          <Y>559.5165</Y>
+                        </item>
+                      </items>
+                    </chunk>
+                    <chunk name="PersistentData">
+                      <items count="1">
+                        <item name="Count" type_name="gh_int32" type_code="3">1</item>
+                      </items>
+                      <chunks count="1">
+                        <chunk name="Branch" index="0">
+                          <items count="2">
+                            <item name="Count" type_name="gh_int32" type_code="3">116</item>
+                            <item name="Path" type_name="gh_string" type_code="10">{0}</item>
+                          </items>
+                          <chunks count="116">
+                            <chunk name="Item" index="0">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">0, 0, 0, 0</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="1">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 166, 163, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="2">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">252, 119, 110, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="3">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">250, 232, 197, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="4">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">99, 240, 245, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="5">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">201, 255, 249, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="6">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">98, 240, 245, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="7">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">98, 240, 245, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="8">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">0, 194, 237, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="9">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">149, 157, 194, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="10">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">125, 160, 171, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="11">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">125, 160, 171, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="12">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">149, 191, 204, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="13">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">186, 214, 222, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="14">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">200, 230, 224, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="15">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">186, 214, 222, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="16">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">186, 214, 222, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="17">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">186, 214, 222, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="18">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">230, 153, 0, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="19">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">240, 174, 60, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="20">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">240, 174, 60, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="21">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">247, 197, 104, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="22">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">247, 197, 104, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="23">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 218, 150, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="24">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">149, 157, 194, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="25">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 112, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="26">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">0, 194, 237, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="27">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">240, 174, 60, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="28">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">153, 204, 255, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="29">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">153, 204, 255, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="30">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">180, 198, 231, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="31">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">180, 198, 231, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="32">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">142, 169, 219, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="33">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">142, 169, 219, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="34">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">142, 169, 219, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="35">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">142, 169, 219, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="36">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">142, 169, 219, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="37">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">153, 153, 255, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="38">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">153, 153, 255, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="39">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">153, 102, 255, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="40">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">153, 102, 255, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="41">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">149, 191, 204, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="42">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">252, 249, 182, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="43">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">252, 249, 182, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="44">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 214, 64, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="45">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">118, 192, 214, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="46">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">115, 178, 115, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="47">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 161, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="48">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 112, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="49">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">85, 255, 0, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="50">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">211, 255, 191, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="51">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">222, 184, 245, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="52">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">243, 219, 255, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="53">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">197, 149, 232, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="54">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">174, 115, 222, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="55">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">230, 255, 255, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="56">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">149, 157, 194, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="57">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">149, 157, 194, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="58">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">149, 157, 194, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="59">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">179, 204, 252, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="60">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">244, 236, 73, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="61">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">116, 179, 116, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="62">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">84, 153, 128, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="63">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">179, 252, 179, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="64">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">230, 203, 151, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="65">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">230, 203, 151, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="66">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 207, 255, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="67">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 166, 163, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="68">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 166, 163, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="69">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 119, 110, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="70">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 72, 59, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="71">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 217, 217, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="72">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 217, 217, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="73">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">85, 255, 0, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="74">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">85, 255, 0, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="75">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">85, 255, 0, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="76">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">85, 255, 0, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="77">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">211, 255, 190, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="78">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">174, 242, 179, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="79">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">222, 184, 245, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="80">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">85, 255, 0, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="81">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">211, 255, 190, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="82">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">237, 216, 173, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="83">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">230, 203, 151, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="84">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">230, 203, 151, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="85">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">222, 192, 131, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="86">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">214, 180, 111, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="87">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">215, 163, 158, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="88">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">199, 158, 76, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="89">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">239, 228, 190, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="90">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">211, 184, 245, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="91">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 210, 220, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="92">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 160, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="93">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 160, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="94">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 112, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="95">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 112, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="96">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 112, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="97">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 112, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="98">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 0, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="99">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 0, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="100">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 9, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="101">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">230, 230, 0, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="102">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 0, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="103">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">252, 210, 239, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="104">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 127, 99, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="105">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 119, 110, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="106">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">252, 196, 184, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="107">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">217, 255, 242, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="108">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">217, 255, 242, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="109">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">153, 255, 221, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="110">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">51, 255, 187, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="111">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">174, 115, 222, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="112">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">17, 130, 194, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="113">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">202, 252, 237, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="114">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 255, 255</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="115">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">255, 255, 255, 255</item>
+                              </items>
+                            </chunk>
+                          </chunks>
+                        </chunk>
+                      </chunks>
+                    </chunk>
+                  </chunks>
+                </chunk>
+              </chunks>
+            </chunk>
+            <chunk name="Object" index="16">
+              <items count="2">
+                <item name="GUID" type_name="gh_guid" type_code="9">8ec86459-bf01-4409-baee-174d0d2b13d0</item>
+                <item name="Name" type_name="gh_string" type_code="10">Data</item>
+              </items>
+              <chunks count="1">
+                <chunk name="Container">
+                  <items count="7">
+                    <item name="Description" type_name="gh_string" type_code="10">Contains a collection of generic data</item>
+                    <item name="Hidden" type_name="gh_bool" type_code="1">true</item>
+                    <item name="InstanceGuid" type_name="gh_guid" type_code="9">8ee8d9ee-dfdf-4314-8266-4334d75e4d08</item>
+                    <item name="Name" type_name="gh_string" type_code="10">Data</item>
+                    <item name="NickName" type_name="gh_string" type_code="10">Data</item>
+                    <item name="Optional" type_name="gh_bool" type_code="1">false</item>
+                    <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
+                  </items>
+                  <chunks count="2">
+                    <chunk name="Attributes">
+                      <items count="2">
+                        <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                          <X>236</X>
+                          <Y>515</Y>
+                          <W>50</W>
+                          <H>24</H>
+                        </item>
+                        <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                          <X>261.1866</X>
+                          <Y>527.0254</Y>
+                        </item>
+                      </items>
+                    </chunk>
+                    <chunk name="PersistentData">
+                      <items count="1">
+                        <item name="Count" type_name="gh_int32" type_code="3">1</item>
+                      </items>
+                      <chunks count="1">
+                        <chunk name="Branch" index="0">
+                          <items count="2">
+                            <item name="Count" type_name="gh_int32" type_code="3">116</item>
+                            <item name="Path" type_name="gh_string" type_code="10">{0}</item>
+                          </items>
+                          <chunks count="116">
+                            <chunk name="Item" index="0">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">CA</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="1">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">2(a)</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="2">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">A</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="3">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">AGB</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="4">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">B</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="5">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">B1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="6">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">B2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="7">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">B2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="8">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">B3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="9">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">B4</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="10">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">B5</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="11">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">B5</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="12">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">B6</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="13">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">B7</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="14">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">B8</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="15">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">C</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="16">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">C</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="17">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">C</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="18">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">C1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="19">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">C2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="20">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">C2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="21">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">C3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="22">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">C3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="23">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">C4</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="24">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">D</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="25">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">DR</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="26">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="27">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="28">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="29">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="30">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="31">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="32">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="33">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="34">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="35">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="36">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="37">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E4</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="38">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E4</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="39">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E5</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="40">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E5</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="41">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">EM</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="42">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">EP</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="43">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">E</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="44">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">ENP</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="45">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">ENT</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="46">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">ENZ</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="47">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">F</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="48">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">G</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="49">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">H</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="50">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">I</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="51">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">IN1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="52">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">IN2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="53">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">IN3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="54">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">IN4</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="55">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">MAP</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="56">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">MU</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="57">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">MU1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="58">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">MU1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="59">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">P</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="60">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">PAE</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="61">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">PEP</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="62">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">PRC</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="63">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">R</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="64">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RAC</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="65">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RAZ</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="66">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">R1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="67">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">R2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="68">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">R2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="69">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">R3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="70">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">R4</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="71">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">R5</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="72">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">R5</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="73">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RE1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="74">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RE1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="75">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RE1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="76">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RE1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="77">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RE2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="78">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">REC</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="79">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">REZ</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="80">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RO</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="81">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RP</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="82">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RU1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="83">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RU2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="84">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RU2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="85">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RU3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="86">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RU4</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="87">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RU5</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="88">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RU6</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="89">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RUR</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="90">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">RW</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="91">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SET</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="92">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SP1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="93">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SP1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="94">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SP2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="95">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SP2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="96">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SP2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="97">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SP2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="98">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SP3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="99">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SP4</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="100">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SP4</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="101">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SP5</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="102">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">SPU</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="103">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">T</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="104">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">UD</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="105">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">UR</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="106">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">W</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="107">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">W1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="108">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">W1</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="109">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">W2</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="110">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">W3</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="111">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">W4</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="112">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">WFU</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="113">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">U</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="114">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">UL</item>
+                              </items>
+                            </chunk>
+                            <chunk name="Item" index="115">
+                              <items count="3">
+                                <item name="TypeName" type_name="gh_string" type_code="10">Grasshopper.Kernel.Types.GH_String</item>
+                                <item name="null_string" type_name="gh_bool" type_code="1">false</item>
+                                <item name="string" type_name="gh_string" type_code="10">DM</item>
+                              </items>
+                            </chunk>
+                          </chunks>
+                        </chunk>
+                      </chunks>
+                    </chunk>
+                  </chunks>
+                </chunk>
+              </chunks>
+            </chunk>
+            <chunk name="Object" index="17">
+              <items count="2">
+                <item name="GUID" type_name="gh_guid" type_code="9">1edcc3cf-cf84-41d4-8204-561162cfe510</item>
+                <item name="Name" type_name="gh_string" type_code="10">Key/Value Search</item>
+              </items>
+              <chunks count="1">
+                <chunk name="Container">
+                  <items count="5">
+                    <item name="Description" type_name="gh_string" type_code="10">Extract an item from a collection using a key-value match</item>
+                    <item name="Hidden" type_name="gh_bool" type_code="1">true</item>
+                    <item name="InstanceGuid" type_name="gh_guid" type_code="9">74b0c5aa-23d1-41da-94da-28ff4949f12e</item>
+                    <item name="Name" type_name="gh_string" type_code="10">Key/Value Search</item>
+                    <item name="NickName" type_name="gh_string" type_code="10">KeySearch</item>
+                  </items>
+                  <chunks count="5">
+                    <chunk name="Attributes">
+                      <items count="2">
+                        <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                          <X>316</X>
+                          <Y>520</Y>
+                          <W>81</W>
+                          <H>64</H>
+                        </item>
+                        <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                          <X>363</X>
+                          <Y>552</Y>
+                        </item>
+                      </items>
+                    </chunk>
+                    <chunk name="param_input" index="0">
+                      <items count="9">
+                        <item name="Access" type_name="gh_int32" type_code="3">1</item>
+                        <item name="Description" type_name="gh_string" type_code="10">A list of key values.</item>
+                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">efb8d3f3-d1a6-4f9c-8c1f-30da0d6d4d07</item>
+                        <item name="Mapping" type_name="gh_int32" type_code="3">1</item>
+                        <item name="Name" type_name="gh_string" type_code="10">Keys</item>
+                        <item name="NickName" type_name="gh_string" type_code="10">K</item>
+                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
+                        <item name="Source" index="0" type_name="gh_guid" type_code="9">8ee8d9ee-dfdf-4314-8266-4334d75e4d08</item>
+                        <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
+                      </items>
+                      <chunks count="1">
+                        <chunk name="Attributes">
+                          <items count="2">
+                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                              <X>318</X>
+                              <Y>522</Y>
+                              <W>30</W>
+                              <H>20</H>
+                            </item>
+                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                              <X>342.5</X>
+                              <Y>532</Y>
+                            </item>
+                          </items>
+                        </chunk>
+                      </chunks>
+                    </chunk>
+                    <chunk name="param_input" index="1">
+                      <items count="9">
+                        <item name="Access" type_name="gh_int32" type_code="3">1</item>
+                        <item name="Description" type_name="gh_string" type_code="10">A list of value data, one for each key.</item>
+                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">3cc89f57-8221-4178-a787-18b9a84b0a41</item>
+                        <item name="Mapping" type_name="gh_int32" type_code="3">1</item>
+                        <item name="Name" type_name="gh_string" type_code="10">Values</item>
+                        <item name="NickName" type_name="gh_string" type_code="10">V</item>
+                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
+                        <item name="Source" index="0" type_name="gh_guid" type_code="9">5484b531-e1b8-4ad9-aaef-53a2d037763a</item>
+                        <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
+                      </items>
+                      <chunks count="1">
+                        <chunk name="Attributes">
+                          <items count="2">
+                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                              <X>318</X>
+                              <Y>542</Y>
+                              <W>30</W>
+                              <H>20</H>
+                            </item>
+                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                              <X>342.5</X>
+                              <Y>552</Y>
+                            </item>
+                          </items>
+                        </chunk>
+                      </chunks>
+                    </chunk>
+                    <chunk name="param_input" index="2">
+                      <items count="8">
+                        <item name="Description" type_name="gh_string" type_code="10">A key value to search for</item>
+                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">0df26adc-45c7-4311-949b-be03e2d0f0a9</item>
+                        <item name="Mapping" type_name="gh_int32" type_code="3">1</item>
+                        <item name="Name" type_name="gh_string" type_code="10">Search</item>
+                        <item name="NickName" type_name="gh_string" type_code="10">S</item>
+                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
+                        <item name="Source" index="0" type_name="gh_guid" type_code="9">6efaadc5-a231-4a87-94ec-bcb69b6830d7</item>
+                        <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
+                      </items>
+                      <chunks count="1">
+                        <chunk name="Attributes">
+                          <items count="2">
+                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                              <X>318</X>
+                              <Y>562</Y>
+                              <W>30</W>
+                              <H>20</H>
+                            </item>
+                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                              <X>342.5</X>
+                              <Y>572</Y>
+                            </item>
+                          </items>
+                        </chunk>
+                      </chunks>
+                    </chunk>
+                    <chunk name="param_output" index="0">
+                      <items count="6">
+                        <item name="Description" type_name="gh_string" type_code="10">Resulting item in the value list that matches the Search key</item>
+                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">fd33bd4b-c838-4624-8c0f-6bf46cf00f91</item>
+                        <item name="Name" type_name="gh_string" type_code="10">Result</item>
+                        <item name="NickName" type_name="gh_string" type_code="10">R</item>
+                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
+                        <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
+                      </items>
+                      <chunks count="1">
+                        <chunk name="Attributes">
+                          <items count="2">
+                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                              <X>378</X>
+                              <Y>522</Y>
+                              <W>17</W>
+                              <H>60</H>
+                            </item>
+                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                              <X>386.5</X>
+                              <Y>552</Y>
+                            </item>
+                          </items>
+                        </chunk>
+                      </chunks>
+                    </chunk>
+                  </chunks>
+                </chunk>
+              </chunks>
+            </chunk>
           </chunks>
         </chunk>
       </chunks>
@@ -1968,7 +3475,7 @@
     <chunk name="Thumbnail">
       <items count="1">
         <item name="Thumbnail" type_name="gh_drawing_bitmap" type_code="37">
-          <bitmap length="2313">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</bitmap>
+          <bitmap length="5184">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</bitmap>
         </item>
       </items>
     </chunk>
