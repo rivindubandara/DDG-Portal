@@ -33,7 +33,7 @@
   <body>
     <canvas class="webgl"></canvas>
 
-    <div class="errorPopupEnv">
+    <div class="errorPopup">
       <span><img src="/static/images/emoji.png" alt="emoji" /></span>
       <p class="firstLine">OOPS...</p>
       <p class="secondLine">SOMETHING WENT WRONG</p>
@@ -114,7 +114,7 @@
         {% if total_sunlight_hours is not none %}
         <div class="resultsEnvContainer">
             <i class="ri-numbers-fill"></i>Results
-            <h5>Total Sunlight Hours</h5>
+            <h5>Average Sunlight Hours</h5>
             <p>{{ total_sunlight_hours }}</p>
         </div>
         {% endif %}
