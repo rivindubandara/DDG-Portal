@@ -225,12 +225,6 @@
             </div>
           </div>
 
-          <div id="wsa_runway05Toggle" class="toggle">
-            <div class="toggle-button" onclick="Animatedtoggle(this)">
-              <div class="toggle-text">WSA Runway 05</div>
-            </div>
-          </div>
-
         </div>
 
         <ul class="sidebar__menu">
@@ -1031,20 +1025,6 @@
 
         buildingsToggleBtn.classList.add("active");
 
-        map.addSource('geojson-source', {
-          type: 'geojson',
-          data: "https://cdn.wsiflightpaths.aerlabs.com/swathes/departures_night_23.geojson"
-          });
-          
-          map.addLayer({
-          'id': 'geojson-layer',
-          'type': 'circle',
-          'source': 'geojson-source',
-          paint: {
-            "fill-color": "#0000ff", 
-            "fill-opacity": 0.8,
-          },
-          });
       });
 
       const geocoder = new MapboxGeocoder({
