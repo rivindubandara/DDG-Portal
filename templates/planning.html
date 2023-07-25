@@ -224,6 +224,13 @@
               <div class="toggle-text">Native Land</div>
             </div>
           </div>
+
+          <div id="wsa_runway05Toggle" class="toggle">
+            <div class="toggle-button" onclick="Animatedtoggle(this)">
+              <div class="toggle-text">WSA Runway 05</div>
+            </div>
+          </div>
+
         </div>
 
         <ul class="sidebar__menu">
@@ -1023,6 +1030,25 @@
         });
 
         buildingsToggleBtn.classList.add("active");
+
+        fetch("https://cdn.wsiflightpaths.aerlabs.com/swathes/departures_night_23.geojson")
+          .then((response) => response.json())
+          .then((geojsonData) => {
+            map.addSource("geojson-source", {
+              type: "geojson",
+              data: geojsonData,
+            });
+
+            map.addLayer({
+              id: "geojson-layer",
+              type: "fill",
+              source: "geojson-source",
+              paint: {
+                "fill-color": "#0000ff", 
+                "fill-opacity": 0.8,
+              },
+            });
+          })
       });
 
       const geocoder = new MapboxGeocoder({
@@ -1084,6 +1110,7 @@
       const heritageToggleBtn = document.getElementById("heritageToggle");
       const buildingsToggleBtn = document.getElementById("buildingsToggle");
       const nativelandsToggleBtn = document.getElementById("nativelandsToggle");
+      const wsa_runway05ToggleBtn = document.getElementById("wsa_runway05ToggleBtn");
 
       cadastreToggleBtn.addEventListener("click", function () {
         const layerId = "cadastre-raster-layer";
@@ -1135,6 +1162,11 @@
         const layerId2 = "nativelands-layer-symbol";
         toggleLayerVisibility(layerId1, nativelandsToggleBtn);
         toggleLayerVisibility(layerId2, nativelandsToggleBtn);
+      });
+
+      wsa_runway05ToggleBtn.addEventListener("click", function () {
+        const layerId = "geojson-layer";
+        toggleLayerVisibility(layerId, wsa_runway05ToggleBtn);
       });
 
       function toggleLayerVisibility(layerId, toggleBtn) {
