@@ -49,10 +49,10 @@
             <chunk name="Projection">
               <items count="2">
                 <item name="Target" type_name="gh_drawing_point" type_code="30">
-                  <X>136</X>
-                  <Y>77</Y>
+                  <X>41</X>
+                  <Y>102</Y>
                 </item>
-                <item name="Zoom" type_name="gh_single" type_code="5">1.17647052</item>
+                <item name="Zoom" type_name="gh_single" type_code="5">1.38408315</item>
               </items>
             </chunk>
             <chunk name="Views">
@@ -73,222 +73,6 @@
           </items>
           <chunks count="13">
             <chunk name="Object" index="0">
-              <items count="2">
-                <item name="GUID" type_name="gh_guid" type_code="9">6da9f120-3ad0-4b6e-9fe0-f8cde3a649b7</item>
-                <item name="Name" type_name="gh_string" type_code="10">Gradient</item>
-              </items>
-              <chunks count="1">
-                <chunk name="Container">
-                  <items count="5">
-                    <item name="Description" type_name="gh_string" type_code="10">Represents a multiple colour gradient</item>
-                    <item name="Hidden" type_name="gh_bool" type_code="1">true</item>
-                    <item name="InstanceGuid" type_name="gh_guid" type_code="9">224b23d0-0825-4d78-b9e8-5e16152603c9</item>
-                    <item name="Name" type_name="gh_string" type_code="10">Gradient</item>
-                    <item name="NickName" type_name="gh_string" type_code="10">Gradient</item>
-                  </items>
-                  <chunks count="6">
-                    <chunk name="Gradient">
-                      <items count="3">
-                        <item name="GripCount" type_name="gh_int32" type_code="3">3</item>
-                        <item name="Linear" type_name="gh_bool" type_code="1">false</item>
-                        <item name="Locked" type_name="gh_bool" type_code="1">false</item>
-                      </items>
-                      <chunks count="3">
-                        <chunk name="Grip" index="0">
-                          <items count="4">
-                            <item name="Colour" index="0" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;0;128;0</ARGB>
-                            </item>
-                            <item name="Colour" index="1" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;0;128;0</ARGB>
-                            </item>
-                            <item name="Factor" type_name="gh_double" type_code="6">0</item>
-                            <item name="Id" type_name="gh_guid" type_code="9">f106fe33-1655-403d-a905-7ddb2e9f69ad</item>
-                          </items>
-                        </chunk>
-                        <chunk name="Grip" index="1">
-                          <items count="4">
-                            <item name="Colour" index="0" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;255;255;0</ARGB>
-                            </item>
-                            <item name="Colour" index="1" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;255;255;0</ARGB>
-                            </item>
-                            <item name="Factor" type_name="gh_double" type_code="6">0.5</item>
-                            <item name="Id" type_name="gh_guid" type_code="9">1f48fa2e-9d75-4bac-a8d8-f38ebd65e1fa</item>
-                          </items>
-                        </chunk>
-                        <chunk name="Grip" index="2">
-                          <items count="4">
-                            <item name="Colour" index="0" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;255;0;0</ARGB>
-                            </item>
-                            <item name="Colour" index="1" type_name="gh_drawing_color" type_code="36">
-                              <ARGB>255;255;0;0</ARGB>
-                            </item>
-                            <item name="Factor" type_name="gh_double" type_code="6">1</item>
-                            <item name="Id" type_name="gh_guid" type_code="9">d0ab48cf-f170-4115-84f3-d43b4ac4ecf2</item>
-                          </items>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                    <chunk name="Attributes">
-                      <items count="1">
-                        <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                          <X>567</X>
-                          <Y>149</Y>
-                          <W>250</W>
-                          <H>64</H>
-                        </item>
-                      </items>
-                    </chunk>
-                    <chunk name="param_input" index="0">
-                      <items count="6">
-                        <item name="Description" type_name="gh_string" type_code="10">Lower limit of gradient range</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">c05ab22b-08b2-4aee-aefc-8fd0c6e18445</item>
-                        <item name="Name" type_name="gh_string" type_code="10">Lower limit</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">L0</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
-                      </items>
-                      <chunks count="2">
-                        <chunk name="Attributes">
-                          <items count="2">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>570</X>
-                              <Y>151</Y>
-                              <W>18</W>
-                              <H>20</H>
-                            </item>
-                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>580.5</X>
-                              <Y>161</Y>
-                            </item>
-                          </items>
-                        </chunk>
-                        <chunk name="PersistentData">
-                          <items count="1">
-                            <item name="Count" type_name="gh_int32" type_code="3">1</item>
-                          </items>
-                          <chunks count="1">
-                            <chunk name="Branch" index="0">
-                              <items count="2">
-                                <item name="Count" type_name="gh_int32" type_code="3">1</item>
-                                <item name="Path" type_name="gh_string" type_code="10">{0}</item>
-                              </items>
-                              <chunks count="1">
-                                <chunk name="Item" index="0">
-                                  <items count="1">
-                                    <item name="number" type_name="gh_double" type_code="6">0</item>
-                                  </items>
-                                </chunk>
-                              </chunks>
-                            </chunk>
-                          </chunks>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                    <chunk name="param_input" index="1">
-                      <items count="7">
-                        <item name="Description" type_name="gh_string" type_code="10">Upper limit of gradient range</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">0ad54702-2368-4cff-b0f9-a614cdef4062</item>
-                        <item name="Name" type_name="gh_string" type_code="10">Upper limit</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">L1</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="Source" index="0" type_name="gh_guid" type_code="9">141885f6-ac8f-4167-aab4-594c2127569f</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
-                      </items>
-                      <chunks count="2">
-                        <chunk name="Attributes">
-                          <items count="2">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>570</X>
-                              <Y>171</Y>
-                              <W>18</W>
-                              <H>20</H>
-                            </item>
-                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>580.5</X>
-                              <Y>181</Y>
-                            </item>
-                          </items>
-                        </chunk>
-                        <chunk name="PersistentData">
-                          <items count="1">
-                            <item name="Count" type_name="gh_int32" type_code="3">1</item>
-                          </items>
-                          <chunks count="1">
-                            <chunk name="Branch" index="0">
-                              <items count="2">
-                                <item name="Count" type_name="gh_int32" type_code="3">1</item>
-                                <item name="Path" type_name="gh_string" type_code="10">{0}</item>
-                              </items>
-                              <chunks count="1">
-                                <chunk name="Item" index="0">
-                                  <items count="1">
-                                    <item name="number" type_name="gh_double" type_code="6">1</item>
-                                  </items>
-                                </chunk>
-                              </chunks>
-                            </chunk>
-                          </chunks>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                    <chunk name="param_input" index="2">
-                      <items count="7">
-                        <item name="Description" type_name="gh_string" type_code="10">Parameter along gradient range</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">ddfbb387-2f20-418d-8512-d06615d48509</item>
-                        <item name="Name" type_name="gh_string" type_code="10">Parameter</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">t</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="Source" index="0" type_name="gh_guid" type_code="9">e603c629-10f9-487a-92a7-9650048afa02</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
-                      </items>
-                      <chunks count="1">
-                        <chunk name="Attributes">
-                          <items count="2">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>570</X>
-                              <Y>191</Y>
-                              <W>18</W>
-                              <H>20</H>
-                            </item>
-                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>580.5</X>
-                              <Y>201</Y>
-                            </item>
-                          </items>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                    <chunk name="param_output" index="0">
-                      <items count="6">
-                        <item name="Description" type_name="gh_string" type_code="10">Colour along gradient at parameter</item>
-                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">17fbf919-6b5d-48e4-a2eb-4cd99c09737a</item>
-                        <item name="Name" type_name="gh_string" type_code="10">Colour</item>
-                        <item name="NickName" type_name="gh_string" type_code="10">C</item>
-                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
-                      </items>
-                      <chunks count="1">
-                        <chunk name="Attributes">
-                          <items count="1">
-                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>817</X>
-                              <Y>149</Y>
-                              <W>0</W>
-                              <H>64</H>
-                            </item>
-                          </items>
-                        </chunk>
-                      </chunks>
-                    </chunk>
-                  </chunks>
-                </chunk>
-              </chunks>
-            </chunk>
-            <chunk name="Object" index="1">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">d2cedf38-1149-4adc-8dbf-b06571cb5106</item>
                 <item name="Name" type_name="gh_string" type_code="10">Mesh Colours</item>
@@ -354,7 +138,7 @@
                         <item name="Name" type_name="gh_string" type_code="10">Colours</item>
                         <item name="NickName" type_name="gh_string" type_code="10">C</item>
                         <item name="Optional" type_name="gh_bool" type_code="1">false</item>
-                        <item name="Source" index="0" type_name="gh_guid" type_code="9">17fbf919-6b5d-48e4-a2eb-4cd99c09737a</item>
+                        <item name="Source" index="0" type_name="gh_guid" type_code="9">3786a6bf-43ad-4c9d-8e30-05f7c8ae4dff</item>
                         <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
                       </items>
                       <chunks count="2">
@@ -475,7 +259,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="2">
+            <chunk name="Object" index="1">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">1e936df3-0eea-4246-8549-514cb8862b7a</item>
                 <item name="Name" type_name="gh_string" type_code="10">Mesh</item>
@@ -511,7 +295,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="3">
+            <chunk name="Object" index="2">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">c552a431-af5b-46a9-a8a4-0fcbc27ef596</item>
                 <item name="Name" type_name="gh_string" type_code="10">Group</item>
@@ -536,7 +320,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="4">
+            <chunk name="Object" index="3">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">41dd7ba9-1f53-49d9-af42-a9270b0e9454</item>
                 <item name="Name" type_name="gh_string" type_code="10">Get Geometry</item>
@@ -577,7 +361,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="5">
+            <chunk name="Object" index="4">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">f80cfe18-9510-4b89-8301-8e58faf423bb</item>
                 <item name="Name" type_name="gh_string" type_code="10">Flatten Tree</item>
@@ -711,7 +495,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="6">
+            <chunk name="Object" index="5">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">98c3c63a-e78a-43ea-a111-514fcf312c95</item>
                 <item name="Name" type_name="gh_string" type_code="10">Create Set</item>
@@ -729,14 +513,14 @@
                     <chunk name="Attributes">
                       <items count="2">
                         <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                          <X>391</X>
-                          <Y>254</Y>
+                          <X>394</X>
+                          <Y>161</Y>
                           <W>66</W>
                           <H>44</H>
                         </item>
                         <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                          <X>420</X>
-                          <Y>276</Y>
+                          <X>423</X>
+                          <Y>183</Y>
                         </item>
                       </items>
                     </chunk>
@@ -755,14 +539,14 @@
                         <chunk name="Attributes">
                           <items count="2">
                             <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>393</X>
-                              <Y>256</Y>
+                              <X>396</X>
+                              <Y>163</Y>
                               <W>12</W>
                               <H>40</H>
                             </item>
                             <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>400.5</X>
-                              <Y>276</Y>
+                              <X>403.5</X>
+                              <Y>183</Y>
                             </item>
                           </items>
                         </chunk>
@@ -782,14 +566,14 @@
                         <chunk name="Attributes">
                           <items count="2">
                             <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>435</X>
-                              <Y>256</Y>
+                              <X>438</X>
+                              <Y>163</Y>
                               <W>20</W>
                               <H>20</H>
                             </item>
                             <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>445</X>
-                              <Y>266</Y>
+                              <X>448</X>
+                              <Y>173</Y>
                             </item>
                           </items>
                         </chunk>
@@ -809,14 +593,14 @@
                         <chunk name="Attributes">
                           <items count="2">
                             <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>435</X>
-                              <Y>276</Y>
+                              <X>438</X>
+                              <Y>183</Y>
                               <W>20</W>
                               <H>20</H>
                             </item>
                             <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>445</X>
-                              <Y>286</Y>
+                              <X>448</X>
+                              <Y>193</Y>
                             </item>
                           </items>
                         </chunk>
@@ -826,7 +610,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="7">
+            <chunk name="Object" index="6">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">1817fd29-20ae-4503-b542-f0fb651e67d7</item>
                 <item name="Name" type_name="gh_string" type_code="10">List Length</item>
@@ -844,14 +628,14 @@
                     <chunk name="Attributes">
                       <items count="2">
                         <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                          <X>423</X>
-                          <Y>160</Y>
+                          <X>479</X>
+                          <Y>159</Y>
                           <W>77</W>
                           <H>28</H>
                         </item>
                         <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                          <X>452</X>
-                          <Y>174</Y>
+                          <X>508</X>
+                          <Y>173</Y>
                         </item>
                       </items>
                     </chunk>
@@ -870,14 +654,14 @@
                         <chunk name="Attributes">
                           <items count="2">
                             <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>425</X>
-                              <Y>162</Y>
+                              <X>481</X>
+                              <Y>161</Y>
                               <W>12</W>
                               <H>24</H>
                             </item>
                             <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>432.5</X>
-                              <Y>174</Y>
+                              <X>488.5</X>
+                              <Y>173</Y>
                             </item>
                           </items>
                         </chunk>
@@ -897,14 +681,14 @@
                         <chunk name="Attributes">
                           <items count="2">
                             <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
-                              <X>467</X>
-                              <Y>162</Y>
+                              <X>523</X>
+                              <Y>161</Y>
                               <W>31</W>
                               <H>24</H>
                             </item>
                             <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
-                              <X>474.5</X>
-                              <Y>174</Y>
+                              <X>530.5</X>
+                              <Y>173</Y>
                             </item>
                           </items>
                         </chunk>
@@ -914,7 +698,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="8">
+            <chunk name="Object" index="7">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">fed87bdd-8327-49cd-949c-09d70f3c345c</item>
                 <item name="Name" type_name="gh_string" type_code="10">Get String</item>
@@ -953,7 +737,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="9">
+            <chunk name="Object" index="8">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">f80cfe18-9510-4b89-8301-8e58faf423bb</item>
                 <item name="Name" type_name="gh_string" type_code="10">Flatten Tree</item>
@@ -1087,7 +871,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="10">
+            <chunk name="Object" index="9">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">3ede854e-c753-40eb-84cb-b48008f14fd4</item>
                 <item name="Name" type_name="gh_string" type_code="10">Text</item>
@@ -1123,7 +907,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="11">
+            <chunk name="Object" index="10">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">c552a431-af5b-46a9-a8a4-0fcbc27ef596</item>
                 <item name="Name" type_name="gh_string" type_code="10">Group</item>
@@ -1148,7 +932,7 @@
                 </chunk>
               </chunks>
             </chunk>
-            <chunk name="Object" index="12">
+            <chunk name="Object" index="11">
               <items count="2">
                 <item name="GUID" type_name="gh_guid" type_code="9">6f93d366-919f-4dda-a35e-ba03dd62799b</item>
                 <item name="Name" type_name="gh_string" type_code="10">Sort List</item>
@@ -1303,6 +1087,221 @@
                 </chunk>
               </chunks>
             </chunk>
+            <chunk name="Object" index="12">
+              <items count="2">
+                <item name="GUID" type_name="gh_guid" type_code="9">6da9f120-3ad0-4b6e-9fe0-f8cde3a649b7</item>
+                <item name="Name" type_name="gh_string" type_code="10">Gradient</item>
+              </items>
+              <chunks count="1">
+                <chunk name="Container">
+                  <items count="4">
+                    <item name="Description" type_name="gh_string" type_code="10">Represents a multiple colour gradient</item>
+                    <item name="InstanceGuid" type_name="gh_guid" type_code="9">4fdea561-b123-41df-a566-f2e0d268683c</item>
+                    <item name="Name" type_name="gh_string" type_code="10">Gradient</item>
+                    <item name="NickName" type_name="gh_string" type_code="10">Gradient</item>
+                  </items>
+                  <chunks count="6">
+                    <chunk name="Gradient">
+                      <items count="3">
+                        <item name="GripCount" type_name="gh_int32" type_code="3">3</item>
+                        <item name="Linear" type_name="gh_bool" type_code="1">false</item>
+                        <item name="Locked" type_name="gh_bool" type_code="1">false</item>
+                      </items>
+                      <chunks count="3">
+                        <chunk name="Grip" index="0">
+                          <items count="4">
+                            <item name="Colour" index="0" type_name="gh_drawing_color" type_code="36">
+                              <ARGB>255;253;245;230</ARGB>
+                            </item>
+                            <item name="Colour" index="1" type_name="gh_drawing_color" type_code="36">
+                              <ARGB>255;253;245;230</ARGB>
+                            </item>
+                            <item name="Factor" type_name="gh_double" type_code="6">0</item>
+                            <item name="Id" type_name="gh_guid" type_code="9">bf269710-16ba-4f8f-87d4-1454c3acb62a</item>
+                          </items>
+                        </chunk>
+                        <chunk name="Grip" index="1">
+                          <items count="4">
+                            <item name="Colour" index="0" type_name="gh_drawing_color" type_code="36">
+                              <ARGB>255;205;92;92</ARGB>
+                            </item>
+                            <item name="Colour" index="1" type_name="gh_drawing_color" type_code="36">
+                              <ARGB>255;205;92;92</ARGB>
+                            </item>
+                            <item name="Factor" type_name="gh_double" type_code="6">0.5</item>
+                            <item name="Id" type_name="gh_guid" type_code="9">5ce3b638-ace5-4ee4-a67e-09bfb5a52ba3</item>
+                          </items>
+                        </chunk>
+                        <chunk name="Grip" index="2">
+                          <items count="4">
+                            <item name="Colour" index="0" type_name="gh_drawing_color" type_code="36">
+                              <ARGB>255;128;0;0</ARGB>
+                            </item>
+                            <item name="Colour" index="1" type_name="gh_drawing_color" type_code="36">
+                              <ARGB>255;128;0;0</ARGB>
+                            </item>
+                            <item name="Factor" type_name="gh_double" type_code="6">1</item>
+                            <item name="Id" type_name="gh_guid" type_code="9">56e10360-0332-4275-9317-110c7f174280</item>
+                          </items>
+                        </chunk>
+                      </chunks>
+                    </chunk>
+                    <chunk name="Attributes">
+                      <items count="1">
+                        <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                          <X>571</X>
+                          <Y>141</Y>
+                          <W>250</W>
+                          <H>64</H>
+                        </item>
+                      </items>
+                    </chunk>
+                    <chunk name="param_input" index="0">
+                      <items count="6">
+                        <item name="Description" type_name="gh_string" type_code="10">Lower limit of gradient range</item>
+                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">548dea11-aefb-4e36-810e-df09f88f917b</item>
+                        <item name="Name" type_name="gh_string" type_code="10">Lower limit</item>
+                        <item name="NickName" type_name="gh_string" type_code="10">L0</item>
+                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
+                        <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
+                      </items>
+                      <chunks count="2">
+                        <chunk name="Attributes">
+                          <items count="2">
+                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                              <X>574</X>
+                              <Y>143</Y>
+                              <W>18</W>
+                              <H>20</H>
+                            </item>
+                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                              <X>584.5</X>
+                              <Y>153</Y>
+                            </item>
+                          </items>
+                        </chunk>
+                        <chunk name="PersistentData">
+                          <items count="1">
+                            <item name="Count" type_name="gh_int32" type_code="3">1</item>
+                          </items>
+                          <chunks count="1">
+                            <chunk name="Branch" index="0">
+                              <items count="2">
+                                <item name="Count" type_name="gh_int32" type_code="3">1</item>
+                                <item name="Path" type_name="gh_string" type_code="10">{0}</item>
+                              </items>
+                              <chunks count="1">
+                                <chunk name="Item" index="0">
+                                  <items count="1">
+                                    <item name="number" type_name="gh_double" type_code="6">0</item>
+                                  </items>
+                                </chunk>
+                              </chunks>
+                            </chunk>
+                          </chunks>
+                        </chunk>
+                      </chunks>
+                    </chunk>
+                    <chunk name="param_input" index="1">
+                      <items count="7">
+                        <item name="Description" type_name="gh_string" type_code="10">Upper limit of gradient range</item>
+                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">f334ab14-9d66-4895-9445-d085f6ae70b1</item>
+                        <item name="Name" type_name="gh_string" type_code="10">Upper limit</item>
+                        <item name="NickName" type_name="gh_string" type_code="10">L1</item>
+                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
+                        <item name="Source" index="0" type_name="gh_guid" type_code="9">141885f6-ac8f-4167-aab4-594c2127569f</item>
+                        <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
+                      </items>
+                      <chunks count="2">
+                        <chunk name="Attributes">
+                          <items count="2">
+                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                              <X>574</X>
+                              <Y>163</Y>
+                              <W>18</W>
+                              <H>20</H>
+                            </item>
+                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                              <X>584.5</X>
+                              <Y>173</Y>
+                            </item>
+                          </items>
+                        </chunk>
+                        <chunk name="PersistentData">
+                          <items count="1">
+                            <item name="Count" type_name="gh_int32" type_code="3">1</item>
+                          </items>
+                          <chunks count="1">
+                            <chunk name="Branch" index="0">
+                              <items count="2">
+                                <item name="Count" type_name="gh_int32" type_code="3">1</item>
+                                <item name="Path" type_name="gh_string" type_code="10">{0}</item>
+                              </items>
+                              <chunks count="1">
+                                <chunk name="Item" index="0">
+                                  <items count="1">
+                                    <item name="number" type_name="gh_double" type_code="6">1</item>
+                                  </items>
+                                </chunk>
+                              </chunks>
+                            </chunk>
+                          </chunks>
+                        </chunk>
+                      </chunks>
+                    </chunk>
+                    <chunk name="param_input" index="2">
+                      <items count="7">
+                        <item name="Description" type_name="gh_string" type_code="10">Parameter along gradient range</item>
+                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">2e877d2b-3fd5-4b9f-8221-d00c290443e9</item>
+                        <item name="Name" type_name="gh_string" type_code="10">Parameter</item>
+                        <item name="NickName" type_name="gh_string" type_code="10">t</item>
+                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
+                        <item name="Source" index="0" type_name="gh_guid" type_code="9">e603c629-10f9-487a-92a7-9650048afa02</item>
+                        <item name="SourceCount" type_name="gh_int32" type_code="3">1</item>
+                      </items>
+                      <chunks count="1">
+                        <chunk name="Attributes">
+                          <items count="2">
+                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                              <X>574</X>
+                              <Y>183</Y>
+                              <W>18</W>
+                              <H>20</H>
+                            </item>
+                            <item name="Pivot" type_name="gh_drawing_pointf" type_code="31">
+                              <X>584.5</X>
+                              <Y>193</Y>
+                            </item>
+                          </items>
+                        </chunk>
+                      </chunks>
+                    </chunk>
+                    <chunk name="param_output" index="0">
+                      <items count="6">
+                        <item name="Description" type_name="gh_string" type_code="10">Colour along gradient at parameter</item>
+                        <item name="InstanceGuid" type_name="gh_guid" type_code="9">3786a6bf-43ad-4c9d-8e30-05f7c8ae4dff</item>
+                        <item name="Name" type_name="gh_string" type_code="10">Colour</item>
+                        <item name="NickName" type_name="gh_string" type_code="10">C</item>
+                        <item name="Optional" type_name="gh_bool" type_code="1">false</item>
+                        <item name="SourceCount" type_name="gh_int32" type_code="3">0</item>
+                      </items>
+                      <chunks count="1">
+                        <chunk name="Attributes">
+                          <items count="1">
+                            <item name="Bounds" type_name="gh_drawing_rectanglef" type_code="35">
+                              <X>821</X>
+                              <Y>141</Y>
+                              <W>0</W>
+                              <H>64</H>
+                            </item>
+                          </items>
+                        </chunk>
+                      </chunks>
+                    </chunk>
+                  </chunks>
+                </chunk>
+              </chunks>
+            </chunk>
           </chunks>
         </chunk>
       </chunks>
@@ -1310,7 +1309,7 @@
     <chunk name="Thumbnail">
       <items count="1">
         <item name="Thumbnail" type_name="gh_drawing_bitmap" type_code="37">
-          <bitmap length="6291">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</bitmap>
+          <bitmap length="6073">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</bitmap>
         </item>
       </items>
     </chunk>
