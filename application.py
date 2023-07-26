@@ -9,6 +9,9 @@ import mapbox_vector_tile
 import mercantile
 import base64
 import concurrent.futures
+from PIL import Image
+from io import BytesIO
+import cv2
 
 application = Flask(__name__, static_url_path='/static', static_folder='static')
 application.secret_key = 'nettletontribe_secret_key'
@@ -460,6 +463,8 @@ def get_planning():
         planning_model, "Parks", (0, 204, 0, 255))
     procedural_layerIndex = create_layer(
         planning_model, "Geometry", (0, 204, 0, 255))
+    raster_layerIndex = create_layer(
+        planning_model, "Raster", (0, 204, 0, 255))
 
     gh_fsr_decoded = encode_ghx_file(r"./gh_scripts/fsr.ghx")
     gh_hob_decoded = encode_ghx_file(r"./gh_scripts/hob.ghx")
@@ -469,6 +474,7 @@ def get_planning():
         r"./gh_scripts/interpolate.ghx")
     gh_roads_decoded = encode_ghx_file(r"./gh_scripts/roads.ghx")
     gh_procedural_decoded = encode_ghx_file(r"./gh_scripts/procedural.ghx")
+    gh_raster_decoded = encode_ghx_file(r"./gh_scripts/image.ghx")
 
     adminboundaries_url = 'https://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Administrative_Boundaries/MapServer/0/query'
     zoning_url = "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/EPI_Primary_Planning_Layers/MapServer/2/query"
@@ -1057,6 +1063,97 @@ def get_planning():
                         cycling_layerIndex, planning_model)
     add_curves_to_model(driving_data, transformer2,
                         driving_layerIndex, planning_model)
+    
+    ras_xmin_LL, ras_xmax_LL, ras_ymin_LL, ras_ymax_LL = create_boundary(lat, lon, 10000)
+
+    ras_tiles = list(mercantile.tiles(ras_xmin_LL, ras_ymin_LL, ras_xmax_LL, ras_ymax_LL, zooms=16))
+
+    for tile in ras_tiles:
+        mb_url = f"https://api.mapbox.com/v4/mapbox.satellite/{zoom}/{tile.x}/{tile.y}@2x.png256?access_token={mapbox_access_token}"
+        response = requests.get(mb_url)
+
+        if response.status_code == 200:
+            image_data = BytesIO(response.content)
+            image = Image.open(image_data)
+            file_name = "ras.png"
+            image.save('./tmp/' + file_name)
+
+    rastile = ras_tiles[0] 
+
+    bbox = mercantile.bounds(rastile)
+    lon1, lat1, lon2, lat2 = bbox
+    t_lon1, t_lat1 = transformer2.transform(lon1, lat1)
+    t_lon2, t_lat2 = transformer2.transform(lon2, lat2)
+
+    raster_points = [
+        rh.Point3d(t_lon1, t_lat1, 0),
+        rh.Point3d(t_lon2, t_lat1, 0),
+        rh.Point3d(t_lon2, t_lat2, 0),
+        rh.Point3d(t_lon1, t_lat2, 0),
+        rh.Point3d(t_lon1, t_lat1, 0)
+    ]
+
+    points_list = rh.Point3dList(raster_points)
+    raster_curve = rh.PolylineCurve(points_list)
+    raster_curve = raster_curve.ToNurbsCurve()
+
+    img = cv2.imread('./tmp/' + file_name)
+    png_img = cv2.imencode('.png', img)
+    b64_string = base64.b64encode(png_img[1]).decode('utf-8')
+
+    string_encoded = b64_string
+    send_string = [{"ParamName": "BaseString", "InnerTree": {}}]
+
+    serialized_string = json.dumps(string_encoded, cls=__Rhino3dmEncoder)
+    key = "{0};0".format(0)
+    value = [
+        {
+            "type": "System.String",
+            "data": serialized_string
+        }
+    ]
+    send_string[0]["InnerTree"][key] = value
+
+    curve_payload = [{"ParamName": "Curve", "InnerTree": {}}]
+    serialized_curve = json.dumps(raster_curve, cls=__Rhino3dmEncoder)
+    key = "{0};0".format(0)
+    value = [
+        {
+            "type": "Rhino.Geometry.Curve",
+            "data": serialized_curve
+        }
+    ]
+    curve_payload[0]["InnerTree"][key] = value
+
+    geo_payload = {
+        "algo": gh_raster_decoded,
+        "pointer": None,
+        "values": send_string + curve_payload
+    }
+
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    response_object = json.loads(res.content)['values']
+
+    for val in response_object:
+        paramName = val['ParamName']
+        innerTree = val['InnerTree']
+        for key, innerVals in innerTree.items():
+            for innerVal in innerVals:
+                if 'data' in innerVal:
+                    data = json.loads(innerVal['data'])
+                    geo = rh.CommonObject.Decode(data)
+                    att = rh.ObjectAttributes()
+                    att.LayerIndex = raster_layerIndex
+                    planning_model.Objects.AddMesh(geo, att)
 
     cen_x, cen_y = transformer2.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
@@ -1799,12 +1896,14 @@ def get_qld_planning():
     creek_layerIndex = create_layer(
         qld, "Creek/Waterway Flood", (255, 106, 0, 255))
     river_layerIndex = create_layer(qld, "River Flood", (255, 106, 0, 255))
+    raster_layerIndex = create_layer(qld, "Raster", (255, 106, 0, 255))
 
     gh_admin_decoded = encode_ghx_file(r"./gh_scripts/admin.ghx")
     gh_zoning_decoded = encode_ghx_file(r"./gh_scripts/vic_qld_zoning.ghx")
     gh_interpolate_decoded = encode_ghx_file(r"./gh_scripts/interpolate.ghx")
     gh_roads_decoded = encode_ghx_file(r"./gh_scripts/roads.ghx")
     gh_bushfire_decoded = encode_ghx_file(r"./gh_scripts/bushfire.ghx")
+    gh_raster_decoded = encode_ghx_file(r"./gh_scripts/image.ghx")
 
     adminboundaries_url = 'https://spatial-gis.information.qld.gov.au/arcgis/rest/services/Boundaries/AdministrativeBoundaries/MapServer/2/query'
     zoning_url = "https://services2.arcgis.com/dEKgZETqwmDAh1rP/arcgis/rest/services/Zoning_opendata/FeatureServer/0/query"
@@ -2446,6 +2545,97 @@ def get_qld_planning():
                         qld.Objects.AddMesh(geo, att)
                         i += 1
 
+    ras_xmin_LL, ras_xmax_LL, ras_ymin_LL, ras_ymax_LL = create_boundary(lat, lon, 10000)
+
+    ras_tiles = list(mercantile.tiles(ras_xmin_LL, ras_ymin_LL, ras_xmax_LL, ras_ymax_LL, zooms=16))
+
+    for tile in ras_tiles:
+        mb_url = f"https://api.mapbox.com/v4/mapbox.satellite/{zoom}/{tile.x}/{tile.y}@2x.png256?access_token={mapbox_access_token}"
+        response = requests.get(mb_url)
+
+        if response.status_code == 200:
+            image_data = BytesIO(response.content)
+            image = Image.open(image_data)
+            file_name = "ras.png"
+            image.save('./tmp/' + file_name)
+
+    rastile = ras_tiles[0] 
+
+    bbox = mercantile.bounds(rastile)
+    lon1, lat1, lon2, lat2 = bbox
+    t_lon1, t_lat1 = transformer2.transform(lon1, lat1)
+    t_lon2, t_lat2 = transformer2.transform(lon2, lat2)
+
+    raster_points = [
+        rh.Point3d(t_lon1, t_lat1, 0),
+        rh.Point3d(t_lon2, t_lat1, 0),
+        rh.Point3d(t_lon2, t_lat2, 0),
+        rh.Point3d(t_lon1, t_lat2, 0),
+        rh.Point3d(t_lon1, t_lat1, 0)
+    ]
+
+    points_list = rh.Point3dList(raster_points)
+    raster_curve = rh.PolylineCurve(points_list)
+    raster_curve = raster_curve.ToNurbsCurve()
+
+    img = cv2.imread('./tmp/' + file_name)
+    png_img = cv2.imencode('.png', img)
+    b64_string = base64.b64encode(png_img[1]).decode('utf-8')
+
+    string_encoded = b64_string
+    send_string = [{"ParamName": "BaseString", "InnerTree": {}}]
+
+    serialized_string = json.dumps(string_encoded, cls=__Rhino3dmEncoder)
+    key = "{0};0".format(0)
+    value = [
+        {
+            "type": "System.String",
+            "data": serialized_string
+        }
+    ]
+    send_string[0]["InnerTree"][key] = value
+
+    curve_payload = [{"ParamName": "Curve", "InnerTree": {}}]
+    serialized_curve = json.dumps(raster_curve, cls=__Rhino3dmEncoder)
+    key = "{0};0".format(0)
+    value = [
+        {
+            "type": "Rhino.Geometry.Curve",
+            "data": serialized_curve
+        }
+    ]
+    curve_payload[0]["InnerTree"][key] = value
+
+    geo_payload = {
+        "algo": gh_raster_decoded,
+        "pointer": None,
+        "values": send_string + curve_payload
+    }
+
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    response_object = json.loads(res.content)['values']
+
+    for val in response_object:
+        paramName = val['ParamName']
+        innerTree = val['InnerTree']
+        for key, innerVals in innerTree.items():
+            for innerVal in innerVals:
+                if 'data' in innerVal:
+                    data = json.loads(innerVal['data'])
+                    geo = rh.CommonObject.Decode(data)
+                    att = rh.ObjectAttributes()
+                    att.LayerIndex = raster_layerIndex
+                    qld.Objects.AddMesh(geo, att)
+
     cen_x, cen_y = transformer2.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
 
@@ -3059,6 +3249,7 @@ def get_vic_planning():
     gh_interpolate_decoded = encode_ghx_file(r"./gh_scripts/interpolate.ghx")
     gh_roads_decoded = encode_ghx_file(r"./gh_scripts/roads.ghx")
     gh_lots_decoded = encode_ghx_file(r"./gh_scripts/vic_lots.ghx")
+    gh_raster_decoded = encode_ghx_file(r"./gh_scripts/image.ghx")
 
     boundary_layerIndex = create_layer(vic, "Boundary", (237, 0, 194, 255))
     admin_layerIndex = create_layer(
@@ -3078,6 +3269,7 @@ def get_vic_planning():
     heritage_layerIndex = create_layer(vic, "Heritage", (153, 153, 153, 255))
     vegetation_layerIndex = create_layer(
         vic, "Vegetation", (153, 153, 153, 255))
+    raster_layerIndex = create_layer(vic, "Raster", (153, 153, 153, 255))
     
     l_xmin_LL, l_xmax_LL, l_ymin_LL, l_ymax_LL = create_boundary(lat, lon, 15000)
     n_xmin_LL, n_xmax_LL, n_ymin_LL, n_ymax_LL = create_boundary(lat, lon, 800000)
@@ -3651,6 +3843,97 @@ def get_vic_planning():
     add_curves_to_model(walking_data, transformer2, walking_layerIndex, vic)
     add_curves_to_model(cycling_data, transformer2, cycling_layerIndex, vic)
     add_curves_to_model(driving_data, transformer2, driving_layerIndex, vic)
+
+    ras_xmin_LL, ras_xmax_LL, ras_ymin_LL, ras_ymax_LL = create_boundary(lat, lon, 10000)
+
+    ras_tiles = list(mercantile.tiles(ras_xmin_LL, ras_ymin_LL, ras_xmax_LL, ras_ymax_LL, zooms=16))
+
+    for tile in ras_tiles:
+        mb_url = f"https://api.mapbox.com/v4/mapbox.satellite/{zoom}/{tile.x}/{tile.y}@2x.png256?access_token={mapbox_access_token}"
+        response = requests.get(mb_url)
+
+        if response.status_code == 200:
+            image_data = BytesIO(response.content)
+            image = Image.open(image_data)
+            file_name = "ras.png"
+            image.save('./tmp/' + file_name)
+
+    rastile = ras_tiles[0] 
+
+    bbox = mercantile.bounds(rastile)
+    lon1, lat1, lon2, lat2 = bbox
+    t_lon1, t_lat1 = transformer2.transform(lon1, lat1)
+    t_lon2, t_lat2 = transformer2.transform(lon2, lat2)
+
+    raster_points = [
+        rh.Point3d(t_lon1, t_lat1, 0),
+        rh.Point3d(t_lon2, t_lat1, 0),
+        rh.Point3d(t_lon2, t_lat2, 0),
+        rh.Point3d(t_lon1, t_lat2, 0),
+        rh.Point3d(t_lon1, t_lat1, 0)
+    ]
+
+    points_list = rh.Point3dList(raster_points)
+    raster_curve = rh.PolylineCurve(points_list)
+    raster_curve = raster_curve.ToNurbsCurve()
+
+    img = cv2.imread('./tmp/' + file_name)
+    png_img = cv2.imencode('.png', img)
+    b64_string = base64.b64encode(png_img[1]).decode('utf-8')
+
+    string_encoded = b64_string
+    send_string = [{"ParamName": "BaseString", "InnerTree": {}}]
+
+    serialized_string = json.dumps(string_encoded, cls=__Rhino3dmEncoder)
+    key = "{0};0".format(0)
+    value = [
+        {
+            "type": "System.String",
+            "data": serialized_string
+        }
+    ]
+    send_string[0]["InnerTree"][key] = value
+
+    curve_payload = [{"ParamName": "Curve", "InnerTree": {}}]
+    serialized_curve = json.dumps(raster_curve, cls=__Rhino3dmEncoder)
+    key = "{0};0".format(0)
+    value = [
+        {
+            "type": "Rhino.Geometry.Curve",
+            "data": serialized_curve
+        }
+    ]
+    curve_payload[0]["InnerTree"][key] = value
+
+    geo_payload = {
+        "algo": gh_raster_decoded,
+        "pointer": None,
+        "values": send_string + curve_payload
+    }
+
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    response_object = json.loads(res.content)['values']
+
+    for val in response_object:
+        paramName = val['ParamName']
+        innerTree = val['InnerTree']
+        for key, innerVals in innerTree.items():
+            for innerVal in innerVals:
+                if 'data' in innerVal:
+                    data = json.loads(innerVal['data'])
+                    geo = rh.CommonObject.Decode(data)
+                    att = rh.ObjectAttributes()
+                    att.LayerIndex = raster_layerIndex
+                    vic.Objects.AddMesh(geo, att)
 
     cen_x, cen_y = transformer2.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
