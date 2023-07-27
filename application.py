@@ -41,7 +41,6 @@ def create_boundary(lat, lon, distance):
     min_lon = lon - ew_dist
     return min_lon, max_lon, min_lat, max_lat
 
-
 def create_layer(model, name, color):
     layer = rh.Layer()
     layer.Name = name
