@@ -11,7 +11,6 @@ import base64
 import concurrent.futures
 from PIL import Image
 from io import BytesIO
-import cv2
 
 application = Flask(__name__, static_url_path='/static', static_folder='static')
 application.secret_key = 'nettletontribe_secret_key'
@@ -1096,9 +1095,10 @@ def get_planning():
     raster_curve = rh.PolylineCurve(points_list)
     raster_curve = raster_curve.ToNurbsCurve()
 
-    img = cv2.imread('./tmp/' + file_name)
-    png_img = cv2.imencode('.png', img)
-    b64_string = base64.b64encode(png_img[1]).decode('utf-8')
+    with open('./tmp/' + file_name, 'rb') as img_file:
+        img_bytes = img_file.read()
+
+    b64_string = base64.b64encode(img_bytes).decode('utf-8')
 
     string_encoded = b64_string
     send_string = [{"ParamName": "BaseString", "InnerTree": {}}]
@@ -2577,9 +2577,11 @@ def get_qld_planning():
     raster_curve = rh.PolylineCurve(points_list)
     raster_curve = raster_curve.ToNurbsCurve()
 
-    img = cv2.imread('./tmp/' + file_name)
-    png_img = cv2.imencode('.png', img)
-    b64_string = base64.b64encode(png_img[1]).decode('utf-8')
+    with open('./tmp/' + file_name, 'rb') as img_file:
+        img_bytes = img_file.read()
+
+    # Encode bytes to base64 string
+    b64_string = base64.b64encode(img_bytes).decode('utf-8')
 
     string_encoded = b64_string
     send_string = [{"ParamName": "BaseString", "InnerTree": {}}]
@@ -3876,9 +3878,11 @@ def get_vic_planning():
     raster_curve = rh.PolylineCurve(points_list)
     raster_curve = raster_curve.ToNurbsCurve()
 
-    img = cv2.imread('./tmp/' + file_name)
-    png_img = cv2.imencode('.png', img)
-    b64_string = base64.b64encode(png_img[1]).decode('utf-8')
+    with open('./tmp/' + file_name, 'rb') as img_file:
+        img_bytes = img_file.read()
+
+    # Encode bytes to base64 string
+    b64_string = base64.b64encode(img_bytes).decode('utf-8')
 
     string_encoded = b64_string
     send_string = [{"ParamName": "BaseString", "InnerTree": {}}]
