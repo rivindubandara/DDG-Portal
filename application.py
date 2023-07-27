@@ -1062,7 +1062,7 @@ def get_planning():
     add_curves_to_model(driving_data, transformer2,
                         driving_layerIndex, planning_model)
     
-    ras_xmin_LL, ras_xmax_LL, ras_ymin_LL, ras_ymax_LL = create_boundary(lat, lon, 10000)
+    ras_xmin_LL, ras_xmax_LL, ras_ymin_LL, ras_ymax_LL = create_boundary(lat, lon, 1000)
 
     ras_tiles = list(mercantile.tiles(ras_xmin_LL, ras_ymin_LL, ras_xmax_LL, ras_ymax_LL, zooms=16))
 
@@ -2544,7 +2544,7 @@ def get_qld_planning():
                         qld.Objects.AddMesh(geo, att)
                         i += 1
 
-    ras_xmin_LL, ras_xmax_LL, ras_ymin_LL, ras_ymax_LL = create_boundary(lat, lon, 10000)
+    ras_xmin_LL, ras_xmax_LL, ras_ymin_LL, ras_ymax_LL = create_boundary(lat, lon, 1000)
 
     ras_tiles = list(mercantile.tiles(ras_xmin_LL, ras_ymin_LL, ras_xmax_LL, ras_ymax_LL, zooms=16))
 
@@ -3845,7 +3845,7 @@ def get_vic_planning():
     add_curves_to_model(cycling_data, transformer2, cycling_layerIndex, vic)
     add_curves_to_model(driving_data, transformer2, driving_layerIndex, vic)
 
-    ras_xmin_LL, ras_xmax_LL, ras_ymin_LL, ras_ymax_LL = create_boundary(lat, lon, 10000)
+    ras_xmin_LL, ras_xmax_LL, ras_ymin_LL, ras_ymax_LL = create_boundary(lat, lon, 1000)
 
     ras_tiles = list(mercantile.tiles(ras_xmin_LL, ras_ymin_LL, ras_xmax_LL, ras_ymax_LL, zooms=16))
 
