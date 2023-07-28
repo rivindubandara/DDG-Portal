@@ -136,6 +136,7 @@
           var blob = new Blob([response]);
           var link = document.createElement("a");
           link.href = window.URL.createObjectURL(blob);
+          link.download = 'zipfile.zip';
           link.click();
 
           $(".spinner").css("display", "none");

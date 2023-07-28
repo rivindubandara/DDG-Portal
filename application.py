@@ -11,6 +11,9 @@ import base64
 import concurrent.futures
 from PIL import Image
 from io import BytesIO
+import os
+import zipfile
+
 
 application = Flask(__name__, static_url_path='/static', static_folder='static')
 application.secret_key = 'nettletontribe_secret_key'
@@ -5152,7 +5155,7 @@ def submit_environmental():
 def tools():
     return render_template('tools.html')
 
-@application.route('/submitImages', methods=['POST'])
+@application.route('/submitImages', methods=['GET','POST'])
 def submitImages():
     file = request.files['uploadedImageFile']
     if file:
@@ -5367,8 +5370,9 @@ def submitImages():
             "values":  list + filename_send + foldername_send
         }
 
-        requests.post(compute_url + "grasshopper",
+        res = requests.post(compute_url + "grasshopper",
                             json=geo_payload, headers=headers)
+
         return None
 
     def s_compute(meshes, vals_list, fileName, ghx_file_path):
@@ -5437,8 +5441,22 @@ def submitImages():
             "values":  list + val_list_send + filename_send + foldername_send
         }
 
-        requests.post(compute_url + "grasshopper",
+        res = requests.post(compute_url + "grasshopper",
                             json=geo_payload, headers=headers)
+        response_object = json.loads(res.content)['values']
+        for val in response_object:
+            paramName = val['ParamName']
+            if paramName == 'RH_OUT:StringImage':
+                innerTree = val['InnerTree']
+                for key, innerVals in innerTree.items():
+                    for innerVal in innerVals:
+                        if 'data' in innerVal:
+                            data = innerVal['data']
+                            encoded_image = data
+                            decoded_image = base64.b64decode(encoded_image)
+                            image = Image.open(BytesIO(decoded_image))
+                            image.save(f'./tmp/files/images/{fileName}.png')
+            
         return None
 
     def s_l_compute(curves, fileName):
@@ -5498,8 +5516,22 @@ def submitImages():
             "values": list_send + filename_send + foldername_send
         }
 
-        requests.post(compute_url + "grasshopper",
+        res = requests.post(compute_url + "grasshopper",
                             json=geo_payload, headers=headers)
+        response_object = json.loads(res.content)['values']
+        for val in response_object:
+            paramName = val['ParamName']
+            if paramName == 'RH_OUT:StringImage':
+                innerTree = val['InnerTree']
+                for key, innerVals in innerTree.items():
+                    for innerVal in innerVals:
+                        if 'data' in innerVal:
+                            data = innerVal['data']
+                            encoded_image = data
+                            decoded_image = base64.b64decode(encoded_image)
+                            image = Image.open(BytesIO(decoded_image))
+                            image.save(f'./tmp/files/images/{fileName}.png')
+            
         return None
     
     s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx')
@@ -5518,7 +5550,16 @@ def submitImages():
     s_l_compute(heritage_curves, 'Heritage')
     #s_b_compute(buildings_curves, 'Buildings','./gh_scripts/buildingsColor.ghx')
 
-    return render_template('tools.html')
+    directory = './tmp/files/images'
+    files = os.listdir(directory)
+
+    with zipfile.ZipFile('zipfile.zip', 'w') as zip:
+        for file in files:
+            file_path = os.path.join(directory, file)
+            if os.path.isfile(file_path):
+                zip.write(file_path, os.path.basename(file_path))
+
+    return send_from_directory('.', 'zipfile.zip', as_attachment=True)
 
 if __name__ == '__main__':
     application.run(host='0.0.0.0', port=5000, debug=True)
