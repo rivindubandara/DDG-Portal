@@ -5315,6 +5315,22 @@ def submitImages():
 
     buildings_curves = [obj.Geometry for obj in buildings]
 
+    parks = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Parks":
+            parks.append(obj)
+
+    park_curves = [obj.Geometry for obj in parks]
+
+    natives = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Native Land":
+            natives.append(obj)
+
+    native_curves = [obj.Geometry for obj in natives]
+
     def s_b_compute(breps, fileName, ghx_file_path):
         list = [{"ParamName": "Geometry", "InnerTree": {}}]
         for i, mesh in enumerate(breps):
@@ -5375,7 +5391,7 @@ def submitImages():
 
         return None
 
-    def s_compute(meshes, vals_list, fileName, ghx_file_path):
+    def s_compute(meshes, vals_list, fileName, ghx_file_path, pngName):
         list = [{"ParamName": "Geometry", "InnerTree": {}}]
         for i, mesh in enumerate(meshes):
             serialized_mesh = json.dumps(mesh, cls=__Rhino3dmEncoder)
@@ -5455,11 +5471,11 @@ def submitImages():
                             encoded_image = data
                             decoded_image = base64.b64decode(encoded_image)
                             image = Image.open(BytesIO(decoded_image))
-                            image.save(f'./tmp/files/images/{fileName}.png')
+                            image.save(f'./tmp/files/images/{pngName}.png')
             
         return None
 
-    def s_l_compute(curves, fileName):
+    def s_l_compute(curves, fileName, ghx_file_path, pngName):
         serialized_curves = []
         for curve in curves:
             serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
@@ -5504,7 +5520,7 @@ def submitImages():
             ]
             foldername_send[0]["InnerTree"][key] = value
 
-        gh_graphics = open('./gh_scripts/lineColors.ghx', mode="r",
+        gh_graphics = open(ghx_file_path, mode="r",
                         encoding="utf-8-sig").read()
         gh_graphics_bytes = gh_graphics.encode("utf-8")
         gh_graphics_encoded = base64.b64encode(gh_graphics_bytes)
@@ -5530,24 +5546,38 @@ def submitImages():
                             encoded_image = data
                             decoded_image = base64.b64decode(encoded_image)
                             image = Image.open(BytesIO(decoded_image))
-                            image.save(f'./tmp/files/images/{fileName}.png')
+                            image.save(f'./tmp/files/images/{pngName}.png')
             
         return None
     
-    s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx')
-    s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx')
-    s_compute(zoning_curves, zoning_values, 'Zoning','./gh_scripts/zoningColors.ghx')
-    s_compute(hob_curves, hob_values, 'HoB','./gh_scripts/hobColors.ghx')
-    s_compute(mls_curves, mls_values, 'MLS','./gh_scripts/mlsColors.ghx')
-    s_compute(fsr_curves, fsr_values, 'FSR','./gh_scripts/fsrColors.ghx')
-    s_l_compute(boundary_curves, 'Boundary')
-    s_l_compute(driving_isochrone_curves, 'Driving Isochrone')
-    s_l_compute(walking_isochrone_curves, 'Walking Isochrone')
-    s_l_compute(cycling_isochrone_curves, 'Cycling Isochrone')
-    s_l_compute(lots_curves, 'Lots')
-    s_l_compute(plan_extent_curves, 'Plan Extent')
-    s_l_compute(roads_curves, 'Roads')
-    s_l_compute(heritage_curves, 'Heritage')
+    s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx', '10KM_Administrative Boundaries')
+    # 1km
+    s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx', '10KM_Administrative Boundaries')
+    # 1km
+    s_compute(zoning_curves, zoning_values, 'Zoning','./gh_scripts/zoningColors.ghx','1KM_Zoning')
+    # 1km
+    s_compute(hob_curves, hob_values, 'HoB','./gh_scripts/hobColors.ghx','1KM_HOB')
+    # 1km
+    s_compute(mls_curves, mls_values, 'MLS','./gh_scripts/mlsColors.ghx','1KM_MLS')
+    # 1km
+    s_compute(fsr_curves, fsr_values, 'FSR','./gh_scripts/fsrColors.ghx','1KM_FSR')
+    # 1km
+    s_l_compute(boundary_curves, 'Boundary', './gh_scripts/1km_lines.ghx','1KM_Boundary')
+    # 1km
+    s_l_compute(driving_isochrone_curves, 'Driving Isochrone', './gh_scripts/30km_iso.ghx','30KM_Driving Isochrone')
+    # 30km
+    s_l_compute(walking_isochrone_curves, 'Walking Isochrone', './gh_scripts/1km_iso.ghx','1KM_Walking Isochrone')
+    # 1km
+    s_l_compute(cycling_isochrone_curves, 'Cycling Isochrone', './gh_scripts/10km_iso.ghx', '10KM_Cycling Isochrone')
+    # 10km
+    s_l_compute(lots_curves, 'Lots', './gh_scripts/1km_lines.ghx','1KM_Lots')
+    # 1km
+    s_l_compute(plan_extent_curves, 'Plan Extent', './gh_scripts/1km_lines.ghx','1KM_Plan Extent')
+    # 1km
+    s_l_compute(roads_curves, 'Roads', './gh_scripts/1km_lines.ghx','1KM_Roads')
+    # 1km
+    s_l_compute(heritage_curves, 'Heritage', './gh_scripts/1km_lines.ghx','1KM_Heritage')
+    # 1km
     #s_b_compute(buildings_curves, 'Buildings','./gh_scripts/buildingsColor.ghx')
 
     directory = './tmp/files/images'
