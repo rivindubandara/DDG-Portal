@@ -5539,11 +5539,11 @@ def submitImages():
     # 1km
     s_l_compute(boundary_curves, 'Boundary', './gh_scripts/1km_lines.ghx','1KM_Boundary')
     # 1km
-    s_l_compute(driving_isochrone_curves, 'Driving Isochrone', './gh_scripts/30km_lines.ghx','30KM_Driving Isochrone')
+    #s_l_compute(driving_isochrone_curves, 'Driving Isochrone', './gh_scripts/30km_lines.ghx','30KM_Driving Isochrone')
     # 30km
-    s_l_compute(walking_isochrone_curves, 'Walking Isochrone', './gh_scripts/1km_lines.ghx','1KM_Walking Isochrone')
+    #s_l_compute(walking_isochrone_curves, 'Walking Isochrone', './gh_scripts/1km_lines.ghx','1KM_Walking Isochrone')
     # 1km
-    s_l_compute(cycling_isochrone_curves, 'Cycling Isochrone', './gh_scripts/10km_lines.ghx', '10KM_Cycling Isochrone')
+    #s_l_compute(cycling_isochrone_curves, 'Cycling Isochrone', './gh_scripts/10km_lines.ghx', '10KM_Cycling Isochrone')
     # 10km
     s_l_compute(lots_curves, 'Lots', './gh_scripts/1km_lines.ghx','1KM_Lots')
     # 1km
