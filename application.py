@@ -5164,7 +5164,6 @@ def submitImages():
     else:
         return jsonify({'error': True})
     
-    folderName = request.form['folderNameInput']
     rhFile = rh.File3dm.Read(file_path)
     layers = rhFile.Layers
 
@@ -5336,7 +5335,7 @@ def submitImages():
             filename_send[0]["InnerTree"][key] = value
 
         folder_name_list = []
-        folder_name_list.append(folderName)
+        folder_name_list.append('folder')
 
         foldername_send = [{"ParamName": "FolderName", "InnerTree": {}}]
         for i, val in enumerate(folder_name_list):
@@ -5407,7 +5406,7 @@ def submitImages():
             filename_send[0]["InnerTree"][key] = value
 
         folder_name_list = []
-        folder_name_list.append(folderName)
+        folder_name_list.append('folder')
 
         foldername_send = [{"ParamName": "FolderName", "InnerTree": {}}]
         for i, val in enumerate(folder_name_list):
@@ -5483,7 +5482,7 @@ def submitImages():
             filename_send[0]["InnerTree"][key] = value
 
         folder_name_list = []
-        folder_name_list.append(folderName)
+        folder_name_list.append('folder')
 
         foldername_send = [{"ParamName": "FolderName", "InnerTree": {}}]
         for i, val in enumerate(folder_name_list):
@@ -5567,5 +5566,5 @@ def submitImages():
 
     return send_from_directory('.', 'zipfile.zip', as_attachment=True)
 
-# if __name__ == '__main__':
-#     application.run(host='0.0.0.0', port=5000, debug=True)
+if __name__ == '__main__':
+    application.run(host='0.0.0.0', port=5000, debug=True)
