@@ -5567,9 +5567,9 @@ def submitImages():
     # 1km
     s_compute(fsr_curves, fsr_values, 'FSR','./gh_scripts/fsrColors.ghx','1KM_FSR')
     # 1km
-    #s_compute(native_curves, native_values, 'Native Land','./gh_scripts/nativeColors.ghx','10KM_Native')
+    s_compute(native_curves, native_values, 'Native Land','./gh_scripts/nativeColors.ghx','10KM_Native')
     # 20km
-    #s_compute(parks_curves, parks_values, 'Parks', './gh_scripts/parksColors.ghx','10KM_Parks')
+    s_compute(parks_curves, parks_values, 'Parks', './gh_scripts/parksColors.ghx','10KM_Parks')
     # 15km
     s_l_compute(boundary_curves, 'Boundary', './gh_scripts/1km_lines.ghx','1KM_Boundary')
     # 1km
