@@ -5307,30 +5307,6 @@ def submitImages():
 
     heritage_curves = [obj.Geometry for obj in heritage]
 
-    buildings = []
-    for obj in rhFile.Objects:
-        layer_index = obj.Attributes.LayerIndex
-        if layers[layer_index].Name == "Buildings":
-            buildings.append(obj)
-
-    buildings_curves = [obj.Geometry for obj in buildings]
-
-    parks = []
-    for obj in rhFile.Objects:
-        layer_index = obj.Attributes.LayerIndex
-        if layers[layer_index].Name == "Parks":
-            parks.append(obj)
-
-    park_curves = [obj.Geometry for obj in parks]
-
-    natives = []
-    for obj in rhFile.Objects:
-        layer_index = obj.Attributes.LayerIndex
-        if layers[layer_index].Name == "Native Land":
-            natives.append(obj)
-
-    native_curves = [obj.Geometry for obj in natives]
-
     def s_b_compute(breps, fileName, ghx_file_path):
         list = [{"ParamName": "Geometry", "InnerTree": {}}]
         for i, mesh in enumerate(breps):
@@ -5554,7 +5530,7 @@ def submitImages():
     # 1km
     s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx', '10KM_Administrative Boundaries')
     # 1km
-    #s_compute(zoning_curves, zoning_values, 'Zoning','./gh_scripts/zoningColors.ghx','1KM_Zoning')
+    s_compute(zoning_curves, zoning_values, 'Zoning','./gh_scripts/zoningColors.ghx','1KM_Zoning')
     # 1km
     s_compute(hob_curves, hob_values, 'HoB','./gh_scripts/hobColors.ghx','1KM_HOB')
     # 1km
@@ -5591,5 +5567,5 @@ def submitImages():
 
     return send_from_directory('.', 'zipfile.zip', as_attachment=True)
 
-if __name__ == '__main__':
-    application.run(host='0.0.0.0', port=5000, debug=True)
+# if __name__ == '__main__':
+#     application.run(host='0.0.0.0', port=5000, debug=True)
