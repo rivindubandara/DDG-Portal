@@ -5253,7 +5253,7 @@ def submitImages():
     driving_isochrone = []
     for obj in rhFile.Objects:
         layer_index = obj.Attributes.LayerIndex
-        if layers[layer_index].Name == "Driving Isochrones":
+        if layers[layer_index].Name == "Driving Isochrone":
             driving_isochrone.append(obj)
 
     driving_isochrone_curves = [obj.Geometry for obj in driving_isochrone]
@@ -5261,7 +5261,7 @@ def submitImages():
     walking_isochrone = []
     for obj in rhFile.Objects:
         layer_index = obj.Attributes.LayerIndex
-        if layers[layer_index].Name == "Walking Isochrones":
+        if layers[layer_index].Name == "Walking Isochrone":
             walking_isochrone.append(obj)
 
     walking_isochrone_curves = [obj.Geometry for obj in walking_isochrone]
@@ -5269,7 +5269,7 @@ def submitImages():
     cycling_isochrone = []
     for obj in rhFile.Objects:
         layer_index = obj.Attributes.LayerIndex
-        if layers[layer_index].Name == "Cycling Isochrones":
+        if layers[layer_index].Name == "Cycling Isochrone":
             cycling_isochrone.append(obj)
 
     cycling_isochrone_curves = [obj.Geometry for obj in cycling_isochrone]
