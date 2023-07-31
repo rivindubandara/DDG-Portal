@@ -5242,6 +5242,21 @@ def submitImages():
             vals = user_string[1]
             fsr_values.append(vals)
 
+    native = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Native Land":
+            native.append(obj)
+
+    native_curves = [obj.Geometry for obj in native]
+
+    native_values = []
+    for obj in native:
+        user_strings = obj.Attributes.GetUserStrings()
+        for user_string in user_strings:
+            vals = user_string[1]
+            native_values.append(vals)
+
     boundary = []
     for obj in rhFile.Objects:
         layer_index = obj.Attributes.LayerIndex
@@ -5305,6 +5320,21 @@ def submitImages():
             heritage.append(obj)
 
     heritage_curves = [obj.Geometry for obj in heritage]
+
+    parks = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Parks":
+            parks.append(obj)
+
+    parks_curves = [obj.Geometry for obj in parks]
+
+    parks_values = []
+    for obj in parks:
+        user_strings = obj.Attributes.GetUserStrings()
+        for user_string in user_strings:
+            vals = user_string[1]
+            parks_values.append(vals)
 
     def s_b_compute(breps, fileName, ghx_file_path):
         list = [{"ParamName": "Geometry", "InnerTree": {}}]
@@ -5537,13 +5567,17 @@ def submitImages():
     # 1km
     s_compute(fsr_curves, fsr_values, 'FSR','./gh_scripts/fsrColors.ghx','1KM_FSR')
     # 1km
+    s_compute(native_curves, native_values, 'Native Land','./gh_scripts/nativeColors.ghx','10KM_Native')
+    # 20km
+    s_compute(parks_curves, parks_values, 'Parks', './gh_scripts/parksColors.ghx','10KM_Parks')
+    # 15km
     s_l_compute(boundary_curves, 'Boundary', './gh_scripts/1km_lines.ghx','1KM_Boundary')
     # 1km
-    #s_l_compute(driving_isochrone_curves, 'Driving Isochrone', './gh_scripts/30km_lines.ghx','30KM_Driving Isochrone')
+    s_l_compute(driving_isochrone_curves, 'Driving Isochrone', './gh_scripts/10km_lines.ghx','10KM_Driving Isochrone')
     # 30km
-    #s_l_compute(walking_isochrone_curves, 'Walking Isochrone', './gh_scripts/1km_lines.ghx','1KM_Walking Isochrone')
+    s_l_compute(walking_isochrone_curves, 'Walking Isochrone', './gh_scripts/1km_lines.ghx','1KM_Walking Isochrone')
     # 1km
-    #s_l_compute(cycling_isochrone_curves, 'Cycling Isochrone', './gh_scripts/10km_lines.ghx', '10KM_Cycling Isochrone')
+    s_l_compute(cycling_isochrone_curves, 'Cycling Isochrone', './gh_scripts/10km_lines.ghx', '10KM_Cycling Isochrone')
     # 10km
     s_l_compute(lots_curves, 'Lots', './gh_scripts/1km_lines.ghx','1KM_Lots')
     # 1km
