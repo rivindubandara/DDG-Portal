@@ -5554,7 +5554,7 @@ def submitImages():
     # 1km
     s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx', '10KM_Administrative Boundaries')
     # 1km
-    s_compute(zoning_curves, zoning_values, 'Zoning','./gh_scripts/zoningColors.ghx','1KM_Zoning')
+    #s_compute(zoning_curves, zoning_values, 'Zoning','./gh_scripts/zoningColors.ghx','1KM_Zoning')
     # 1km
     s_compute(hob_curves, hob_values, 'HoB','./gh_scripts/hobColors.ghx','1KM_HOB')
     # 1km
