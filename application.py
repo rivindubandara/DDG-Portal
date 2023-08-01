@@ -87,7 +87,7 @@ def create_parameters_vic(geometry, geometry_type, xmin_LL, ymin_LL, xmax_LL, ym
         'f': 'json',
         'outFields': '*',
         'inSR': '4326',
-        'outSR': '32755'
+        'outSR': '32756'
     }
     if geometry_type == 'esriGeometryEnvelope':
         params['geometry'] = f'{xmin_LL}, {ymin_LL}, {xmax_LL}, {ymax_LL}'
@@ -3306,7 +3306,7 @@ def get_vic_planning():
         'f': 'json',
         'outFields': '*',
         'inSR': '4326',
-        'outSR': '32755',
+        'outSR': '32756',
     }
 
     native_post = {
