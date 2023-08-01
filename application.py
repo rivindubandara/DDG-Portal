@@ -1243,6 +1243,7 @@ def get_geometry():
         geometry_model, "Contours", (191, 191, 191, 255))
     geometry_layerIndex = create_layer(
         geometry_model, "Geometry", (191, 191, 191, 255))
+    buildingfootprint_LayerIndex = create_layer(geometry_model, "Building Footprint",(191, 191, 191, 255) )
 
     params_dict = {
         boundary_url: boundary_params,
@@ -1312,6 +1313,9 @@ def get_geometry():
                         orientation = curve.ClosedCurveOrientation()
                         if str(orientation) == 'CurveOrientation.Clockwise':
                             curve.Reverse()
+                        att_bf = rh.ObjectAttributes()
+                        att_bf.LayerIndex = buildingfootprint_LayerIndex
+                        geometry_model.Objects.AddCurve(curve, att_bf)
                         extrusion = rh.Extrusion.Create(
                             curve, height, True)
                         att = rh.ObjectAttributes()
@@ -1345,6 +1349,9 @@ def get_geometry():
                             orientation = curve.ClosedCurveOrientation()
                             if str(orientation) == 'CurveOrientation.Clockwise':
                                 curve.Reverse()
+                            att_bf = rh.ObjectAttributes()
+                            att_bf.LayerIndex = buildingfootprint_LayerIndex
+                            geometry_model.Objects.AddCurve(curve, att_bf)
                             extrusion = rh.Extrusion.Create(
                                 curve, height, True)
                             att = rh.ObjectAttributes()
@@ -2712,6 +2719,7 @@ def get_qld_geometry():
     building_layerIndex = create_layer(qld_g, "Buildings", (99, 99, 99, 255))
     contours_layerIndex = create_layer(qld_g, "Contours", (191, 191, 191, 255))
     geometry_layerIndex = create_layer(qld_g, "Geometry", (191, 191, 191, 255))
+    buildingfootprint_LayerIndex = create_layer(qld_g, "Building Footprint", (191, 191, 191, 255))
 
     xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
@@ -2794,6 +2802,9 @@ def get_qld_geometry():
                         orientation = curve.ClosedCurveOrientation()
                         if str(orientation) == 'CurveOrientation.Clockwise':
                             curve.Reverse()
+                        att_bf = rh.ObjectAttributes()
+                        att_bf.LayerIndex = buildingfootprint_LayerIndex
+                        qld_g.Objects.AddCurve(curve, att_bf)
                         extrusion = rh.Extrusion.Create(
                             curve, height, True)
                         att = rh.ObjectAttributes()
@@ -2827,6 +2838,9 @@ def get_qld_geometry():
                             orientation = curve.ClosedCurveOrientation()
                             if str(orientation) == 'CurveOrientation.Clockwise':
                                 curve.Reverse()
+                            att_bf = rh.ObjectAttributes()
+                            att_bf.LayerIndex = buildingfootprint_LayerIndex
+                            qld_g.Objects.AddCurve(curve, att_bf)
                             extrusion = rh.Extrusion.Create(
                                 curve, height, True)
                             att = rh.ObjectAttributes()
@@ -4011,6 +4025,7 @@ def get_vic_geometry():
     building_layerIndex = create_layer(vic_g, "Buildings", (99, 99, 99, 255))
     contours_layerIndex = create_layer(vic_g, "Contours", (191, 191, 191, 255))
     geometry_layerIndex = create_layer(vic_g, "Geometry", (191, 191, 191, 255))
+    buildingfootprint_LayerIndex = create_layer(vic_g, "Building Footprint", (191, 191, 191, 255))
 
     xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 30000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
@@ -4077,6 +4092,9 @@ def get_vic_geometry():
                 orientation = curve.ClosedCurveOrientation()
                 if str(orientation) == 'CurveOrientation.Clockwise':
                     curve.Reverse()
+                att_bf = rh.ObjectAttributes()
+                att_bf.LayerIndex = buildingfootprint_LayerIndex
+                vic_g.Objects.AddCurve(curve, att_bf)
                 extrusion = rh.Extrusion.Create(
                     curve, height, True)
                 att = rh.ObjectAttributes()
@@ -4125,6 +4143,9 @@ def get_vic_geometry():
                         orientation = curve.ClosedCurveOrientation()
                         if str(orientation) == 'CurveOrientation.Clockwise':
                             curve.Reverse()
+                        att_bf = rh.ObjectAttributes()
+                        att_bf.LayerIndex = buildingfootprint_LayerIndex
+                        vic_g.Objects.AddCurve(curve, att_bf)
                         extrusion = rh.Extrusion.Create(
                             curve, height, True)
                         att = rh.ObjectAttributes()
@@ -5359,6 +5380,14 @@ def submitImages():
             vals = user_string[1]
             parks_values.append(vals)
 
+    buildings = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Building Footprint":
+            buildings.append(obj)
+
+    building_curves = [obj.Geometry for obj in buildings]
+
     def s_b_compute(breps, fileName, ghx_file_path):
         list = [{"ParamName": "Geometry", "InnerTree": {}}]
         for i, mesh in enumerate(breps):
@@ -5610,7 +5639,8 @@ def submitImages():
     # 1km
     s_l_compute(heritage_curves, 'Heritage', './gh_scripts/1km_lines.ghx','1KM_Heritage')
     # 1km
-    #s_b_compute(buildings_curves, 'Buildings','./gh_scripts/buildingsColor.ghx')
+    s_b_compute(building_curves, 'Buildings','./gh_scripts/buildingsColor.ghx')
+    # 1km
 
     directory = './tmp/files/images'
     files = os.listdir(directory)
