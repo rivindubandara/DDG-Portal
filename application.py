@@ -77,6 +77,23 @@ def create_parameters(geometry, geometry_type, xmin_LL, ymin_LL, xmax_LL, ymax_L
         params['geometry'] = f'{xmin_LL}, {ymin_LL}, {xmax_LL}, {ymax_LL}'
     return params
 
+def create_parameters_vic(geometry, geometry_type, xmin_LL, ymin_LL, xmax_LL, ymax_LL):
+    params = {
+        'where': '1=1',
+        'geometry': f'{geometry}',
+        'geometryType': f'{geometry_type}',
+        'spatialRel': 'esriSpatialRelIntersects',
+        'returnGeometry': 'true',
+        'f': 'json',
+        'outFields': '*',
+        'inSR': '4326',
+        'outSR': '32755'
+    }
+    if geometry_type == 'esriGeometryEnvelope':
+        params['geometry'] = f'{xmin_LL}, {ymin_LL}, {xmax_LL}, {ymax_LL}'
+    return params
+
+
 
 def get_data(url, params):
     counter = 0
@@ -3325,9 +3342,9 @@ def get_vic_planning():
     n_xmin_LL, n_xmax_LL, n_ymin_LL, n_ymax_LL = create_boundary(
         lat, lon, 800000)
 
-    boundary_params = create_parameters(
+    boundary_params = create_parameters_vic(
         f'{lon},{lat}', 'esriGeometryPoint', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
-    params = create_parameters(
+    params = create_parameters_vic(
         '', 'esriGeometryEnvelope', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
 
     boundary_data = get_data(
@@ -3996,11 +4013,11 @@ def get_vic_geometry():
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 200000)
 
-    boundary_params = create_parameters(
+    boundary_params = create_parameters_vic(
         f'{lon},{lat}', 'esriGeometryPoint', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
-    params = create_parameters(
+    params = create_parameters_vic(
         '', 'esriGeometryEnvelope', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
-    t_params = create_parameters(
+    t_params = create_parameters_vic(
         '', 'esriGeometryEnvelope', t_xmin_LL, t_ymin_LL, t_xmax_LL, t_ymax_LL)
 
     boundary_data = get_data(boundary_url, boundary_params)
@@ -4194,11 +4211,11 @@ def get_vic_elevated():
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 200000)
 
-    boundary_params = create_parameters(
+    boundary_params = create_parameters_vic(
         f'{lon},{lat}', 'esriGeometryPoint', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
-    params = create_parameters(
+    params = create_parameters_vic(
         '', 'esriGeometryEnvelope', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
-    t_params = create_parameters(
+    t_params = create_parameters_vic(
         '', 'esriGeometryEnvelope', t_xmin_LL, t_ymin_LL, t_xmax_LL, t_ymax_LL)
 
     vic_e = rh.File3dm()
