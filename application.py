@@ -5388,7 +5388,7 @@ def submitImages():
 
     building_curves = [obj.Geometry for obj in buildings]
 
-    def s_b_compute(breps, fileName, ghx_file_path):
+    def s_b_compute(breps, fileName, ghx_file_path, pngName):
         list = [{"ParamName": "Geometry", "InnerTree": {}}]
         for i, mesh in enumerate(breps):
             serialized_mesh = json.dumps(mesh, cls=__Rhino3dmEncoder)
@@ -5445,6 +5445,19 @@ def submitImages():
 
         res = requests.post(compute_url + "grasshopper",
                             json=geo_payload, headers=headers)
+        response_object = json.loads(res.content)['values']
+        for val in response_object:
+            paramName = val['ParamName']
+            if paramName == 'RH_OUT:StringImage':
+                innerTree = val['InnerTree']
+                for key, innerVals in innerTree.items():
+                    for innerVal in innerVals:
+                        if 'data' in innerVal:
+                            data = innerVal['data']
+                            encoded_image = data
+                            decoded_image = base64.b64decode(encoded_image)
+                            image = Image.open(BytesIO(decoded_image))
+                            image.save(f'./tmp/files/images/{pngName}.png')
 
         return None
 
@@ -5639,7 +5652,7 @@ def submitImages():
     # 1km
     s_l_compute(heritage_curves, 'Heritage', './gh_scripts/1km_lines.ghx','1KM_Heritage')
     # 1km
-    s_b_compute(building_curves, 'Buildings','./gh_scripts/buildingsColor.ghx')
+    s_b_compute(building_curves, 'Buildings','./gh_scripts/buildingsColor.ghx', '1KM_Buildings')
     # 1km
 
     directory = './tmp/files/images'
