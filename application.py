@@ -87,7 +87,7 @@ def create_parameters_vic(geometry, geometry_type, xmin_LL, ymin_LL, xmax_LL, ym
         'f': 'json',
         'outFields': '*',
         'inSR': '4326',
-        'outSR': '32756'
+        'outSR': '32755'
     }
     if geometry_type == 'esriGeometryEnvelope':
         params['geometry'] = f'{xmin_LL}, {ymin_LL}, {xmax_LL}, {ymax_LL}'
@@ -285,6 +285,9 @@ def add_mesh_to_model(data, layerIndex, p_key, paramName, gh_algo, gh_param, mod
 
 transformer2 = Transformer.from_crs("EPSG:4326", "EPSG:32756", always_xy=True)
 transformer = Transformer.from_crs("EPSG:3857", "EPSG:32756")
+
+transformer2_vic = Transformer.from_crs("EPSG:4326", "EPSG:32755", always_xy=True)
+transformer_vic = Transformer.from_crs("EPSG:3857", "EPSG:32755")
 
 application.config['UPLOAD_FOLDER'] = '/upload'
 
@@ -3306,7 +3309,7 @@ def get_vic_planning():
         'f': 'json',
         'outFields': '*',
         'inSR': '4326',
-        'outSR': '32756',
+        'outSR': '32755',
     }
 
     native_post = {
@@ -3368,7 +3371,7 @@ def get_vic_planning():
         for ring in geometry['coordinates']:
             points = []
             for coord in ring:
-                native_x, native_y = transformer2.transform(
+                native_x, native_y = transformer2_vic.transform(
                     coord[0], coord[1])
                 point = rh.Point3d(native_x, native_y, 0)
                 points.append(point)
@@ -3691,7 +3694,7 @@ def get_vic_planning():
                     lat_delta = lat2 - lat1
                     lon_mapped = lon1 + (x_prop * lon_delta)
                     lat_mapped = lat1 + (y_prop * lat_delta)
-                    lon_mapped, lat_mapped = transformer2.transform(
+                    lon_mapped, lat_mapped = transformer2_vic.transform(
                         lon_mapped, lat_mapped)
                     point = rh.Point3d(lon_mapped, lat_mapped, 0)
                     points.append(point)
@@ -3712,7 +3715,7 @@ def get_vic_planning():
                         lat_delta = lat2 - lat1
                         lon_mapped = lon1 + (x_prop * lon_delta)
                         lat_mapped = lat1 + (y_prop * lat_delta)
-                        lon_mapped, lat_mapped = transformer2.transform(
+                        lon_mapped, lat_mapped = transformer2_vic.transform(
                             lon_mapped, lat_mapped)
                         point = rh.Point3d(
                             lon_mapped, lat_mapped, 0)
@@ -3861,11 +3864,11 @@ def get_vic_planning():
                         geo = rh.CommonObject.Decode(data)
                         att = rh.ObjectAttributes()
                         att.LayerIndex = layerIndex
-                        model.Objects.AddCurve(geo, att)
+                        vic.Objects.AddCurve(geo, att)
 
-    add_curves_to_model(walking_data, transformer2, walking_layerIndex, vic)
-    add_curves_to_model(cycling_data, transformer2, cycling_layerIndex, vic)
-    add_curves_to_model(driving_data, transformer2, driving_layerIndex, vic)
+    add_curves_to_model(walking_data, transformer2_vic, walking_layerIndex, vic)
+    add_curves_to_model(cycling_data, transformer2_vic, cycling_layerIndex, vic)
+    add_curves_to_model(driving_data, transformer2_vic, driving_layerIndex, vic)
 
     ras_xmin_LL, ras_xmax_LL, ras_ymin_LL, ras_ymax_LL = create_boundary(lat, lon, 1000)
 
@@ -3885,8 +3888,8 @@ def get_vic_planning():
 
     bbox = mercantile.bounds(rastile)
     lon1, lat1, lon2, lat2 = bbox
-    t_lon1, t_lat1 = transformer2.transform(lon1, lat1)
-    t_lon2, t_lat2 = transformer2.transform(lon2, lat2)
+    t_lon1, t_lat1 = transformer2_vic.transform(lon1, lat1)
+    t_lon2, t_lat2 = transformer2_vic.transform(lon2, lat2)
 
     raster_points = [
         rh.Point3d(t_lon1, t_lat1, 0),
@@ -3960,7 +3963,7 @@ def get_vic_planning():
                     att.LayerIndex = raster_layerIndex
                     vic.Objects.AddMesh(geo, att)
 
-    cen_x, cen_y = transformer2.transform(lon, lat)
+    cen_x, cen_y = transformer2_vic.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
     translation_vector = rh.Vector3d(-centroid.X, -centroid.Y, -centroid.Z)
 
@@ -4064,7 +4067,7 @@ def get_vic_geometry():
                         lat_delta = lat2 - lat1
                         lon_mapped = lon1 + (x_prop * lon_delta)
                         lat_mapped = lat1 + (y_prop * lat_delta)
-                        lon_mapped, lat_mapped = transformer2.transform(
+                        lon_mapped, lat_mapped = transformer2_vic.transform(
                             lon_mapped, lat_mapped)
                         point = rh.Point3d(
                             lon_mapped, lat_mapped, 0)
@@ -4096,7 +4099,7 @@ def get_vic_geometry():
                                     (x_prop * lon_delta)
                                 lat_mapped = lat1 + \
                                     (y_prop * lat_delta)
-                                lon_mapped, lat_mapped = transformer2.transform(
+                                lon_mapped, lat_mapped = transformer2_vic.transform(
                                     lon_mapped, lat_mapped)
                                 point = rh.Point3d(
                                     lon_mapped, lat_mapped, 0)
@@ -4112,7 +4115,7 @@ def get_vic_geometry():
                                     (x_prop * lon_delta)
                                 lat_mapped = lat1 + \
                                     (y_prop * lat_delta)
-                                lon_mapped, lat_mapped = transformer2.transform(
+                                lon_mapped, lat_mapped = transformer2_vic.transform(
                                     lon_mapped, lat_mapped)
                                 point = rh.Point3d(
                                     lon_mapped, lat_mapped, 0)
@@ -4164,7 +4167,7 @@ def get_vic_geometry():
     else:
         time.sleep(0)
 
-    cen_x, cen_y = transformer2.transform(lon, lat)
+    cen_x, cen_y = transformer2_vic.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
     translation_vector = rh.Vector3d(-centroid.X, -
                                      centroid.Y, -centroid.Z)
@@ -4285,7 +4288,7 @@ def get_vic_elevated():
                             lat_delta = lat2 - lat1
                             lon_mapped = lon1 + (x_prop * lon_delta)
                             lat_mapped = lat1 + (y_prop * lat_delta)
-                            lon_mapped, lat_mapped = transformer2.transform(
+                            lon_mapped, lat_mapped = transformer2_vic.transform(
                                 lon_mapped, lat_mapped)
                             point = rh.Point3d(
                                 lon_mapped, lat_mapped, 0)
@@ -4313,7 +4316,7 @@ def get_vic_elevated():
                                     (x_prop * lon_delta)
                                 lat_mapped = lat1 + \
                                     (y_prop * lat_delta)
-                                lon_mapped, lat_mapped = transformer2.transform(
+                                lon_mapped, lat_mapped = transformer2_vic.transform(
                                     lon_mapped, lat_mapped)
                                 point = rh.Point3d(
                                     lon_mapped, lat_mapped, 0)
@@ -4400,7 +4403,7 @@ def get_vic_elevated():
         elevations_list_terrain[0]["InnerTree"][key] = value
 
     centre_list = []
-    cen_x, cen_y = transformer2.transform(lon, lat)
+    cen_x, cen_y = transformer2_vic.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
     centre_list.append(centroid)
 
@@ -4525,7 +4528,7 @@ def get_vic_elevated():
                         att.LayerIndex = boundary_layerIndex
                         vic_e.Objects.AddCurve(geo, att)
 
-    cen_x, cen_y = transformer2.transform(lon, lat)
+    cen_x, cen_y = transformer2_vic.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
     translation_vector = rh.Vector3d(-centroid.X, -
                                      centroid.Y, -centroid.Z)
