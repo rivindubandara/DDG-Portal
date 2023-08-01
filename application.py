@@ -4224,14 +4224,6 @@ def get_vic_elevated():
     vic_e = rh.File3dm()
     vic_e.Settings.ModelUnitSystem = rh.UnitSystem.Meters
 
-    boundary_data = get_data(boundary_url, boundary_params)
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, vic_e, boundary_layerIndex)
-
-    tiles = list(mercantile.tiles(
-        xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
-    zoom = 16
-
     boundary_layerIndex = create_layer(vic_e, "Boundary", (237, 0, 194, 255))
     building_layer_EIndex = create_layer(
         vic_e, "Buildings Elevated", (99, 99, 99, 255))
@@ -4240,6 +4232,15 @@ def get_vic_elevated():
     contours_layer_EIndex = create_layer(
         vic_e, "Contours Elevated", (191, 191, 191, 255))
 
+
+    boundary_data = get_data(boundary_url, boundary_params)
+    bound_curve = add_bound_curve_to_model(
+        boundary_data, vic_e, boundary_layerIndex)
+
+    tiles = list(mercantile.tiles(
+        xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
+    zoom = 16       
+    
     gh_topography_decoded = encode_ghx_file(r"./gh_scripts/topography.ghx")
     gh_buildings_elevated_decoded = encode_ghx_file(
         r"./gh_scripts/elevate_buildings.ghx")
