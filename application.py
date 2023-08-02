@@ -1861,6 +1861,9 @@ def get_elevated():
         tilesX_list.append(tile.x)
         tilesY_list.append(tile.y)
 
+    tilesX_list = list(set(tilesX_list))
+    tilesY_list = list(set(tilesY_list))
+
     tileX_send = [{"ParamName": "TileX", "InnerTree": {}}]
     for i, val in enumerate(tilesX_list):
         key = f"{{{i};0}}"
