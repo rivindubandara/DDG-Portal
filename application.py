@@ -1849,9 +1849,8 @@ def get_elevated():
                         att.LayerIndex = boundary_layerEIndex
                         elevated_model.Objects.AddCurve(geo, att)
 
-    mbc_xmin_LL, mbc_xmax_LL, mbc_ymin_LL, mbc_ymax_LL = create_boundary(lat, lon, 15000)
-    mbc_tiles = list(mercantile.tiles(
-        mbc_xmin_LL, mbc_ymin_LL, mbc_xmax_LL, mbc_ymax_LL, zooms=14))
+    mbc_xmin_LL, mbc_xmax_LL, mbc_ymin_LL, mbc_ymax_LL = create_boundary(lat, lon, 20000)
+    mbc_tiles = list(mercantile.tiles(mbc_xmin_LL, mbc_ymin_LL, mbc_xmax_LL, mbc_ymax_LL, zooms=14))
 
     tilesX_list = []
     tilesY_list = []
@@ -1895,7 +1894,7 @@ def get_elevated():
     counter = 0
     while True:
         if res.status_code == 200:
-                break
+            break
         else:
             counter += 1
             if counter >= 3:
@@ -1903,15 +1902,16 @@ def get_elevated():
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
-        innerTree = val['InnerTree']
-        for key, innerVals in innerTree.items():
-            for innerVal in innerVals:
-                if 'data' in innerVal:
-                    data = json.loads(innerVal['data'])
-                    geo = rh.CommonObject.Decode(data)
-                    att = rh.ObjectAttributes()
-                    att.LayerIndex = mapboxContours_LayerIndex
-                    elevated_model.Objects.AddCurve(geo, att)
+        if paramName == 'RH_OUT:Contours':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = mapboxContours_LayerIndex
+                        elevated_model.Objects.AddCurve(geo, att)
 
     cen_x, cen_y = transformer2.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
