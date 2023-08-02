@@ -1849,72 +1849,69 @@ def get_elevated():
                         att.LayerIndex = boundary_layerEIndex
                         elevated_model.Objects.AddCurve(geo, att)
 
-    # mbc_xmin_LL, mbc_xmax_LL, mbc_ymin_LL, mbc_ymax_LL = create_boundary(lat, lon, 30000)
+    mbc_xmin_LL, mbc_xmax_LL, mbc_ymin_LL, mbc_ymax_LL = create_boundary(lat, lon, 15000)
+    mbc_tiles = list(mercantile.tiles(
+        mbc_xmin_LL, mbc_ymin_LL, mbc_xmax_LL, mbc_ymax_LL, zooms=14))
 
-    # mbc_tiles = list(mercantile.tiles(
-    #     mbc_xmin_LL, mbc_ymin_LL, mbc_xmax_LL, mbc_ymax_LL, zooms=16))
-    
-    # tilesX_list = []
-    # tilesY_list = []
+    tilesX_list = []
+    tilesY_list = []
+    for tile in mbc_tiles:
+        tilesX_list.append(tile.x)
+        tilesY_list.append(tile.y)
 
-    # for tile in mbc_tiles:
-    #     tilesX_list.append(tile.x)
-    #     tilesY_list.append(tile.y)
+    tilesX_list = list(set(tilesX_list))
+    tilesY_list = list(set(tilesY_list))
 
-    # tilesX_list = list(set(tilesX_list))
-    # tilesY_list = list(set(tilesY_list))
+    tileX_send = [{"ParamName": "TileX", "InnerTree": {}}]
+    for i, val in enumerate(tilesX_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Int32",
+                "data": val
+            }
+        ]
+        tileX_send[0]["InnerTree"][key] = value
 
-    # tileX_send = [{"ParamName": "TileX", "InnerTree": {}}]
-    # for i, val in enumerate(tilesX_list):
-    #     key = f"{{{i};0}}"
-    #     value = [
-    #         {
-    #             "type": "System.Int32",
-    #             "data": val
-    #         }
-    #     ]
-    #     tileX_send[0]["InnerTree"][key] = value
+    tileY_send = [{"ParamName": "TileY", "InnerTree": {}}]
+    for i, val in enumerate(tilesY_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Int32",
+                "data": val
+            }
+        ]
+        tileY_send[0]["InnerTree"][key] = value
 
-    # tileY_send = [{"ParamName": "TileY", "InnerTree": {}}]
-    # for i, val in enumerate(tilesY_list):
-    #     key = f"{{{i};0}}"
-    #     value = [
-    #         {
-    #             "type": "System.Int32",
-    #             "data": val
-    #         }
-    #     ]
-    #     tileY_send[0]["InnerTree"][key] = value
+    geo_payload = {
+        "algo": gh_mapboxContours_decoded,
+        "pointer": None,
+        "values":  tileX_send + tileY_send
+    }
 
-    # geo_payload = {
-    #     "algo": gh_mapboxContours_decoded,
-    #     "pointer": None,
-    #     "values":  tileX_send + tileY_send
-    # }
-
-    # res = requests.post(compute_url + "grasshopper",
-    #                     json=geo_payload, headers=headers)
-    # counter = 0
-    # while True:
-    #     if res.status_code == 200:
-    #             break
-    #     else:
-    #         counter += 1
-    #         if counter >= 3:
-    #             return jsonify({'error': True})
-    #         time.sleep(0)
-    # response_object = json.loads(res.content)['values']
-    # for val in response_object:
-    #     paramName = val['ParamName']
-    #     innerTree = val['InnerTree']
-    #     for key, innerVals in innerTree.items():
-    #         for innerVal in innerVals:
-    #             if 'data' in innerVal:
-    #                 data = json.loads(innerVal['data'])
-    #                 geo = rh.CommonObject.Decode(data)
-    #                 att = rh.ObjectAttributes()
-    #                 att.LayerIndex = mapboxContours_LayerIndex
-    #                 elevated_model.Objects.AddCurve(geo, att)
+    res = requests.post(compute_url + "grasshopper",
+                        json=geo_payload, headers=headers)
+    counter = 0
+    while True:
+        if res.status_code == 200:
+                break
+        else:
+            counter += 1
+            if counter >= 3:
+                None
+    response_object = json.loads(res.content)['values']
+    for val in response_object:
+        paramName = val['ParamName']
+        innerTree = val['InnerTree']
+        for key, innerVals in innerTree.items():
+            for innerVal in innerVals:
+                if 'data' in innerVal:
+                    data = json.loads(innerVal['data'])
+                    geo = rh.CommonObject.Decode(data)
+                    att = rh.ObjectAttributes()
+                    att.LayerIndex = mapboxContours_LayerIndex
+                    elevated_model.Objects.AddCurve(geo, att)
 
     cen_x, cen_y = transformer2.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
