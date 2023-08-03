@@ -1849,7 +1849,7 @@ def get_elevated():
                         att.LayerIndex = boundary_layerEIndex
                         elevated_model.Objects.AddCurve(geo, att)
 
-    mbc_xmin_LL, mbc_xmax_LL, mbc_ymin_LL, mbc_ymax_LL = create_boundary(lat, lon, 20000)
+    mbc_xmin_LL, mbc_xmax_LL, mbc_ymin_LL, mbc_ymax_LL = create_boundary(lat, lon, 15000)
     mbc_tiles = list(mercantile.tiles(mbc_xmin_LL, mbc_ymin_LL, mbc_xmax_LL, mbc_ymax_LL, zooms=14))
 
     tilesX_list = []
