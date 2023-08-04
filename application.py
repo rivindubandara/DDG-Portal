@@ -866,6 +866,10 @@ def get_planning():
     for tile in tiles:
         mb_data = concurrent_fetching(zoom, tile)
         tiles1 = mapbox_vector_tile.decode(mb_data)
+        
+        if 'road' not in tiles1:
+            continue
+
         road_layer = tiles1['road']
 
         tile1 = mercantile.Tile(tile.x, tile.y, 16)
