@@ -13,6 +13,8 @@ from PIL import Image
 from io import BytesIO
 import os
 import zipfile
+from specklepy.api.client import SpeckleClient
+from specklepy.api.client import get_account_from_token
 
 Image.MAX_IMAGE_PIXELS = None
 
@@ -5275,6 +5277,185 @@ def submit_environmental():
 
 @application.route('/tools', methods=['GET', 'POST'])
 def tools():
+    stream_url = session.get('stream_url')
+    return render_template('tools.html', stream_url=stream_url)
+
+@application.route('/submitTopo', methods=['GET','POST'])
+def submitTopo():
+
+    streamName = request.form.get('inputStream')
+    client = SpeckleClient(host="https://speckle.xyz/")
+    account = get_account_from_token(token='091eabd976672b05e476e09b315f8bc1a254de4ca0', server_url="https://speckle.xyz/")
+
+    client.authenticate_with_account(account)
+
+    new_stream_id = client.stream.create(name=f'{streamName}')
+
+    file = request.files['uploadedTopoFile']
+    if file:
+        file_path = 'tmp/files/' + file.filename
+        file.save(file_path)
+    else:
+        return jsonify({'error': True})
+
+    rhFile = rh.File3dm.Read(file_path)
+    layers = rhFile.Layers
+
+    topo = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Topography":
+            topo.append(obj)
+
+    topo_meshes = [obj.Geometry for obj in topo]
+
+    topo_to_send = [{"ParamName": "Mesh", "InnerTree": {}}]
+
+    for i, mesh in enumerate(topo_meshes):
+        serialized_mesh = json.dumps(mesh, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Mesh",
+                "data": serialized_mesh
+            }
+        ]
+        topo_to_send[0]["InnerTree"][key] = value
+
+    buildings = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Buildings":
+            buildings.append(obj)
+
+    buildings_list = [obj.Geometry for obj in buildings]
+
+    buildings_to_send = [{"ParamName": "Buildings", "InnerTree": {}}]
+
+    for i, brep in enumerate(buildings_list):
+        serialized_brep = json.dumps(brep, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Brep",
+                "data": serialized_brep
+            }
+        ]
+        buildings_to_send[0]["InnerTree"][key] = value
+
+    elevated_buildings = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Elevated Buildings":
+            elevated_buildings.append(obj)
+
+    elevated_buildings_list = [obj.Geometry for obj in elevated_buildings]
+
+    elevated_buildings_to_send = [{"ParamName": "ElevatedBuildings", "InnerTree": {}}]
+
+    for i, brep in enumerate(elevated_buildings_list):
+        serialized_brep = json.dumps(brep, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Brep",
+                "data": serialized_brep
+            }
+        ]
+        elevated_buildings_to_send[0]["InnerTree"][key] = value
+
+    contours = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Contours":
+            contours.append(obj)
+
+    contours_list = [obj.Geometry for obj in contours]
+
+    contours_to_send = [{"ParamName": "ElevatedBuildings", "InnerTree": {}}]
+
+    for i, curve in enumerate(contours_list):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        contours_to_send[0]["InnerTree"][key] = value
+
+    roads = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Roads":
+            roads.append(obj)
+
+    roads_list = [obj.Geometry for obj in roads]
+
+    roads_to_send = [{"ParamName": "Roads", "InnerTree": {}}]
+
+    for i, curve in enumerate(roads_list):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        roads_to_send[0]["InnerTree"][key] = value
+
+    lots = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Lots":
+            lots.append(obj)
+
+    lots_list = [obj.Geometry for obj in lots]
+
+    lots_to_send = [{"ParamName": "Lots", "InnerTree": {}}]
+
+    for i, curve in enumerate(lots_list):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        lots_to_send[0]["InnerTree"][key] = value
+
+    input_streams = []
+    input_streams.append(new_stream_id)
+
+    url_to_send = [{"ParamName": "StreamID", "InnerTree": {}}]
+
+    for i, url in enumerate(input_streams):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.String",
+                "data": url
+            }
+        ]
+        url_to_send[0]["InnerTree"][key] = value
+
+
+    gh_decoded = encode_ghx_file('./gh_scripts/topoSpeckle.ghx')
+
+    geo_payload = {
+        "algo": gh_decoded,
+        "pointer": None,
+        "values": topo_to_send + url_to_send + buildings_to_send + elevated_buildings_to_send + contours_to_send + roads_to_send + lots_to_send
+    }
+
+    requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
+    stream_url = 'https://speckle.xyz/streams/' + str(new_stream_id)
+
+    session['stream_url'] = stream_url
+
     return render_template('tools.html')
 
 @application.route('/submitImages', methods=['GET','POST'])

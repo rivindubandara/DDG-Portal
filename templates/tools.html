@@ -53,6 +53,33 @@
       </div>
     </form>
 
+    <form  
+      id="topoForm"
+      action="/submitTopo"
+      method="POST"
+      enctype="multipart/form-data">
+      <div class="topographySpeckle">
+        <h2>3DM TO SPECKLE</h2>
+        <div class="fileUploadTopo">
+            <input type="file" id="uploadedTopoFile" name="uploadedTopoFile">
+            <label for="uploadedTopoFile" class="uploadedTopoFile"><i class="ri-upload-line"></i>Upload Rhino File</label>
+        </div>
+        <div class="streamInput">
+          <input type="text" name="inputStream" id="inputStream">
+          <label for="inputStream" class="inputStream">Enter a Stream Name</label>
+        </div>
+        <div class="submitContainerImages">
+          <button id="submitBtnImages" type="submit">
+            <i class="ri-send-plane-line"></i>Speckle
+          </button>
+        </div>
+        <div class="outputUrl">
+          <h3>Stream URL:</h3>
+          <p><a href="{{ stream_url }}" target="_blank">{{ stream_url }}</a></p>
+        </div>
+      </div>
+    </form>
+
     <div class="sidebar">
       <div class="nt__logo">
         <a href="https://www.nettletontribe.com.au"
@@ -109,6 +136,19 @@
     });
   </script>   
 
+<script>
+  document
+  .getElementById("uploadedTopoFile")
+  .addEventListener("change", function () {
+    var label = document.querySelector("label[for='uploadedTopoFile']");
+    if (this.value) {
+      label.classList.add("green");
+    } else {
+      label.classList.remove("green");
+    }
+  });
+</script> 
+
   <script>
   $(document).ready(function () {
     $("#imagesForm").on("submit", function (event) {
@@ -133,6 +173,44 @@
           var link = document.createElement("a");
           link.href = window.URL.createObjectURL(blob);
           link.download = 'zipfile.zip';
+          link.click();
+
+          $(".spinner").css("display", "none");
+
+          location.reload();
+        },
+        error: function () {
+          $(".spinner").css("display", "none");
+          $(".errorPopup").css("display", "flex");
+        },
+      });
+    });
+  });
+  </script>
+
+<script>
+  $(document).ready(function () {
+    $("#topoForm").on("submit", function (event) {
+      event.preventDefault();
+
+      $(".spinner").css("display", "block");
+
+      var formData = new FormData(this);
+
+      $.ajax({
+        type: "POST",
+        url: "/submitTopo",
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: "binary",
+        xhrFields: {
+          responseType: "blob",
+        },
+        success: function (response) {
+          var blob = new Blob([response]);
+          var link = document.createElement("a");
+          link.href = window.URL.createObjectURL(blob);
           link.click();
 
           $(".spinner").css("display", "none");

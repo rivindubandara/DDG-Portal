@@ -12,9 +12,43 @@
   z-index: 2;
 }
 
+.topographySpeckle {
+  position: fixed;
+  background-color: var(--black-300);
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+  width: 310px;
+  height: 290px;
+  margin-top: 150px;
+  margin-left: 500px;
+  color: var(--color-white);
+  padding: 5px;
+  z-index: 2;
+}
+
 .planningImages h2 {
   text-align: center;
 }
+
+.topographySpeckle h2 {
+  text-align: center;
+  font-size: 1.3rem;
+}
+
+.topographySpeckle h3 {
+  margin-left: 10px;
+  margin-top: 20px;
+}
+
+.outputUrl {
+  display: inline;
+  color: #fff;
+}
+
+.outputUrl a{
+  color: #fff;
+}
+
 
 .uploadedImageFile {
   display: flex;
@@ -40,8 +74,49 @@
   cursor: pointer;
 }
 
+.uploadedTopoFile {
+  display: flex;
+  position: relative;
+  top: 10px;
+  left: 20px;
+  height: 50px;
+  text-transform: uppercase;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  width: 250px;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 2px;
+  background: var(--black-300);
+  color: var(--color-white);
+  font-weight: bold;
+  z-index: 1;
+  padding: 5px;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+}
+
+.streamInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.streamInput input {
+  width: 75%; 
+  max-width: 300px;
+}
 
 .uploadedImageFile.green {
+  background: green;
+  color: white;
+}
+
+
+.uploadedTopoFile.green {
   background: green;
   color: white;
 }
@@ -49,7 +124,7 @@
 #submitBtnImages {
   display: flex;
   position: relative;
-  top: 20px;
+  top: 10px;
   left: 10px;
   height: 50px;
   text-transform: uppercase;
