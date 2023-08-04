@@ -5372,7 +5372,7 @@ def submitTopo():
 
     contours_list = [obj.Geometry for obj in contours]
 
-    contours_to_send = [{"ParamName": "ElevatedBuildings", "InnerTree": {}}]
+    contours_to_send = [{"ParamName": "Contours", "InnerTree": {}}]
 
     for i, curve in enumerate(contours_list):
         serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
