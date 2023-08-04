@@ -866,7 +866,7 @@ def get_planning():
     for tile in tiles:
         mb_data = concurrent_fetching(zoom, tile)
         tiles1 = mapbox_vector_tile.decode(mb_data)
-        
+
         if 'road' not in tiles1:
             continue
 
@@ -2386,6 +2386,10 @@ def get_qld_planning():
                     return jsonify({'error': True})
         mb_data = mb_response.content
         tiles1 = mapbox_vector_tile.decode(mb_data)
+
+        if 'road' not in tiles1:
+            continue
+
         road_layer = tiles1['road']
 
         tile1 = mercantile.Tile(tile.x, tile.y, 16)
@@ -3758,6 +3762,10 @@ def get_vic_planning():
                     return jsonify({'error': True})
         mb_data = mb_response.content
         tiles1 = mapbox_vector_tile.decode(mb_data)
+
+        if 'road' not in tiles1:
+            continue
+
         road_layer = tiles1['road']
 
         tile1 = mercantile.Tile(tile.x, tile.y, 16)
