@@ -5406,7 +5406,6 @@ def submitTopo():
         ]
         roads_to_send[0]["InnerTree"][key] = value
 
-
     lots = []
     for obj in rhFile.Objects:
         layer_index = obj.Attributes.LayerIndex
