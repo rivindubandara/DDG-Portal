@@ -75,7 +75,9 @@
         </div>
         <div class="outputUrl">
           <h3>Stream URL:</h3>
+          {% if stream_url is not none %}
           <p><a href="{{ stream_url }}" target="_blank">{{ stream_url }}</a></p>
+          {% endif %}
         </div>
       </div>
     </form>
