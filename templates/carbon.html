@@ -51,12 +51,12 @@
       <div></div>
     </div>
 
+    {% if gwp is not none %}
     <div class="gwpContainer">
       <h3>GWP</h3>
-      {% if gwp is not none %}
       <p>{{ gwp }} kgCO2e/m2</p>
-      {% endif %}
     </div>
+    {% endif %}
 
     <div class="resultsContainer">
       {% if roof_carbon is not none %}
