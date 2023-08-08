@@ -5346,7 +5346,7 @@ def submitTopo():
     elevated_buildings = []
     for obj in rhFile.Objects:
         layer_index = obj.Attributes.LayerIndex
-        if layers[layer_index].Name == "Elevated Buildings":
+        if layers[layer_index].Name == "Buildings Elevated":
             elevated_buildings.append(obj)
 
     elevated_buildings_list = [obj.Geometry for obj in elevated_buildings]
@@ -5427,6 +5427,132 @@ def submitTopo():
         ]
         lots_to_send[0]["InnerTree"][key] = value
 
+    isochrones = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Walking Isochrone" or layers[layer_index].Name == "Cycling Isochrone" or layers[layer_index].Name == "Driving Isochrone":
+            isochrones.append(obj)
+
+    isochrones_list = [obj.Geometry for obj in isochrones]
+
+    isochrones_to_send = [{"ParamName": "Isochrone", "InnerTree": {}}]
+
+    for i, curve in enumerate(isochrones_list):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        isochrones_to_send[0]["InnerTree"][key] = value
+
+    parks = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Parks":
+            parks.append(obj)
+
+    parks_list = [obj.Geometry for obj in parks]
+
+    parks_to_send = [{"ParamName": "Parks", "InnerTree": {}}]
+
+    for i, curve in enumerate(parks_list):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        parks_to_send[0]["InnerTree"][key] = value
+
+    heritage = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Heritage":
+            heritage.append(obj)
+
+    heritage_list = [obj.Geometry for obj in heritage]
+
+    heritage_to_send = [{"ParamName": "Heritage", "InnerTree": {}}]
+
+    for i, curve in enumerate(heritage_list):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        heritage_to_send[0]["InnerTree"][key] = value
+
+    flood = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Flood":
+            flood.append(obj)
+
+    flood_list = [obj.Geometry for obj in flood]
+
+    flood_to_send = [{"ParamName": "Flood", "InnerTree": {}}]
+
+    for i, curve in enumerate(flood_list):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        flood_to_send[0]["InnerTree"][key] = value
+
+    native = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Native Land":
+            native.append(obj)
+
+    native_list = [obj.Geometry for obj in native]
+
+    native_to_send = [{"ParamName": "Native", "InnerTree": {}}]
+
+    for i, curve in enumerate(native_list):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        native_to_send[0]["InnerTree"][key] = value
+
+    admin = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Administrative Boundaries":
+            admin.append(obj)
+
+    admin_list = [obj.Geometry for obj in admin]
+
+    admin_to_send = [{"ParamName": "Admin", "InnerTree": {}}]
+
+    for i, curve in enumerate(admin_list):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        admin_to_send[0]["InnerTree"][key] = value
+
     input_streams = []
     input_streams.append(new_stream_id)
 
@@ -5448,7 +5574,7 @@ def submitTopo():
     geo_payload = {
         "algo": gh_decoded,
         "pointer": None,
-        "values": topo_to_send + url_to_send + buildings_to_send + elevated_buildings_to_send + contours_to_send + roads_to_send + lots_to_send
+        "values": topo_to_send + url_to_send + buildings_to_send + elevated_buildings_to_send + contours_to_send + roads_to_send + lots_to_send + isochrones_to_send + parks_to_send + heritage_to_send + flood_to_send + admin_to_send + native_to_send
     }
 
     requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
