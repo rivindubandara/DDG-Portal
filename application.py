@@ -5553,6 +5553,27 @@ def submitTopo():
         ]
         admin_to_send[0]["InnerTree"][key] = value
 
+    bushfire = []
+    for obj in rhFile.Objects:
+        layer_index = obj.Attributes.LayerIndex
+        if layers[layer_index].Name == "Bushfire":
+            bushfire.append(obj)
+
+    bushfire_list = [obj.Geometry for obj in bushfire]
+
+    bushfire_to_send = [{"ParamName": "Bushfire", "InnerTree": {}}]
+
+    for i, curve in enumerate(bushfire_list):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        bushfire_to_send[0]["InnerTree"][key] = value
+
     input_streams = []
     input_streams.append(new_stream_id)
 
@@ -5574,7 +5595,7 @@ def submitTopo():
     geo_payload = {
         "algo": gh_decoded,
         "pointer": None,
-        "values": topo_to_send + url_to_send + buildings_to_send + elevated_buildings_to_send + contours_to_send + roads_to_send + lots_to_send + isochrones_to_send + parks_to_send + heritage_to_send + flood_to_send + admin_to_send + native_to_send
+        "values": topo_to_send + url_to_send + buildings_to_send + elevated_buildings_to_send + contours_to_send + roads_to_send + lots_to_send + isochrones_to_send + parks_to_send + heritage_to_send + flood_to_send + admin_to_send + native_to_send + bushfire_to_send
     }
 
     requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
