@@ -28,6 +28,8 @@
       rel="stylesheet"
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v3.0.0-beta.1/mapbox-gl.js'></script>
+    <link href='https://api.mapbox.com/mapbox-gl-js/v3.0.0-beta.1/mapbox-gl.css' rel='stylesheet' />
   </head>
   <body>
     <div class="statePicker">
@@ -471,10 +473,13 @@
 
       const map = new mapboxgl.Map({
         container: "map",
-        style: "mapbox://styles/mapbox/dark-v10",
         center: [lon, lat],
         zoom: 10,
       });
+
+      map.on('style.load', () => {
+        map.setConfigProperty('basemap', 'lightPreset', 'night');
+    });
 
       function queryCadastreLayer(lat, lon) {
         var queryUrl =
