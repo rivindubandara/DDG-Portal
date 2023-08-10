@@ -1550,11 +1550,13 @@ def get_elevated():
         elevated_model, "Topography", (191, 191, 191, 255))
     contours_layer_EIndex = create_layer(
         elevated_model, "Contours Elevated", (191, 191, 191, 255))
+    mapboxContours_LayerIndex = create_layer(elevated_model, "Mapbox Contours Elevated", (191,191,191,255))
 
     gh_topography_decoded = encode_ghx_file(
         r"./gh_scripts/topography.ghx")
     gh_buildings_elevated_decoded = encode_ghx_file(
         r"./gh_scripts/elevate_buildings.ghx")
+    gh_mapboxContours_decoded = encode_ghx_file(r"./gh_scripts/mapboxContours.ghx")
 
     params_dict = {
         boundary_url: boundary_params,
