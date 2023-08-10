@@ -325,7 +325,7 @@ def get_planning():
 
     xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
     z_xmin_LL, z_xmax_LL, z_ymin_LL, z_ymax_LL = create_boundary(
-        lat, lon, 30000)
+        lat, lon, 20000)
     h_xmin_LL,h_xmax_LL, h_ymin_LL, h_ymax_LL = create_boundary(
         lat, lon, 20000)
     b_xmin_LL, b_xmax_LL, b_ymin_LL, b_ymax_LL = create_boundary(
