@@ -325,7 +325,9 @@ def get_planning():
 
     xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
     z_xmin_LL, z_xmax_LL, z_ymin_LL, z_ymax_LL = create_boundary(
-        lat, lon, 30000)
+        lat, lon, 50000)
+    h_xmin_LL,h_xmax_LL, h_ymin_LL, h_ymax_LL = create_boundary(
+        lat, lon, 20000)
     b_xmin_LL, b_xmax_LL, b_ymin_LL, b_ymax_LL = create_boundary(
         lat, lon, 50000)
     p_xmin_LL, p_xmax_LL, p_ymin_LL, p_ymax_LL = create_boundary(
@@ -345,6 +347,8 @@ def get_planning():
         '', 'esriGeometryEnvelope', a_xmin_LL, a_ymin_LL, a_xmax_LL, a_ymax_LL)
     p_params = create_parameters(
         '', 'esriGeometryEnvelope', p_xmin_LL, p_ymin_LL, p_xmax_LL, p_ymax_LL)
+    h_params = create_parameters(
+        '', 'esriGeometryEnvelope', h_xmin_LL, h_ymin_LL, h_xmax_LL, h_ymax_LL)
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
     zoom = 16
@@ -519,15 +523,15 @@ def get_planning():
     params_dict = {
         adminboundaries_url: params,
         zoning_url: z_params,
-        hob_url: z_params,
-        lotsize_url: z_params,
-        fsr_url: z_params,
+        hob_url: h_params,
+        lotsize_url: h_params,
+        fsr_url: h_params,
         lots_url: params,
         plan_extent_url: params,
         acid_url: params,
         bushfire_url: b_params,
         flood_url: b_params,
-        heritage_url: z_params,
+        heritage_url: h_params,
         airport_url: a_params,
         parks_url: p_params
 
