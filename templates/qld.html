@@ -343,13 +343,14 @@
     var lon = "{{ lon }}";
 
     const map = new mapboxgl.Map({
-    container: 'map',
-    center: [lon, lat],
-    zoom: 10
-    });
+        container: "map",
+        style: "mapbox://styles/mapbox/dark-v10",
+        center: [lon, lat],
+        zoom: 10,
+      });
 
     map.on('style.load', () => {
-        map.setConfigProperty('basemap', 'lightPreset', 'dawn');
+        map.setConfigProperty('basemap', 'lightPreset', 'night');
     });
 
     function queryCadastreLayer(lat, lon) {
@@ -765,24 +766,24 @@
         }
       });
 
-      // map.addLayer({
-      //   id: 'nativelands-layer-symbol',
-      //   type: 'symbol',
-      //   source: 'nativelands-source',
-      //   'source-layer': 'Territories',
-      //   layout: {
-      //     'text-field': ['get', 'Name'], 
-      //     'text-size': 12,
-      //     'text-anchor': 'center',
-      //     'text-allow-overlap': true,
-      //     visibility: 'none'
-      //   },
-      //   paint: {
-      //     'text-color': '#fff'
-      //   },
-      //   minzoom: 0,
-      //   maxzoom: 22
-      // });
+      map.addLayer({
+        id: 'nativelands-layer-symbol',
+        type: 'symbol',
+        source: 'nativelands-source',
+        'source-layer': 'Territories',
+        layout: {
+          'text-field': ['get', 'Name'], 
+          'text-size': 12,
+          'text-anchor': 'center',
+          'text-allow-overlap': true,
+          visibility: 'none'
+        },
+        paint: {
+          'text-color': '#fff'
+        },
+        minzoom: 0,
+        maxzoom: 22
+      });
 
       buildingsToggleBtn.classList.add('active');
     });
@@ -877,9 +878,9 @@
 
   nativelandsToggleBtn.addEventListener('click', function() {
     const layerId1 = 'nativelands-layer';
-    // const layerId2 = 'nativelands-layer-symbol';
+    const layerId2 = 'nativelands-layer-symbol';
     toggleLayerVisibility(layerId1, nativelandsToggleBtn);
-    // toggleLayerVisibility(layerId2, nativelandsToggleBtn);
+    toggleLayerVisibility(layerId2, nativelandsToggleBtn);
   });
 
   function toggleLayerVisibility(layerId, toggleBtn) {
