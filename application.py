@@ -637,88 +637,172 @@ def get_planning():
     add_to_model(admin_data, admin_layerIndex,
                  'suburbname', 'Suburb', planning_model)
 
-    def process_zoning_feature(feature, zoning_curves, zoning_names):
-        zoning_name = feature['attributes']['SYM_CODE']
-        geometry = feature["geometry"]
-        points = []
-        for coord in geometry["rings"][0]:
-            point = rh.Point3d(coord[0], coord[1], 0)
-            points.append(point)
-        polyline = rh.Polyline(points)
-        curve = polyline.ToNurbsCurve()
-        zoning_curves.append(curve)
-        zoning_names.append(zoning_name)
+    # def process_zoning_feature(feature, zoning_curves, zoning_names):
+    #     zoning_name = feature['attributes']['SYM_CODE']
+    #     geometry = feature["geometry"]
+    #     points = []
+    #     for coord in geometry["rings"][0]:
+    #         point = rh.Point3d(coord[0], coord[1], 0)
+    #         points.append(point)
+    #     polyline = rh.Polyline(points)
+    #     curve = polyline.ToNurbsCurve()
+    #     zoning_curves.append(curve)
+    #     zoning_names.append(zoning_name)
 
-    def process_zoning_data(zoning_data, gh_zoning_decoded, layerIndex, model):
-        zoning_curves = []
-        zoning_names = []
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = []
-            for feature in zoning_data["features"]:
-                futures.append(executor.submit(
-                    process_zoning_feature, feature, zoning_curves, zoning_names))
-            for future in concurrent.futures.as_completed(futures):
-                future.result()
-        curves_zoning = [{"ParamName": "Curves", "InnerTree": {}}]
-        for i, curve in enumerate(zoning_curves):
-            serialized_curve = json.dumps(
-                curve, cls=__Rhino3dmEncoder)
-            key = f"{{{i};0}}"
-            value = [
-                {
-                    "type": "Rhino.Geometry.Curve",
-                    "data": serialized_curve
-                }
-            ]
-            curves_zoning[0]["InnerTree"][key] = value
-        names_zoning = [{"ParamName": "Zoning", "InnerTree": {}}]
-        for i, zone in enumerate(zoning_names):
-            key = f"{{{i};0}}"
-            value = [
-                {
-                    "type": "System.String",
-                    "data": zone
-                }
-            ]
-            names_zoning[0]["InnerTree"][key] = value
-        geo_payload = {
-            "algo": gh_zoning_decoded,
-            "pointer": None,
-            "values": curves_zoning + names_zoning
-        }
-        zoning_names_sorted = []
-        res = send_compute_post(geo_payload)
-        response_object = json.loads(res.content)['values']
-        for val in response_object:
-            paramName = val['ParamName']
-            if paramName == 'RH_OUT:Zone':
-                innerTree = val['InnerTree']
-                for key, innerVals in innerTree.items():
-                    for innerVal in innerVals:
-                        if 'data' in innerVal:
-                            data = json.loads(innerVal['data'])
-                            zoning_names_sorted.append(data)
-        i = 0
-        for val in response_object:
-            paramName = val['ParamName']
-            if paramName == 'RH_OUT:Mesh':
-                innerTree = val['InnerTree']
-                for key, innerVals in innerTree.items():
-                    for innerVal in innerVals:
-                        if 'data' in innerVal:
-                            data = json.loads(innerVal['data'])
-                            geo = rh.CommonObject.Decode(data)
-                            att = rh.ObjectAttributes()
-                            att.LayerIndex = layerIndex
-                            att.SetUserString(
-                                "Zoning Code", zoning_names_sorted[i])
-                            model.Objects.AddMesh(
-                                geo, att)
-                            i += 1
+    # def process_zoning_data(zoning_data, gh_zoning_decoded, layerIndex, model):
+    #     zoning_curves = []
+    #     zoning_names = []
+    #     with concurrent.futures.ThreadPoolExecutor() as executor:
+    #         futures = []
+    #         for feature in zoning_data["features"]:
+    #             futures.append(executor.submit(
+    #                 process_zoning_feature, feature, zoning_curves, zoning_names))
+    #         for future in concurrent.futures.as_completed(futures):
+    #             future.result()
+    #     curves_zoning = [{"ParamName": "Curves", "InnerTree": {}}]
+    #     for i, curve in enumerate(zoning_curves):
+    #         serialized_curve = json.dumps(
+    #             curve, cls=__Rhino3dmEncoder)
+    #         key = f"{{{i};0}}"
+    #         value = [
+    #             {
+    #                 "type": "Rhino.Geometry.Curve",
+    #                 "data": serialized_curve
+    #             }
+    #         ]
+    #         curves_zoning[0]["InnerTree"][key] = value
+    #     names_zoning = [{"ParamName": "Zoning", "InnerTree": {}}]
+    #     for i, zone in enumerate(zoning_names):
+    #         key = f"{{{i};0}}"
+    #         value = [
+    #             {
+    #                 "type": "System.String",
+    #                 "data": zone
+    #             }
+    #         ]
+    #         names_zoning[0]["InnerTree"][key] = value
+    #     geo_payload = {
+    #         "algo": gh_zoning_decoded,
+    #         "pointer": None,
+    #         "values": curves_zoning + names_zoning
+    #     }
+    #     zoning_names_sorted = []
+    #     res = send_compute_post(geo_payload)
+    #     response_object = json.loads(res.content)['values']
+    #     for val in response_object:
+    #         paramName = val['ParamName']
+    #         if paramName == 'RH_OUT:Zone':
+    #             innerTree = val['InnerTree']
+    #             for key, innerVals in innerTree.items():
+    #                 for innerVal in innerVals:
+    #                     if 'data' in innerVal:
+    #                         data = json.loads(innerVal['data'])
+    #                         zoning_names_sorted.append(data)
+    #     i = 0
+    #     for val in response_object:
+    #         paramName = val['ParamName']
+    #         if paramName == 'RH_OUT:Mesh':
+    #             innerTree = val['InnerTree']
+    #             for key, innerVals in innerTree.items():
+    #                 for innerVal in innerVals:
+    #                     if 'data' in innerVal:
+    #                         data = json.loads(innerVal['data'])
+    #                         geo = rh.CommonObject.Decode(data)
+    #                         att = rh.ObjectAttributes()
+    #                         att.LayerIndex = layerIndex
+    #                         att.SetUserString(
+    #                             "Zoning Code", zoning_names_sorted[i])
+    #                         model.Objects.AddMesh(
+    #                             geo, att)
+    #                         i += 1
 
-    process_zoning_data(
-        zoning_data, gh_zoning_decoded, zoning_layerIndex, planning_model)
+    # process_zoning_data(
+    #     zoning_data, gh_zoning_decoded, zoning_layerIndex, planning_model)
+    
+    zoning_curves = []
+    zoning_names = []
+    counter = 0
+    while True:
+        zoning_response = requests.get(zoning_url, params=z_params)
+        if zoning_response.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
 
+    zoning_data = json.loads(zoning_response.text)
+    if "features" in zoning_data:
+        for feature in zoning_data["features"]:
+            zoning_name = feature['attributes']['SYM_CODE']
+            geometry = feature["geometry"]
+            points = []
+            for coord in geometry["rings"][0]:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            curve = polyline.ToNurbsCurve()
+            zoning_curves.append(curve)
+            zoning_names.append(zoning_name)
+
+    curves_zoning = [{"ParamName": "Curves", "InnerTree": {}}]
+    for i, curve in enumerate(zoning_curves):
+        serialized_curve = json.dumps(
+            curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        curves_zoning[0]["InnerTree"][key] = value
+    names_zoning = [{"ParamName": "Zoning", "InnerTree": {}}]
+    for i, zone in enumerate(zoning_names):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.String",
+                "data": zone
+            }
+        ]
+        names_zoning[0]["InnerTree"][key] = value
+    geo_payload = {
+        "algo": gh_zoning_decoded,
+        "pointer": None,
+        "values": curves_zoning + names_zoning
+    }
+    zoning_names_sorted = []
+    res = send_compute_post(geo_payload)
+    response_object = json.loads(res.content)['values']
+    for val in response_object:
+        paramName = val['ParamName']
+        if paramName == 'RH_OUT:Zone':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        zoning_names_sorted.append(data)
+    i = 0
+    for val in response_object:
+        paramName = val['ParamName']
+        if paramName == 'RH_OUT:Mesh':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = zoning_layerIndex
+                        att.SetUserString(
+                            "Zoning Code", zoning_names_sorted[i])
+                        planning_model.Objects.AddMesh(
+                            geo, att)
+                        i += 1
+       
     hob_nums = []
     hob_curves = []
     counter = 0
