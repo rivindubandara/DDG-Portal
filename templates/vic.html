@@ -328,13 +328,13 @@
 
     const map = new mapboxgl.Map({
         container: "map",
-        style: "mapbox://styles/mapbox/dark-v10",
+        // style: "mapbox://styles/mapbox/dark-v10",
         center: [lon, lat],
         zoom: 10,
       });
 
     map.on('style.load', () => {
-        map.setConfigProperty('basemap', 'lightPreset', 'night');
+        map.setConfigProperty('basemap', 'lightPreset', 'dawn');
     });
 
     function queryCadastreLayer(lat, lon) {
@@ -581,6 +581,7 @@
       map.addLayer({
         id: 'cadastre-raster-layer',
         type: 'raster',
+        slot: 'middle',
         source: 'cadastre-raster-tiles',
         minzoom: 0,
         maxzoom: 22,
@@ -601,6 +602,7 @@
       map.addLayer({
         id: 'land-zoning-raster-layer',
         type: 'raster',
+        slot: 'middle',
         source: 'land-zoning-raster-tiles',
         minzoom: 0,
         maxzoom: 22,
@@ -621,6 +623,7 @@
       map.addLayer({
         id: 'heritage-raster-layer',
         type: 'raster',
+        slot: 'middle',
         source: 'heritage-raster-tiles',
         minzoom: 0,
         maxzoom: 22,
@@ -640,6 +643,7 @@
       map.addLayer({
         id: 'bushfire-raster-layer',
         type: 'raster',
+        slot: 'middle',
         source: 'bushfire-raster-tiles',
         minzoom: 0,
         maxzoom: 22,
@@ -659,6 +663,7 @@
       map.addLayer({
         id: 'admin-raster-layer',
         type: 'raster',
+        slot: 'middle',
         source: 'admin-raster-tiles',
         minzoom: 0,
         maxzoom: 22,
@@ -693,6 +698,7 @@
       map.addLayer({
         id: 'nativelands-layer',
         type: 'fill',
+        slot: 'middle',
         source: 'nativelands-source',
         'source-layer': 'Territories',
         paint: {
@@ -706,24 +712,24 @@
         }
       });
 
-      map.addLayer({
-        id: 'nativelands-layer-symbol',
-        type: 'symbol',
-        source: 'nativelands-source',
-        'source-layer': 'Territories',
-        layout: {
-          'text-field': ['get', 'Name'], 
-          'text-size': 12,
-          'text-anchor': 'center',
-          'text-allow-overlap': true,
-          visibility: 'none'
-        },
-        paint: {
-          'text-color': '#fff'
-        },
-        minzoom: 0,
-        maxzoom: 22
-      });
+      // map.addLayer({
+      //   id: 'nativelands-layer-symbol',
+      //   type: 'symbol',
+      //   source: 'nativelands-source',
+      //   'source-layer': 'Territories',
+      //   layout: {
+      //     'text-field': ['get', 'Name'], 
+      //     'text-size': 12,
+      //     'text-anchor': 'center',
+      //     'text-allow-overlap': true,
+      //     visibility: 'none'
+      //   },
+      //   paint: {
+      //     'text-color': '#fff'
+      //   },
+      //   minzoom: 0,
+      //   maxzoom: 22
+      // });
 
       buildingsToggleBtn.classList.add('active');
     });
@@ -817,9 +823,9 @@
 
   nativelandsToggleBtn.addEventListener('click', function() {
     const layerId1 = 'nativelands-layer';
-    const layerId2 = 'nativelands-layer-symbol';
+    // const layerId2 = 'nativelands-layer-symbol';
     toggleLayerVisibility(layerId1, nativelandsToggleBtn);
-    toggleLayerVisibility(layerId2, nativelandsToggleBtn);
+    // toggleLayerVisibility(layerId2, nativelandsToggleBtn);
   });
 
   function toggleLayerVisibility(layerId, toggleBtn) {
