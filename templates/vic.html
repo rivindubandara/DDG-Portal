@@ -117,6 +117,12 @@
             <div class="toggle-text">Native Land</div>
           </div>
         </div>
+
+        <div id="satelliteToggle" class="toggle">
+          <div class="toggle-button" onclick="Animatedtoggle(this)">
+            <div class="toggle-text">Satellite</div>
+          </div>
+        </div>
   
       </div>
 
@@ -712,6 +718,22 @@
         }
       });
 
+      map.addSource("mapbox-satellite", {
+          type: "raster",
+          url: "mapbox://mapbox.satellite",
+          tileSize: 256,
+        });
+
+        map.addLayer({
+          id: "mapbox-satellite-layer",
+          type: "raster",
+          slot: "middle",
+          source: "mapbox-satellite",
+          layout: {
+              visibility: "none",
+          },
+      });
+
       // map.addLayer({
       //   id: 'nativelands-layer-symbol',
       //   type: 'symbol',
@@ -789,7 +811,8 @@
   const bushfireToggleBtn = document.getElementById('bushfireToggle');
   const heritageToggleBtn = document.getElementById('heritageToggle');
   const buildingsToggleBtn = document.getElementById('buildingsToggle');
-  const nativelandsToggleBtn = document.getElementById('nativelandsToggle')
+  const nativelandsToggleBtn = document.getElementById('nativelandsToggle');
+  const satelliteToggleBtn = document.getElementById("satelliteToggle");
 
   cadastreToggleBtn.addEventListener('click', function() {
     const layerId = 'cadastre-raster-layer';
@@ -827,6 +850,11 @@
     toggleLayerVisibility(layerId1, nativelandsToggleBtn);
     // toggleLayerVisibility(layerId2, nativelandsToggleBtn);
   });
+
+  satelliteToggleBtn.addEventListener("click", function () {
+        const layerId = "mapbox-satellite-layer";
+        toggleLayerVisibility(layerId, satelliteToggleBtn);
+      });
 
   function toggleLayerVisibility(layerId, toggleBtn) {
       const visibility = map.getLayoutProperty(layerId, 'visibility');
