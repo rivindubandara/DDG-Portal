@@ -95,8 +95,6 @@ def create_parameters_vic(geometry, geometry_type, xmin_LL, ymin_LL, xmax_LL, ym
         params['geometry'] = f'{xmin_LL}, {ymin_LL}, {xmax_LL}, {ymax_LL}'
     return params
 
-
-
 def get_data(url, params):
     counter = 0
     while True:
@@ -212,7 +210,7 @@ def add_bound_curve_to_model(data, model, layerIndex):
             time.sleep(0)
 
 
-def add_mesh_to_model(data, layerIndex, p_key, paramName, gh_algo, gh_param, model):
+def add_mesh_to_model(data, layerIndex, p_key, paramName, gh_algo, model):
     curves = []
     numbers = []
 
@@ -256,33 +254,64 @@ def add_mesh_to_model(data, layerIndex, p_key, paramName, gh_algo, gh_param, mod
         "values": curves_data + names_data
     }
 
-    sorted_names = []
+    # sorted_names = []
     res = send_compute_post(geo_payload)
-    if hasattr(res, 'content'):
-        response_object = json.loads(res.content)['values']
-        for val in response_object:
-            if val['ParamName'] == gh_param:
-                innerTree = val['InnerTree']
-                for key, innerVals in innerTree.items():
-                    for innerVal in innerVals:
-                        if 'data' in innerVal:
-                            data = json.loads(innerVal['data'])
-                            sorted_names.append(data)
+    response_object = json.loads(res.content)['values']
 
-        i = 0
-        for val in response_object:
-            if val['ParamName'] == 'RH_OUT:Mesh':
-                innerTree = val['InnerTree']
-                for key, innerVals in innerTree.items():
-                    for innerVal in innerVals:
-                        if 'data' in innerVal:
-                            data = json.loads(innerVal['data'])
-                            geo = rh.CommonObject.Decode(data)
-                            att = rh.ObjectAttributes()
-                            att.LayerIndex = layerIndex
-                            att.SetUserString(paramName, sorted_names[i])
-                            model.Objects.AddMesh(geo, att)
-                            i += 1
+    colors = []
+    surfaces = []
+    string_vals = []
+
+    for val in response_object:
+        paramName = val['ParamName']
+        innerTree = val.get('InnerTree', {})
+        for _, innerVals in innerTree.items():
+            for innerVal in innerVals:
+                if 'data' in innerVal:
+                    data = json.loads(innerVal['data'])
+                    if paramName == "RH_OUT:Colors":
+                        colors.append(data)
+                    elif paramName == "RH_OUT:Surface":
+                        geo = rh.CommonObject.Decode(data)
+                        surfaces.append(geo)
+                    elif paramName == "RH_OUT:Values":
+                        string_vals.append(data)
+
+    for idx, (color, geo) in enumerate(zip(colors, surfaces)):
+        r, g, b = map(int, color.split(','))
+        att = rh.ObjectAttributes()
+        a = 255
+        att.ColorSource = rh.ObjectColorSource.ColorFromObject
+        att.LayerIndex = layerIndex
+        att.SetUserString(p_key, str(string_vals[idx]))
+        att.ObjectColor = (r, g, b, int(a))
+        model.Objects.AddBrep(geo, att)
+    
+    # if hasattr(res, 'content'):
+    #     response_object = json.loads(res.content)['values']
+    #     for val in response_object:
+    #         if val['ParamName'] == gh_param:
+    #             innerTree = val['InnerTree']
+    #             for key, innerVals in innerTree.items():
+    #                 for innerVal in innerVals:
+    #                     if 'data' in innerVal:
+    #                         data = json.loads(innerVal['data'])
+    #                         sorted_names.append(data)
+
+    #     i = 0
+    #     for val in response_object:
+    #         if val['ParamName'] == 'RH_OUT:Mesh':
+    #             innerTree = val['InnerTree']
+    #             for key, innerVals in innerTree.items():
+    #                 for innerVal in innerVals:
+    #                     if 'data' in innerVal:
+    #                         data = json.loads(innerVal['data'])
+    #                         geo = rh.CommonObject.Decode(data)
+    #                         att = rh.ObjectAttributes()
+    #                         att.LayerIndex = layerIndex
+    #                         att.SetUserString(paramName, sorted_names[i])
+    #                         model.Objects.AddMesh(geo, att)
+    #                         i += 1
 
 
 transformer2 = Transformer.from_crs("EPSG:4326", "EPSG:32756", always_xy=True)
@@ -495,6 +524,10 @@ def get_planning():
     gh_hob_decoded = encode_ghx_file(r"./gh_scripts/hob.ghx")
     gh_mls_decoded = encode_ghx_file(r"./gh_scripts/mls.ghx")
     gh_zoning_decoded = encode_ghx_file(r"./gh_scripts/zoning.ghx")
+    gh_acid_decoded = encode_ghx_file(r"./gh_scripts/acid.ghx")
+    gh_parks_decoded = encode_ghx_file(r"./gh_scripts/parks.ghx")
+    gh_bushfire_decoded = encode_ghx_file(r"./gh_scripts/bushfire.ghx")
+    gh_flood_decoded = encode_ghx_file(r"./gh_scripts/flood.ghx")
     gh_interpolate_decoded = encode_ghx_file(
         r"./gh_scripts/interpolate.ghx")
     gh_roads_decoded = encode_ghx_file(r"./gh_scripts/roads.ghx")
@@ -634,93 +667,101 @@ def get_planning():
             att.SetUserString("Native Name", str(name))
             planning_model.Objects.AddCurve(curve, att)
 
-    add_to_model(admin_data, admin_layerIndex,
-                 'suburbname', 'Suburb', planning_model)
+    # add_to_model(admin_data, admin_layerIndex,
+    #              'suburbname', 'Suburb', planning_model)
+    
+    admin_curves = []
+    admin_vals = []
 
-    # def process_zoning_feature(feature, zoning_curves, zoning_names):
-    #     zoning_name = feature['attributes']['SYM_CODE']
-    #     geometry = feature["geometry"]
-    #     points = []
-    #     for coord in geometry["rings"][0]:
-    #         point = rh.Point3d(coord[0], coord[1], 0)
-    #         points.append(point)
-    #     polyline = rh.Polyline(points)
-    #     curve = polyline.ToNurbsCurve()
-    #     zoning_curves.append(curve)
-    #     zoning_names.append(zoning_name)
+    while True:
+        if 'features' in admin_data:
+            break
+        else:
+            time.sleep(0)
+    for feature in admin_data["features"]:
+                value = feature['attributes']['suburbname']
+                admin_vals.append(value)
+                geometry = feature["geometry"]
+                for ring in geometry["rings"]:
+                    points = []
+                    for coord in ring:
+                        point = rh.Point3d(coord[0], coord[1], 0)
+                        points.append(point)
+                    polyline = rh.Polyline(points)
+                    curve = polyline.ToNurbsCurve()
+                    admin_curves.append(curve)
 
-    # def process_zoning_data(zoning_data, gh_zoning_decoded, layerIndex, model):
-    #     zoning_curves = []
-    #     zoning_names = []
-    #     with concurrent.futures.ThreadPoolExecutor() as executor:
-    #         futures = []
-    #         for feature in zoning_data["features"]:
-    #             futures.append(executor.submit(
-    #                 process_zoning_feature, feature, zoning_curves, zoning_names))
-    #         for future in concurrent.futures.as_completed(futures):
-    #             future.result()
-    #     curves_zoning = [{"ParamName": "Curves", "InnerTree": {}}]
-    #     for i, curve in enumerate(zoning_curves):
-    #         serialized_curve = json.dumps(
-    #             curve, cls=__Rhino3dmEncoder)
-    #         key = f"{{{i};0}}"
-    #         value = [
-    #             {
-    #                 "type": "Rhino.Geometry.Curve",
-    #                 "data": serialized_curve
-    #             }
-    #         ]
-    #         curves_zoning[0]["InnerTree"][key] = value
-    #     names_zoning = [{"ParamName": "Zoning", "InnerTree": {}}]
-    #     for i, zone in enumerate(zoning_names):
-    #         key = f"{{{i};0}}"
-    #         value = [
-    #             {
-    #                 "type": "System.String",
-    #                 "data": zone
-    #             }
-    #         ]
-    #         names_zoning[0]["InnerTree"][key] = value
-    #     geo_payload = {
-    #         "algo": gh_zoning_decoded,
-    #         "pointer": None,
-    #         "values": curves_zoning + names_zoning
-    #     }
-    #     zoning_names_sorted = []
-    #     res = send_compute_post(geo_payload)
-    #     response_object = json.loads(res.content)['values']
-    #     for val in response_object:
-    #         paramName = val['ParamName']
-    #         if paramName == 'RH_OUT:Zone':
-    #             innerTree = val['InnerTree']
-    #             for key, innerVals in innerTree.items():
-    #                 for innerVal in innerVals:
-    #                     if 'data' in innerVal:
-    #                         data = json.loads(innerVal['data'])
-    #                         zoning_names_sorted.append(data)
-    #     i = 0
-    #     for val in response_object:
-    #         paramName = val['ParamName']
-    #         if paramName == 'RH_OUT:Mesh':
-    #             innerTree = val['InnerTree']
-    #             for key, innerVals in innerTree.items():
-    #                 for innerVal in innerVals:
-    #                     if 'data' in innerVal:
-    #                         data = json.loads(innerVal['data'])
-    #                         geo = rh.CommonObject.Decode(data)
-    #                         att = rh.ObjectAttributes()
-    #                         att.LayerIndex = layerIndex
-    #                         att.SetUserString(
-    #                             "Zoning Code", zoning_names_sorted[i])
-    #                         model.Objects.AddMesh(
-    #                             geo, att)
-    #                         i += 1
+    curves_to_send = [{"ParamName": "Curves", "InnerTree": {}}]
 
-    # process_zoning_data(
-    #     zoning_data, gh_zoning_decoded, zoning_layerIndex, planning_model)
+    for i, curve in enumerate(admin_curves):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        curves_to_send[0]["InnerTree"][key] = value
+
+    val_to_send = [{"ParamName": "Admin", "InnerTree": {}}]
+
+    for i, val in enumerate(admin_vals):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.String",
+                "data": val
+            }
+        ]
+        val_to_send[0]["InnerTree"][key] = value
+
+
+    gh_admin_decoded = encode_ghx_file('./gh_scripts/admin.ghx')
+
+    geo_payload = {
+        "algo": gh_admin_decoded,
+        "pointer": None,
+        "values": val_to_send + curves_to_send
+    }
+
+    res = requests.post(compute_url + "grasshopper",
+                    json=geo_payload, headers=headers)
+    response_object = json.loads(res.content)['values']
+
+    colors = []
+    surfaces = []
+    string_vals = []
+
+    for val in response_object:
+        paramName = val['ParamName']
+        innerTree = val.get('InnerTree', {})
+
+        for _, innerVals in innerTree.items():
+            for innerVal in innerVals:
+                if 'data' in innerVal:
+                    data = json.loads(innerVal['data'])
+                    if paramName == "RH_OUT:Colors":
+                        colors.append(data)
+                    elif paramName == "RH_OUT:Surface":
+                        geo = rh.CommonObject.Decode(data)
+                        surfaces.append(geo)
+                    elif paramName == "RH_OUT:Values":
+                        string_vals.append(data)
+
+    for idx, (color, geo) in enumerate(zip(colors, surfaces)):
+        r, g, b = map(int, color.split(','))
+        a = 255
+        att = rh.ObjectAttributes()
+        att.ColorSource = rh.ObjectColorSource.ColorFromObject
+        att.LayerIndex = admin_layerIndex
+        att.SetUserString("Suburb", str(string_vals[idx]))
+        att.ObjectColor = (r, g, b, int(a))
+        planning_model.Objects.AddBrep(geo, att)
     
     zoning_curves = []
     zoning_names = []
+    
     counter = 0
     while True:
         zoning_response = requests.get(zoning_url, params=z_params)
@@ -758,6 +799,7 @@ def get_planning():
             }
         ]
         curves_zoning[0]["InnerTree"][key] = value
+
     names_zoning = [{"ParamName": "Zoning", "InnerTree": {}}]
     for i, zone in enumerate(zoning_names):
         key = f"{{{i};0}}"
@@ -773,35 +815,64 @@ def get_planning():
         "pointer": None,
         "values": curves_zoning + names_zoning
     }
-    zoning_names_sorted = []
-    res = send_compute_post(geo_payload)
+    res = requests.post(compute_url + "grasshopper",
+                    json=geo_payload, headers=headers)
     response_object = json.loads(res.content)['values']
+
+    colors = []
+    surfaces = []
+    string_vals = []
+
     for val in response_object:
         paramName = val['ParamName']
-        if paramName == 'RH_OUT:Zone':
-            innerTree = val['InnerTree']
-            for key, innerVals in innerTree.items():
-                for innerVal in innerVals:
-                    if 'data' in innerVal:
-                        data = json.loads(innerVal['data'])
-                        zoning_names_sorted.append(data)
-    i = 0
-    for val in response_object:
-        paramName = val['ParamName']
-        if paramName == 'RH_OUT:Mesh':
-            innerTree = val['InnerTree']
-            for key, innerVals in innerTree.items():
-                for innerVal in innerVals:
-                    if 'data' in innerVal:
-                        data = json.loads(innerVal['data'])
+        innerTree = val.get('InnerTree', {})
+        for _, innerVals in innerTree.items():
+            for innerVal in innerVals:
+                if 'data' in innerVal:
+                    data = json.loads(innerVal['data'])
+                    if paramName == "RH_OUT:Colors":
+                        colors.append(data)
+                    elif paramName == "RH_OUT:Surface":
                         geo = rh.CommonObject.Decode(data)
-                        att = rh.ObjectAttributes()
-                        att.LayerIndex = zoning_layerIndex
-                        att.SetUserString(
-                            "Zoning Code", zoning_names_sorted[i])
-                        planning_model.Objects.AddMesh(
-                            geo, att)
-                        i += 1
+                        surfaces.append(geo)
+                    elif paramName == "RH_OUT:Values":
+                        string_vals.append(data)
+
+    for idx, (color, geo) in enumerate(zip(colors, surfaces)):
+        r, g, b, a = map(int, color.split(','))
+        att = rh.ObjectAttributes()
+        att.ColorSource = rh.ObjectColorSource.ColorFromObject
+        att.LayerIndex = zoning_layerIndex
+        att.SetUserString("Zoning Code", str(string_vals[idx]))
+        att.ObjectColor = (r, g, b, a)
+        planning_model.Objects.AddBrep(geo, att)
+
+    # for val in response_object:
+    #     paramName = val['ParamName']
+    #     if paramName == 'RH_OUT:Zone':
+    #         innerTree = val['InnerTree']
+    #         for key, innerVals in innerTree.items():
+    #             for innerVal in innerVals:
+    #                 if 'data' in innerVal:
+    #                     data = json.loads(innerVal['data'])
+    #                     zoning_names_sorted.append(data)
+    # i = 0
+    # for val in response_object:
+    #     paramName = val['ParamName']
+    #     if paramName == 'RH_OUT:Mesh':
+    #         innerTree = val['InnerTree']
+    #         for key, innerVals in innerTree.items():
+    #             for innerVal in innerVals:
+    #                 if 'data' in innerVal:
+    #                     data = json.loads(innerVal['data'])
+    #                     geo = rh.CommonObject.Decode(data)
+    #                     att = rh.ObjectAttributes()
+    #                     att.LayerIndex = zoning_layerIndex
+    #                     att.SetUserString(
+    #                         "Zoning Code", zoning_names_sorted[i])
+    #                     planning_model.Objects.AddMesh(
+    #                         geo, att)
+    #                     i += 1
        
     hob_nums = []
     hob_curves = []
@@ -864,50 +935,83 @@ def get_planning():
         "values": curves_hob + numbers_hob
     }
 
-    hob_numbers_sorted = []
-    counter = 0
-    while True:
-        res = requests.post(compute_url + "grasshopper",
-                            json=geo_payload, headers=headers)
-        if res.status_code == 200:
-            break
-        else:
-            counter += 1
-            if counter > 1:
-                break
-            time.sleep(0)
+    res = requests.post(compute_url + "grasshopper",
+                    json=geo_payload, headers=headers)
     response_object = json.loads(res.content)['values']
-    for val in response_object:
-        paramName = val['ParamName']
-        if paramName == 'RH_OUT:HOBnum':
-            innerTree = val['InnerTree']
-            for key, innerVals in innerTree.items():
-                for innerVal in innerVals:
-                    if 'data' in innerVal:
-                        data = json.loads(innerVal['data'])
-                        hob_numbers_sorted.append(data)
 
-    i = 0
+    colors = []
+    surfaces = []
+    string_vals = []
+
     for val in response_object:
         paramName = val['ParamName']
-        if paramName == 'RH_OUT:Mesh':
-            innerTree = val['InnerTree']
-            for key, innerVals in innerTree.items():
-                for innerVal in innerVals:
-                    if 'data' in innerVal:
-                        data = json.loads(innerVal['data'])
+        innerTree = val.get('InnerTree', {})
+        for _, innerVals in innerTree.items():
+            for innerVal in innerVals:
+                if 'data' in innerVal:
+                    data = json.loads(innerVal['data'])
+                    if paramName == "RH_OUT:Colors":
+                        colors.append(data)
+                    elif paramName == "RH_OUT:Surface":
                         geo = rh.CommonObject.Decode(data)
-                        att = rh.ObjectAttributes()
-                        att.LayerIndex = hob_layerIndex
-                        att.SetUserString("HOB", str(hob_numbers_sorted[i]))
-                        planning_model.Objects.AddMesh(geo, att)
-                        i += 1
+                        surfaces.append(geo)
+                    elif paramName == "RH_OUT:Values":
+                        string_vals.append(data)
+
+    for idx, (color, geo) in enumerate(zip(colors, surfaces)):
+        r, g, b = map(int, color.split(','))
+        att = rh.ObjectAttributes()
+        a = 255
+        att.ColorSource = rh.ObjectColorSource.ColorFromObject
+        att.LayerIndex = hob_layerIndex
+        att.SetUserString("HOB", str(string_vals[idx]))
+        att.ObjectColor = (r, g, b, int(a))
+        planning_model.Objects.AddBrep(geo, att)
+
+    # hob_numbers_sorted = []
+    # counter = 0
+    # while True:
+    #     res = requests.post(compute_url + "grasshopper",
+    #                         json=geo_payload, headers=headers)
+    #     if res.status_code == 200:
+    #         break
+    #     else:
+    #         counter += 1
+    #         if counter > 1:
+    #             break
+    #         time.sleep(0)
+    # response_object = json.loads(res.content)['values']
+    # for val in response_object:
+    #     paramName = val['ParamName']
+    #     if paramName == 'RH_OUT:HOBnum':
+    #         innerTree = val['InnerTree']
+    #         for key, innerVals in innerTree.items():
+    #             for innerVal in innerVals:
+    #                 if 'data' in innerVal:
+    #                     data = json.loads(innerVal['data'])
+    #                     hob_numbers_sorted.append(data)
+
+    # i = 0
+    # for val in response_object:
+    #     paramName = val['ParamName']
+    #     if paramName == 'RH_OUT:Mesh':
+    #         innerTree = val['InnerTree']
+    #         for key, innerVals in innerTree.items():
+    #             for innerVal in innerVals:
+    #                 if 'data' in innerVal:
+    #                     data = json.loads(innerVal['data'])
+    #                     geo = rh.CommonObject.Decode(data)
+    #                     att = rh.ObjectAttributes()
+    #                     att.LayerIndex = hob_layerIndex
+    #                     att.SetUserString("HOB", str(hob_numbers_sorted[i]))
+    #                     planning_model.Objects.AddMesh(geo, att)
+    #                     i += 1
 
     add_mesh_to_model(lotsize_data, lotsize_layerIndex, 'LOT_SIZE',
-                      'MLS', gh_mls_decoded, 'RH_OUT:MLSnum', planning_model)
+                      'MLS', gh_mls_decoded, planning_model)
 
     add_mesh_to_model(fsr_data, fsr_layerIndex, 'FSR', 'FSR',
-                      gh_fsr_decoded, 'RH_OUT:FSRnum', planning_model)
+                      gh_fsr_decoded, planning_model)
 
     add_to_model(lots_data, lots_layerIndex,
                  "plannumber", "Lot Number", planning_model)
@@ -918,14 +1022,17 @@ def get_planning():
     add_to_model(acid_data, acid_layerIndex,
                  "LAY_CLASS", "Acid Class", planning_model)
 
-    add_to_model(bushfire_data, bushfire_layerIndex,
-                 "d_Category", "Bushfire Class", planning_model)
+    add_mesh_to_model(bushfire_data, bushfire_layerIndex,
+                 "d_Category", "Bushfire", gh_bushfire_decoded, planning_model)
 
     add_to_model(flood_data, flood_layerIndex,
-                 "LAY_CLASS", "Flood Class", planning_model)
+                 "LAY_CLASS", "Flood", planning_model)
 
     add_to_model(heritage_data, heritage_layerIndex,
                  "H_NAME", "Heritage Name", planning_model)
+    
+    add_to_model(parks_data, parks_layerIndex,
+                 "NAME", "Park Name", planning_model)
 
     for feature in airport_data["features"]:
         min_height = feature['attributes']['MINIMUM_HEIGHT']
@@ -944,9 +1051,6 @@ def get_planning():
                 "Minimum Height", str(min_height))
             planning_model.Objects.AddCurve(
                 curve, att)
-
-    add_to_model(parks_data, parks_layerIndex,
-                 "NAME", "Park", planning_model)
 
     road_curves = []
     for tile in tiles:
@@ -6132,9 +6236,9 @@ def submitImages():
         return None
     
     s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx', '10KM_Administrative Boundaries')
-    # 1km
+    # 10km
     s_compute(admin_curves, admin_values, 'Admin', './gh_scripts/adminColors.ghx', '10KM_Administrative Boundaries')
-    # 1km
+    # 10km
     s_compute(zoning_curves, zoning_values, 'Zoning','./gh_scripts/zoningColors.ghx','1KM_Zoning')
     # 1km
     s_compute(hob_curves, hob_values, 'HoB','./gh_scripts/hobColors.ghx','1KM_HOB')
@@ -6144,13 +6248,13 @@ def submitImages():
     s_compute(fsr_curves, fsr_values, 'FSR','./gh_scripts/fsrColors.ghx','1KM_FSR')
     # 1km
     s_compute(native_curves, native_values, 'Native Land','./gh_scripts/nativeColors.ghx','10KM_Native')
-    # 20km
+    # 10km
     s_compute(parks_curves, parks_values, 'Parks', './gh_scripts/parksColors.ghx','10KM_Parks')
-    # 15km
+    # 10km
     s_l_compute(boundary_curves, 'Boundary', './gh_scripts/1km_lines.ghx','1KM_Boundary')
     # 1km
     s_l_compute(driving_isochrone_curves, 'Driving Isochrone', './gh_scripts/10km_lines.ghx','10KM_Driving Isochrone')
-    # 30km
+    # 10km
     s_l_compute(walking_isochrone_curves, 'Walking Isochrone', './gh_scripts/1km_lines.ghx','1KM_Walking Isochrone')
     # 1km
     s_l_compute(cycling_isochrone_curves, 'Cycling Isochrone', './gh_scripts/10km_lines.ghx', '10KM_Cycling Isochrone')
@@ -6176,6 +6280,1187 @@ def submitImages():
                 zip.write(file_path, os.path.basename(file_path))
 
     return send_from_directory('.', 'zipfile.zip', as_attachment=True)
+
+@application.route('/tas', methods=['POST', 'GET'])
+def tas():
+    return render_template('tas.html', lat=-42.880554, lon=147.324997)
+
+@application.route('/tas_planning', methods=['POST'])
+def tas_planning():
+    address = request.form.get('address')
+    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    params = {
+        "access_token": mapbox_access_token,
+        "autocomplete": False,
+        "limit": 1,
+        "query": address,
+    }
+
+    response = requests.get(endpoint.format(address=address), params=params)
+    if response.status_code == 200:
+        result = response.json()["features"][0]
+        longitude, latitude = result["center"]
+        lon = float(longitude)
+        lat = float(latitude)
+    else:
+        return jsonify({'error': True})
+
+    tas_planning = rh.File3dm()
+    tas_planning.Settings.ModelUnitSystem = rh.UnitSystem.Meters
+
+    boundary_url = 'https://services.thelist.tas.gov.au/arcgis/rest/services/Public/PlanningOnline/MapServer/2/query'
+    zoning_url = 'https://services.thelist.tas.gov.au/arcgis/rest/services/Public/PlanningOnline/MapServer/4/query'
+    adminboundaries_url = 'https://services.thelist.tas.gov.au/arcgis/rest/services/Public/CadastreAndAdministrative/MapServer/7/query'
+    heritage_url = 'https://services.thelist.tas.gov.au/arcgis/rest/services/HT/HT_Public/MapServer/0/query'
+    native_url = 'https://native-land.ca/wp-json/nativeland/v1/api/index.php'
+
+    gh_zoning_decoded = encode_ghx_file(r"./gh_scripts/vic_qld_zoning.ghx")
+    gh_interpolate_decoded = encode_ghx_file(r"./gh_scripts/interpolate.ghx")
+    gh_roads_decoded = encode_ghx_file(r"./gh_scripts/roads.ghx")
+    gh_raster_decoded = encode_ghx_file(r"./gh_scripts/image.ghx")
+
+    boundary_layerIndex = create_layer(tas_planning, "Boundary", (237, 0, 194, 255))
+    admin_layerIndex = create_layer(
+        tas_planning, "Administrative Boundaries", (134, 69, 255, 255))
+    native_layerIndex = create_layer(tas_planning, "Native Land", (134, 69, 255, 255))
+    zoning_layerIndex = create_layer(tas_planning, "Zoning", (255, 180, 18, 255))
+    lots_layerIndex = create_layer(tas_planning, "Lots", (255, 106, 0, 255))
+    road_layerIndex = create_layer(tas_planning, "Roads", (145, 145, 145, 255))
+    walking_layerIndex = create_layer(
+        tas_planning, "Walking Isochrone", (129, 168, 0, 255))
+    cycling_layerIndex = create_layer(
+        tas_planning, "Cycling Isochrone", (0, 168, 168, 255))
+    driving_layerIndex = create_layer(
+        tas_planning, "Driving Isochrone", (168, 0, 121, 255))
+    heritage_layerIndex = create_layer(tas_planning, "Heritage", (153, 153, 153, 255))
+    raster_layerIndex = create_layer(tas_planning, "Raster", (153, 153, 153, 255))
+    
+    l_xmin_LL, l_xmax_LL, l_ymin_LL, l_ymax_LL = create_boundary(lat, lon, 15000)
+    n_xmin_LL, n_xmax_LL, n_ymin_LL, n_ymax_LL = create_boundary(lat, lon, 800000)
+
+    l_params = {
+        'where': '1=1',
+        'geometry': f'{l_xmin_LL}, {l_ymin_LL},{l_xmax_LL},{l_ymax_LL}',
+        'geometryType': 'esriGeometryEnvelope',
+        'spatialRel': 'esriSpatialRelContains',
+        'returnGeometry': 'true',
+        'f': 'json',
+        'outFields': '*',
+        'inSR': '4326',
+        'outSR': '32755',
+    }
+
+    native_post = {
+        'maps': 'territories',
+        'polygon_geojson': {
+            'type': 'FeatureCollection',
+            'features': [
+                {
+                    'type': 'Feature',
+                    'properties': {},
+                    'geometry': {
+                        'type': 'Polygon',
+                        'coordinates': [
+                            [
+                                [n_xmin_LL, n_ymin_LL],
+                                [n_xmax_LL, n_ymin_LL],
+                                [n_xmax_LL, n_ymax_LL],
+                                [n_xmin_LL, n_ymax_LL],
+                                [n_xmin_LL, n_ymin_LL]
+                            ]
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 30000)
+    l_xmin_LL, l_xmax_LL, l_ymin_LL, l_ymax_LL = create_boundary(
+        lat, lon, 15000)
+    n_xmin_LL, n_xmax_LL, n_ymin_LL, n_ymax_LL = create_boundary(
+        lat, lon, 800000)
+
+    boundary_params = create_parameters_vic(
+        f'{lon},{lat}', 'esriGeometryPoint', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
+    params = create_parameters_vic(
+        '', 'esriGeometryEnvelope', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
+
+    boundary_data = get_data(
+        boundary_url, boundary_params)
+    bound_curve = add_bound_curve_to_model(boundary_data, tas_planning, boundary_layerIndex)
+
+    counter = 0
+    while True:
+        native_response = requests.post(native_url, json=native_post)
+        if native_response.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    native_data = native_response.json()
+    for feature in native_data:
+        geometry = feature['geometry']
+        properties = feature['properties']
+        name = properties['Name']
+        for ring in geometry['coordinates']:
+            points = []
+            for coord in ring:
+                native_x, native_y = transformer2_vic.transform(
+                    coord[0], coord[1])
+                point = rh.Point3d(native_x, native_y, 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = native_layerIndex
+            att.SetUserString("Native Name", str(name))
+            tas_planning.Objects.AddCurve(curve, att)
+
+    counter = 0
+    while True:
+        admin_response = requests.get(adminboundaries_url, params=params)
+        if admin_response.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    admin_data = json.loads(admin_response.text)
+    if "features" in admin_data:
+        for feature in admin_data["features"]:
+            suburb_name = feature['attributes']['NAME']
+            geometry = feature["geometry"]
+            for ring in geometry["rings"]:
+                points = []
+                for coord in ring:
+                    point = rh.Point3d(
+                        coord[0], coord[1], 0)
+                    points.append(point)
+                polyline = rh.Polyline(points)
+                curve = polyline.ToNurbsCurve()
+                att = rh.ObjectAttributes()
+                att.LayerIndex = admin_layerIndex
+                att.SetUserString("Suburb Name", str(suburb_name))
+                tas_planning.Objects.AddCurve(curve, att)
+    else:
+        time.sleep(0)
+
+    zoning_curves = []
+    zoning_names = []
+    counter = 0
+    while True:
+        zoning_response = requests.get(zoning_url, params=params)
+        if zoning_response.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    zoning_data = json.loads(zoning_response.text)
+    if "features" in zoning_data:
+        for feature in zoning_data["features"]:
+            zoning_code = feature['attributes']['ZONE']
+            geometry = feature["geometry"]
+            points = []
+            for coord in geometry["rings"][0]:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            curve = polyline.ToNurbsCurve()
+            zoning_curves.append(curve)
+            zoning_names.append(zoning_code)
+    else:
+        time.sleep(0)
+
+    curves_zoning = [{"ParamName": "Curves", "InnerTree": {}}]
+    for i, curve in enumerate(zoning_curves):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        curves_zoning[0]["InnerTree"][key] = value
+
+    names_zoning = [{"ParamName": "Zoning", "InnerTree": {}}]
+    for i, zone in enumerate(zoning_names):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.String",
+                "data": zone
+            }
+        ]
+        names_zoning[0]["InnerTree"][key] = value
+
+    geo_payload = {
+        "algo": gh_zoning_decoded,
+        "pointer": None,
+        "values": curves_zoning + names_zoning
+    }
+
+    zoning_names_sorted = []
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    response_object = json.loads(res.content)['values']
+    for val in response_object:
+        paramName = val['ParamName']
+        if paramName == 'RH_OUT:Zone':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        zoning_names_sorted.append(data)
+
+    i = 0
+    for val in response_object:
+        paramName = val['ParamName']
+        if paramName == 'RH_OUT:Mesh':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = zoning_layerIndex
+                        att.SetUserString(
+                            "Zoning Code", zoning_names_sorted[i])
+                        tas_planning.Objects.AddMesh(geo, att)
+                        i += 1
+
+    counter = 0
+    while True:
+        lots_response = requests.get(boundary_url, params=l_params)
+        if lots_response.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    lots_data = json.loads(lots_response.text)
+    if "features" in lots_data:
+        for feature in lots_data["features"]:
+            lot_number = feature['attributes']['PID']
+            geometry = feature["geometry"]
+            for ring in geometry["rings"]:
+                points = []
+                for coord in ring:
+                    point = rh.Point3d(
+                        coord[0], coord[1], 0)
+                    points.append(point)
+                polyline = rh.Polyline(points)
+                curve = polyline.ToNurbsCurve()
+                att = rh.ObjectAttributes()
+                att.SetUserString("Lot ID", str(lot_number))
+                att.LayerIndex = lots_layerIndex
+                tas_planning.Objects.AddCurve(curve, att)
+
+    else:
+        time.sleep(0)
+
+    heritage_data = get_data(heritage_url, params)
+    add_to_model(heritage_data, heritage_layerIndex,
+                 "THR_NAME", "Heritage Name", tas_planning)
+
+    tiles = list(mercantile.tiles(
+        xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
+    zoom = 16
+
+    road_curves = []
+    for tile in tiles:
+        mb_url = f"https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/{zoom}/{tile.x}/{tile.y}.mvt?access_token={mapbox_access_token}"
+        counter = 0
+        while True:
+            mb_response = requests.get(mb_url)
+            if mb_response.status_code == 200:
+                break
+            else:
+                counter += 1
+                if counter >= 3:
+                    return jsonify({'error': True})
+        mb_data = mb_response.content
+        tiles1 = mapbox_vector_tile.decode(mb_data)
+
+        if 'road' not in tiles1:
+            continue
+
+        road_layer = tiles1['road']
+
+        tile1 = mercantile.Tile(tile.x, tile.y, 16)
+        bbox = mercantile.bounds(tile1)
+        lon1, lat1, lon2, lat2 = bbox
+
+        for feature in road_layer['features']:
+            geometry_type = feature['geometry']['type']
+            road_class = feature['properties']['class']
+            if geometry_type == 'LineString':
+                geometry = feature['geometry']['coordinates']
+                points = []
+                for ring in geometry:
+                    x_val, y_val = ring[0], ring[1]
+                    x_prop = (x_val / 4096)
+                    y_prop = (y_val / 4096)
+                    lon_delta = lon2 - lon1
+                    lat_delta = lat2 - lat1
+                    lon_mapped = lon1 + (x_prop * lon_delta)
+                    lat_mapped = lat1 + (y_prop * lat_delta)
+                    lon_mapped, lat_mapped = transformer2_vic.transform(
+                        lon_mapped, lat_mapped)
+                    point = rh.Point3d(lon_mapped, lat_mapped, 0)
+                    points.append(point)
+
+                polyline = rh.Polyline(points)
+                curve = polyline.ToNurbsCurve()
+                road_curves.append(curve)
+
+            elif geometry_type == 'MultiLineString':
+                geometry = feature['geometry']['coordinates']
+                for line_string in geometry:
+                    points = []
+                    for ring in line_string:
+                        x_val, y_val = ring[0], ring[1]
+                        x_prop = (x_val / 4096)
+                        y_prop = (y_val / 4096)
+                        lon_delta = lon2 - lon1
+                        lat_delta = lat2 - lat1
+                        lon_mapped = lon1 + (x_prop * lon_delta)
+                        lat_mapped = lat1 + (y_prop * lat_delta)
+                        lon_mapped, lat_mapped = transformer2_vic.transform(
+                            lon_mapped, lat_mapped)
+                        point = rh.Point3d(
+                            lon_mapped, lat_mapped, 0)
+                        points.append(point)
+                    polyline = rh.Polyline(points)
+                    curve = polyline.ToNurbsCurve()
+                    road_curves.append(curve)
+
+    curves_list_roads = [{"ParamName": "Curves", "InnerTree": {}}]
+
+    for i, curve in enumerate(road_curves):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        curves_list_roads[0]["InnerTree"][key] = value
+
+    geo_payload = {
+        "algo": gh_roads_decoded,
+        "pointer": None,
+        "values": curves_list_roads
+    }
+
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    response_object = json.loads(res.content)['values']
+    for val in response_object:
+        paramName = val['ParamName']
+        if paramName == 'RH_OUT:Roads':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = road_layerIndex
+                        tas_planning.Objects.AddCurve(geo, att)
+
+    profile1 = 'mapbox/walking'
+    profile2 = 'mapbox/cycling'
+    profile3 = 'mapbox/driving'
+    longitude_iso = lon
+    latitude_iso = lat
+    iso_url_w = f'https://api.mapbox.com/isochrone/v1/{profile1}/{longitude_iso},{latitude_iso}?contours_minutes=5&polygons=true&access_token={mapbox_access_token}'
+    iso_url_c = f'https://api.mapbox.com/isochrone/v1/{profile2}/{longitude_iso},{latitude_iso}?contours_minutes=10&polygons=true&access_token={mapbox_access_token}'
+    iso_url_d = f'https://api.mapbox.com/isochrone/v1/{profile3}/{longitude_iso},{latitude_iso}?contours_minutes=15&polygons=true&access_token={mapbox_access_token}'
+
+    counter = 0
+    while True:
+        iso_response_w = requests.get(iso_url_w)
+        if iso_response_w.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    walking_data = json.loads(iso_response_w.content.decode())
+
+    counter = 0
+    while True:
+        iso_response_c = requests.get(iso_url_c)
+        if iso_response_c.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    cycling_data = json.loads(iso_response_c.content.decode())
+
+    counter = 0
+    while True:
+        iso_response_d = requests.get(iso_url_d)
+        if iso_response_d.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    driving_data = json.loads(iso_response_d.content.decode())
+
+    def add_curves_to_model(data, transformer, layerIndex, model):
+        curves = []
+        for feature in data['features']:
+            geometry_type = feature['geometry']['type']
+            if geometry_type == 'Polygon':
+                geometry = feature['geometry']['coordinates']
+                for ring in geometry:
+                    points = []
+                    for coord in ring:
+                        iso_x, iso_y = coord[0], coord[1]
+                        iso_x, iso_y = transformer.transform(iso_x, iso_y)
+                        point = rh.Point3d(iso_x, iso_y, 0)
+                        points.append(point)
+                    polyline = rh.Polyline(points)
+                    curve = polyline.ToNurbsCurve()
+                    curves.append(curve)
+
+        curves_data = [{"ParamName": "Curves", "InnerTree": {}}]
+        for i, curve in enumerate(curves):
+            serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "Rhino.Geometry.Curve",
+                    "data": serialized_curve
+                }
+            ]
+            curves_data[0]["InnerTree"][key] = value
+
+        geo_payload = {
+            "algo": gh_interpolate_decoded,
+            "pointer": None,
+            "values": curves_data
+        }
+        counter = 0
+        while True:
+            res = requests.post(compute_url + "grasshopper",
+                                json=geo_payload, headers=headers)
+            if res.status_code == 200:
+                break
+            else:
+                counter += 1
+                if counter >= 3:
+                    return jsonify({'error': True})
+        response_object = json.loads(res.content)['values']
+        for val in response_object:
+            paramName = val['ParamName']
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = layerIndex
+                        tas_planning.Objects.AddCurve(geo, att)
+
+    add_curves_to_model(walking_data, transformer2_vic, walking_layerIndex, tas_planning)
+    add_curves_to_model(cycling_data, transformer2_vic, cycling_layerIndex, tas_planning)
+    add_curves_to_model(driving_data, transformer2_vic, driving_layerIndex, tas_planning)
+
+    ras_xmin_LL, ras_xmax_LL, ras_ymin_LL, ras_ymax_LL = create_boundary(lat, lon, 1000)
+
+    ras_tiles = list(mercantile.tiles(ras_xmin_LL, ras_ymin_LL, ras_xmax_LL, ras_ymax_LL, zooms=16))
+
+    for tile in ras_tiles:
+        mb_url = f"https://api.mapbox.com/v4/mapbox.satellite/{zoom}/{tile.x}/{tile.y}@2x.png256?access_token={mapbox_access_token}"
+        response = requests.get(mb_url)
+
+        if response.status_code == 200:
+            image_data = BytesIO(response.content)
+            image = Image.open(image_data)
+            file_name = "ras.png"
+            image.save('./tmp/' + file_name)
+
+    rastile = ras_tiles[0] 
+
+    bbox = mercantile.bounds(rastile)
+    lon1, lat1, lon2, lat2 = bbox
+    t_lon1, t_lat1 = transformer2_vic.transform(lon1, lat1)
+    t_lon2, t_lat2 = transformer2_vic.transform(lon2, lat2)
+
+    raster_points = [
+        rh.Point3d(t_lon1, t_lat1, 0),
+        rh.Point3d(t_lon2, t_lat1, 0),
+        rh.Point3d(t_lon2, t_lat2, 0),
+        rh.Point3d(t_lon1, t_lat2, 0),
+        rh.Point3d(t_lon1, t_lat1, 0)
+    ]
+
+    points_list = rh.Point3dList(raster_points)
+    raster_curve = rh.PolylineCurve(points_list)
+    raster_curve = raster_curve.ToNurbsCurve()
+
+    with open('./tmp/' + file_name, 'rb') as img_file:
+        img_bytes = img_file.read()
+
+    b64_string = base64.b64encode(img_bytes).decode('utf-8')
+
+    string_encoded = b64_string
+    send_string = [{"ParamName": "BaseString", "InnerTree": {}}]
+
+    serialized_string = json.dumps(string_encoded, cls=__Rhino3dmEncoder)
+    key = "{0};0".format(0)
+    value = [
+        {
+            "type": "System.String",
+            "data": serialized_string
+        }
+    ]
+    send_string[0]["InnerTree"][key] = value
+
+    curve_payload = [{"ParamName": "Curve", "InnerTree": {}}]
+    serialized_curve = json.dumps(raster_curve, cls=__Rhino3dmEncoder)
+    key = "{0};0".format(0)
+    value = [
+        {
+            "type": "Rhino.Geometry.Curve",
+            "data": serialized_curve
+        }
+    ]
+    curve_payload[0]["InnerTree"][key] = value
+
+    geo_payload = {
+        "algo": gh_raster_decoded,
+        "pointer": None,
+        "values": send_string + curve_payload
+    }
+
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    response_object = json.loads(res.content)['values']
+
+    for val in response_object:
+        paramName = val['ParamName']
+        innerTree = val['InnerTree']
+        for key, innerVals in innerTree.items():
+            for innerVal in innerVals:
+                if 'data' in innerVal:
+                    data = json.loads(innerVal['data'])
+                    geo = rh.CommonObject.Decode(data)
+                    att = rh.ObjectAttributes()
+                    att.LayerIndex = raster_layerIndex
+                    tas_planning.Objects.AddMesh(geo, att)
+
+    cen_x, cen_y = transformer2_vic.transform(lon, lat)
+    centroid = rh.Point3d(cen_x, cen_y, 0)
+    translation_vector = rh.Vector3d(-centroid.X, -centroid.Y, -centroid.Z)
+
+    if bound_curve is not None:
+        bound_curve.Translate(translation_vector)
+
+    for obj in tas_planning.Objects:
+        if obj.Geometry != bound_curve and obj.Geometry is not None:
+            obj.Geometry.Translate(translation_vector)
+
+    filename = "tas_planning.3dm"
+    tas_planning.Write('./tmp/files/' + str(filename))
+
+    return send_from_directory('./tmp/files/', filename, as_attachment=True)
+
+@application.route('/tas_geometry', methods=['POST'])
+def tas_geometry():
+    boundary_url = 'https://services.thelist.tas.gov.au/arcgis/rest/services/Public/PlanningOnline/MapServer/2/query'
+    topo_url = "https://services.thelist.tas.gov.au/arcgis/rest/services/Public/TopographyAndRelief/MapServer/13/query"
+
+    address = request.form.get('address')
+    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    params = {
+        "access_token": mapbox_access_token,
+        "autocomplete": False,
+        "limit": 1,
+        "query": address,
+    }
+
+    response = requests.get(endpoint.format(address=address), params=params)
+    if response.status_code == 200:
+        result = response.json()["features"][0]
+        longitude, latitude = result["center"]
+        lon = float(longitude)
+        lat = float(latitude)
+    else:
+        return jsonify({'error': True})
+
+    tas_g = rh.File3dm()
+    tas_g.Settings.ModelUnitSystem = rh.UnitSystem.Meters
+
+    boundary_layerIndex = create_layer(tas_g, "Boundary", (237, 0, 194, 255))
+    building_layerIndex = create_layer(tas_g, "Buildings", (99, 99, 99, 255))
+    contours_layerIndex = create_layer(tas_g, "Contours", (191, 191, 191, 255))
+    geometry_layerIndex = create_layer(tas_g, "Geometry", (191, 191, 191, 255))
+    buildingfootprint_LayerIndex = create_layer(tas_g, "Building Footprint", (191, 191, 191, 255))
+
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
+    t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
+        lat, lon, 30000)
+
+    boundary_params = create_parameters(
+        f'{lon},{lat}', 'esriGeometryPoint', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
+    params = create_parameters(
+        '', 'esriGeometryEnvelope', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
+    topo_params = create_parameters(
+        '', 'esriGeometryEnvelope', t_xmin_LL, t_ymin_LL, t_xmax_LL, t_ymax_LL)
+
+    params_dict = {
+        boundary_url: boundary_params,
+        topo_url: topo_params
+    }
+
+    urls = [
+        boundary_url,
+        topo_url
+    ]
+
+    data_dict = {}
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_to_url = {executor.submit(
+            get_data, url, params=params_dict[url]): url for url in urls}
+        for future in concurrent.futures.as_completed(future_to_url):
+            url = future_to_url[future]
+            data = future.result()
+            if data is not None:
+                if url == topo_url:
+                    data_dict['topography_data'] = data
+                elif url == boundary_url:
+                    data_dict['boundary_data'] = data
+
+    topography_data = data_dict.get('topography_data')
+    boundary_data = data_dict.get('boundary_data')
+
+    tiles = list(mercantile.tiles(
+        xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
+    zoom = 16
+
+    bound_curve = add_bound_curve_to_model(
+        boundary_data, tas_g, boundary_layerIndex)
+
+    for tile in tiles:
+        mb_data = concurrent_fetching(zoom, tile)
+        tiles1 = mapbox_vector_tile.decode(mb_data)
+
+        if 'building' in tiles1:
+            building_layerMB = tiles1['building']
+
+            tile1 = mercantile.Tile(tile.x, tile.y, 16)
+            bbox = mercantile.bounds(tile1)
+            lon1, lat1, lon2, lat2 = bbox
+
+            for feature in building_layerMB['features']:
+                geometry_type = feature['geometry']['type']
+                height = feature['properties']['height']
+                if geometry_type == 'Polygon':
+                    geometry = feature['geometry']['coordinates']
+                    for ring in geometry:
+                        points = []
+                        for coord in ring:
+                            x_val, y_val = coord[0], coord[1]
+                            x_prop = (x_val / 4096)
+                            y_prop = (y_val / 4096)
+                            lon_delta = lon2 - lon1
+                            lat_delta = lat2 - lat1
+                            lon_mapped = lon1 + (x_prop * lon_delta)
+                            lat_mapped = lat1 + (y_prop * lat_delta)
+                            lon_mapped, lat_mapped = transformer2.transform(
+                                lon_mapped, lat_mapped)
+                            point = rh.Point3d(
+                                lon_mapped, lat_mapped, 0)
+                            points.append(point)
+                        polyline = rh.Polyline(points)
+                        curve = polyline.ToNurbsCurve()
+                        orientation = curve.ClosedCurveOrientation()
+                        if str(orientation) == 'CurveOrientation.Clockwise':
+                            curve.Reverse()
+                        att_bf = rh.ObjectAttributes()
+                        att_bf.LayerIndex = buildingfootprint_LayerIndex
+                        tas_g.Objects.AddCurve(curve, att_bf)
+                        extrusion = rh.Extrusion.Create(
+                            curve, height, True)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = building_layerIndex
+                        att.SetUserString(
+                            "Building Height", str(height))
+                        tas_g.Objects.AddExtrusion(
+                            extrusion, att)
+                elif geometry_type == 'MultiPolygon':
+                    geometry = feature['geometry']['coordinates']
+                    for polygon in geometry:
+                        for ring in polygon:
+                            points = []
+                            for coord in ring:
+                                x_val, y_val = coord[0], coord[1]
+                                x_prop = (x_val / 4096)
+                                y_prop = (y_val / 4096)
+                                lon_delta = lon2 - lon1
+                                lat_delta = lat2 - lat1
+                                lon_mapped = lon1 + \
+                                    (x_prop * lon_delta)
+                                lat_mapped = lat1 + \
+                                    (y_prop * lat_delta)
+                                lon_mapped, lat_mapped = transformer2.transform(
+                                    lon_mapped, lat_mapped)
+                                point = rh.Point3d(
+                                    lon_mapped, lat_mapped, 0)
+                                points.append(point)
+                            polyline = rh.Polyline(points)
+                            curve = polyline.ToNurbsCurve()
+                            orientation = curve.ClosedCurveOrientation()
+                            if str(orientation) == 'CurveOrientation.Clockwise':
+                                curve.Reverse()
+                            att_bf = rh.ObjectAttributes()
+                            att_bf.LayerIndex = buildingfootprint_LayerIndex
+                            tas_g.Objects.AddCurve(curve, att_bf)
+                            extrusion = rh.Extrusion.Create(
+                                curve, height, True)
+                            att = rh.ObjectAttributes()
+                            att.LayerIndex = building_layerIndex
+                            att.SetUserString(
+                                "Building Height", str(height))
+                            tas_g.Objects.AddExtrusion(
+                                extrusion, att)
+        else:
+            time.sleep(0)
+
+    if "features" in topography_data:
+        for feature in topography_data["features"]:
+            elevation = feature['attributes']['ELEVATION']
+            geometry = feature["geometry"]
+            for ring in geometry["paths"]:
+                points = []
+                for coord in ring:
+                    point = rh.Point3d(
+                        coord[0], coord[1], 0)
+                    points.append(point)
+                polyline = rh.Polyline(points)
+                curve = polyline.ToNurbsCurve()
+                att = rh.ObjectAttributes()
+                att.LayerIndex = contours_layerIndex
+                att.SetUserString(
+                    "Elevation", str(elevation))
+                tas_g.Objects.AddCurve(curve, att)
+    else:
+        time.sleep(0)
+
+    cen_x, cen_y = transformer2.transform(lon, lat)
+    centroid = rh.Point3d(cen_x, cen_y, 0)
+
+    translation_vector = rh.Vector3d(-centroid.X, -
+                                     centroid.Y, -centroid.Z)
+
+    if bound_curve is not None:  # Check if bound_curve is not None
+        bound_curve.Translate(translation_vector)
+
+    for obj in tas_g.Objects:
+        if obj.Geometry != bound_curve and obj.Geometry is not None:  # Check if obj.Geometry is not None
+            obj.Geometry.Translate(translation_vector)
+
+    filename = "tas_geometry.3dm"
+    tas_g.Write('./tmp/files/' + str(filename))
+
+    return send_from_directory('./tmp/files/', filename, as_attachment=True)
+
+
+@application.route('/tas_elevated', methods=['POST'])
+def tas_elevated():
+    boundary_url = 'https://services.thelist.tas.gov.au/arcgis/rest/services/Public/PlanningOnline/MapServer/2/query'
+    topo_url = "https://services.thelist.tas.gov.au/arcgis/rest/services/Public/TopographyAndRelief/MapServer/13/query"
+
+    address = request.form.get('address')
+    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    params = {
+        "access_token": mapbox_access_token,
+        "autocomplete": False,
+        "limit": 1,
+        "query": address,
+    }
+
+    response = requests.get(endpoint.format(address=address), params=params)
+    if response.status_code == 200:
+        result = response.json()["features"][0]
+        longitude, latitude = result["center"]
+        lon = float(longitude)
+        lat = float(latitude)
+    else:
+        return jsonify({'error': True})
+
+    tas_e = rh.File3dm()
+    tas_e.Settings.ModelUnitSystem = rh.UnitSystem.Meters
+
+    boundary_layerEIndex = create_layer(tas_e, "Boundary Elevated", (237, 0, 194, 255))
+    building_layer_EIndex = create_layer(
+        tas_e, "Buildings Elevated", (99, 99, 99, 255))
+    topography_layerIndex = create_layer(
+        tas_e, "Topography", (191, 191, 191, 255))
+    contours_layer_EIndex = create_layer(
+        tas_e, "Contours Elevated", (191, 191, 191, 255))
+
+    gh_topography_decoded = encode_ghx_file(r"./gh_scripts/topography.ghx")
+    gh_buildings_elevated_decoded = encode_ghx_file(
+        r"./gh_scripts/elevate_buildings.ghx")
+
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
+    t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
+        lat, lon, 30000)
+
+    boundary_params = create_parameters(
+        f'{lon},{lat}', 'esriGeometryPoint', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
+    params = create_parameters(
+        '', 'esriGeometryEnvelope', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
+    topo_params = create_parameters(
+        '', 'esriGeometryEnvelope', t_xmin_LL, t_ymin_LL, t_xmax_LL, t_ymax_LL)
+
+    params_dict = {
+        boundary_url: boundary_params,
+        topo_url: topo_params
+    }
+
+    urls = [
+        boundary_url,
+        topo_url
+    ]
+
+    data_dict = {}
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_to_url = {executor.submit(
+            get_data, url, params=params_dict[url]): url for url in urls}
+        for future in concurrent.futures.as_completed(future_to_url):
+            url = future_to_url[future]
+            data = future.result()
+            if data is not None:
+                if url == topo_url:
+                    data_dict['topography_data'] = data
+                elif url == boundary_url:
+                    data_dict['boundary_data'] = data
+
+    topography_data = data_dict.get('topography_data')
+    boundary_data = data_dict.get('boundary_data')
+
+    bound_curve = add_bound_curve_to_model(
+        boundary_data, tas_e, boundary_layerEIndex)
+
+    tiles = list(mercantile.tiles(
+        xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
+    zoom = 16
+
+    buildings = []
+    for tile in tiles:
+        mb_data = concurrent_fetching(zoom, tile)
+        tiles1 = mapbox_vector_tile.decode(mb_data)
+
+        if 'building' in tiles1:
+            building_layerMB = tiles1['building']
+
+            tile1 = mercantile.Tile(tile.x, tile.y, 16)
+            bbox = mercantile.bounds(tile1)
+            lon1, lat1, lon2, lat2 = bbox
+
+            for feature in building_layerMB['features']:
+                geometry_type = feature['geometry']['type']
+                height = feature['properties']['height']
+                if geometry_type == 'Polygon':
+                    geometry = feature['geometry']['coordinates']
+                    for ring in geometry:
+                        points = []
+                        for coord in ring:
+                            x_val, y_val = coord[0], coord[1]
+                            x_prop = (x_val / 4096)
+                            y_prop = (y_val / 4096)
+                            lon_delta = lon2 - lon1
+                            lat_delta = lat2 - lat1
+                            lon_mapped = lon1 + (x_prop * lon_delta)
+                            lat_mapped = lat1 + (y_prop * lat_delta)
+                            lon_mapped, lat_mapped = transformer2.transform(
+                                lon_mapped, lat_mapped)
+                            point = rh.Point3d(
+                                lon_mapped, lat_mapped, 0)
+                            points.append(point)
+                        polyline = rh.Polyline(points)
+                        curve = polyline.ToNurbsCurve()
+                        orientation = curve.ClosedCurveOrientation()
+                        if str(orientation) == 'CurveOrientation.Clockwise':
+                            curve.Reverse()
+                        extrusion = rh.Extrusion.Create(
+                            curve, height, True)
+                        buildings.append(extrusion)
+                elif geometry_type == 'MultiPolygon':
+                    geometry = feature['geometry']['coordinates']
+                    for polygon in geometry:
+                        for ring in polygon:
+                            points = []
+                            for coord in ring:
+                                x_val, y_val = coord[0], coord[1]
+                                x_prop = (x_val / 4096)
+                                y_prop = (y_val / 4096)
+                                lon_delta = lon2 - lon1
+                                lat_delta = lat2 - lat1
+                                lon_mapped = lon1 + \
+                                    (x_prop * lon_delta)
+                                lat_mapped = lat1 + \
+                                    (y_prop * lat_delta)
+                                lon_mapped, lat_mapped = transformer2.transform(
+                                    lon_mapped, lat_mapped)
+                                point = rh.Point3d(
+                                    lon_mapped, lat_mapped, 0)
+                                points.append(point)
+                            polyline = rh.Polyline(points)
+                            curve = polyline.ToNurbsCurve()
+                            orientation = curve.ClosedCurveOrientation()
+                            if str(orientation) == 'CurveOrientation.Clockwise':
+                                curve.Reverse()
+                            extrusion = rh.Extrusion.Create(
+                                curve, height, True)
+                            buildings.append(extrusion)
+        else:
+            time.sleep(0)
+
+    terrain_curves = []
+    terrain_elevations = []
+    if "features" in topography_data:
+        for feature in topography_data["features"]:
+            elevation = feature['attributes']['ELEVATION']
+            geometry = feature["geometry"]
+            for ring in geometry["paths"]:
+                points = []
+                points_e = []
+                for coord in ring:
+                    point = rh.Point3d(
+                        coord[0], coord[1], 0)
+                    point_e = rh.Point3d(
+                        coord[0], coord[1], elevation)
+                    points.append(point)
+                    points_e.append(point_e)
+                polyline = rh.Polyline(points)
+                polyline_e = rh.Polyline(points_e)
+                curve = polyline.ToNurbsCurve()
+                curve_e = polyline_e.ToNurbsCurve()
+                terrain_curves.append(curve)
+                terrain_elevations.append(int(elevation))
+                att = rh.ObjectAttributes()
+                att.LayerIndex = contours_layer_EIndex
+                att.SetUserString("Elevation", str(elevation))
+                tas_e.Objects.AddCurve(
+                    curve_e, att)
+    else:
+        time.sleep(0)
+
+    mesh_geo_list = []
+    curves_list_terrain = [
+        {"ParamName": "Curves", "InnerTree": {}}]
+
+    for i, curve in enumerate(terrain_curves):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        curves_list_terrain[0]["InnerTree"][key] = value
+
+    elevations_list_terrain = [
+        {"ParamName": "Elevations", "InnerTree": {}}]
+    for i, elevation in enumerate(terrain_elevations):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Int32",
+                "data": elevation
+            }
+        ]
+        elevations_list_terrain[0]["InnerTree"][key] = value
+
+    centre_list = []
+    cen_x, cen_y = transformer2.transform(lon, lat)
+    centroid = rh.Point3d(cen_x, cen_y, 0)
+    centre_list.append(centroid)
+
+    centre_point_list = [{"ParamName": "Point", "InnerTree": {}}]
+    for i, point in enumerate(centre_list):
+        serialized_point = json.dumps(point, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Point",
+                "data": serialized_point
+            }
+        ]
+        centre_point_list[0]["InnerTree"][key] = value
+
+    geo_payload = {
+        "algo": gh_topography_decoded,
+        "pointer": None,
+        "values": curves_list_terrain + elevations_list_terrain + centre_point_list
+    }
+
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    response_object = json.loads(res.content)['values']
+    for val in response_object:
+        paramName = val['ParamName']
+        innerTree = val['InnerTree']
+        for key, innerVals in innerTree.items():
+            for innerVal in innerVals:
+                if 'data' in innerVal:
+                    data = json.loads(innerVal['data'])
+                    mesh_geo = rh.CommonObject.Decode(data)
+                    mesh_geo_list.append(mesh_geo)
+                    att = rh.ObjectAttributes()
+                    att.LayerIndex = topography_layerIndex
+                    tas_e.Objects.AddMesh(mesh_geo, att)
+
+    buildings_elevated = [
+        {"ParamName": "Buildings", "InnerTree": {}}]
+
+    for i, brep in enumerate(buildings):
+        serialized_extrusion = json.dumps(
+            brep, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Extrusion",
+                "data": serialized_extrusion
+            }
+        ]
+        buildings_elevated[0]["InnerTree"][key] = value
+
+    mesh_terrain = [{"ParamName": "Mesh", "InnerTree": {}}]
+    for i, mesh in enumerate(mesh_geo_list):
+        serialized = json.dumps(mesh, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Mesh",
+                "data": serialized
+            }
+        ]
+        mesh_terrain[0]["InnerTree"][key] = value
+
+    boundcurves_list = []
+    boundcurves_list.append(bound_curve)
+
+    bound_curves = [{"ParamName": "Boundary", "InnerTree": {}}]
+    for i, curve in enumerate(boundcurves_list):
+        serialized = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized
+            }
+        ]
+        bound_curves[0]["InnerTree"][key] = value
+
+    geo_payload = {
+        "algo": gh_buildings_elevated_decoded,
+        "pointer": None,
+        "values": buildings_elevated + mesh_terrain + bound_curves
+    }
+
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+    response_object = json.loads(res.content)['values']
+    for val in response_object:
+        paramName = val['ParamName']
+        if paramName == 'RH_OUT:Elevated':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = building_layer_EIndex
+                        tas_e.Objects.AddBrep(geo, att)
+        elif paramName == 'RH_OUT:UpBound':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = boundary_layerEIndex
+                        tas_e.Objects.AddCurve(geo, att)
+
+    cen_x, cen_y = transformer2.transform(lon, lat)
+    centroid = rh.Point3d(cen_x, cen_y, 0)
+
+    translation_vector = rh.Vector3d(-centroid.X, -
+                                     centroid.Y, -centroid.Z)
+
+    if bound_curve is not None:
+        bound_curve.Translate(translation_vector)
+
+    for obj in tas_e.Objects:
+        if obj.Geometry != bound_curve and obj.Geometry is not None:
+            obj.Geometry.Translate(translation_vector)
+
+    filename = "tas_elevated.3dm"
+    tas_e.Write('./tmp/files/' + str(filename))
+
+    return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
 if __name__ == '__main__':
     application.run(host='0.0.0.0', port=5000, debug=True)

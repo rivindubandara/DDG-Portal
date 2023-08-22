@@ -262,7 +262,7 @@ button {
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
   border-radius: 5px;
   background-color: var(--black-300);
-  width: 400px;
+  width: 550px;
   height: 100px;
   z-index: 1;
   transition: opacity 0.3s ease-in-out;
@@ -312,6 +312,12 @@ button {
   width: 70px;
   height: 60px;
   margin: 25px;
+}
+
+.tas-img {
+  width: 85px;
+  height: 60px;
+  margin: 10px;
 }
 
 .state img {

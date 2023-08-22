@@ -57,6 +57,14 @@
               class="state-img vic-img"
           /></a>
         </li>
+        <li>
+          <a href="{{ url_for('tas') }}" onclick="hideStatePicker()"
+            ><img
+              src="/static/images/tas_outline.png"
+              alt=""
+              class="state-img tas-img"
+          /></a>
+        </li>  
       </ul>
     </div>
 
@@ -480,7 +488,7 @@
 
       map.on('style.load', () => {
         map.setConfigProperty('basemap', 'lightPreset', 'dawn');
-    });
+        });
 
       function queryCadastreLayer(lat, lon) {
         var queryUrl =
@@ -1003,7 +1011,7 @@
         });
 
         map.addLayer({
-          id: "nativelands-layer",
+          id: "Territories",
           type: "fill",
           slot: 'middle',
           source: "nativelands-source",
@@ -1019,25 +1027,34 @@
           },
         });
 
-        // map.addLayer({
-        //   id: "nativelands-layer-symbol",
-        //   type: "symbol",
-        //   slot: 'middle',
-        //   source: "nativelands-source",
-        //   "source-layer": "Territories",
-        //   layout: {
-        //     "text-field": ["get", "Name"],
-        //     "text-size": 12,
-        //     "text-anchor": "center",
-        //     "text-allow-overlap": true,
-        //     visibility: "none",
-        //   },
-        //   paint: {
-        //     "text-color": "#fff",
-        //   },
-        //   minzoom: 0,
-        //   maxzoom: 22,
-        // });
+        map.addLayer({
+          id: "Territories-labels",
+          type: "symbol",
+          source: "nativelands-source",
+          "source-layer": "Territories",
+          layout: {
+            "text-field": [
+              "to-string",
+              [
+                "get",
+                "Name"
+              ]
+            ],
+            "text-font": [
+              "Open Sans ExtraBold",
+              "Arial Unicode MS Regular"
+            ],
+            "text-size": 15,
+          },
+          paint: {
+            "text-color": "#ffffff",
+          },
+          minzoom: 0,
+          maxzoom: 22,
+          layout: {
+            visibility: "none",
+          },
+        });
 
         buildingsToggleBtn.classList.add("active");
 
@@ -1150,15 +1167,10 @@
       });
 
       nativelandsToggleBtn.addEventListener("click", function () {
-        const layerId1 = "nativelands-layer";
-        // const layerId2 = "nativelands-layer-symbol";
+        const layerId1 = "Territories";
+        const layerId2 = "Territories-labels";
         toggleLayerVisibility(layerId1, nativelandsToggleBtn);
-        // toggleLayerVisibility(layerId2, nativelandsToggleBtn);
-      });
-
-      wsa_runway05ToggleBtn.addEventListener("click", function () {
-        const layerId = "geojson-layer";
-        toggleLayerVisibility(layerId, wsa_runway05ToggleBtn);
+        toggleLayerVisibility(layerId2, nativelandsToggleBtn);
       });
 
       function toggleLayerVisibility(layerId, toggleBtn) {
