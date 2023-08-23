@@ -95,6 +95,7 @@ def create_parameters_vic(geometry, geometry_type, xmin_LL, ymin_LL, xmax_LL, ym
         params['geometry'] = f'{xmin_LL}, {ymin_LL}, {xmax_LL}, {ymax_LL}'
     return params
 
+
 def get_data(url, params):
     counter = 0
     while True:
@@ -313,6 +314,66 @@ def add_mesh_to_model(data, layerIndex, p_key, paramName, gh_algo, model):
     #                         model.Objects.AddMesh(geo, att)
     #                         i += 1
 
+gh_interpolate_decoded = encode_ghx_file("./gh_scripts/interpolate.ghx")
+
+def add_curves_to_model(data, transformer, layerIndex, model):
+        curves = []
+        for feature in data['features']:
+            geometry_type = feature['geometry']['type']
+            if geometry_type == 'Polygon':
+                geometry = feature['geometry']['coordinates']
+                for ring in geometry:
+                    points = []
+                    for coord in ring:
+                        iso_x, iso_y = coord[0], coord[1]
+                        iso_x, iso_y = transformer.transform(iso_x, iso_y)
+                        point = rh.Point3d(iso_x, iso_y, 0)
+                        points.append(point)
+                    polyline = rh.Polyline(points)
+                    curve = polyline.ToNurbsCurve()
+                    curves.append(curve)
+
+        curves_data = [{"ParamName": "Curves", "InnerTree": {}}]
+        for i, curve in enumerate(curves):
+            serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+            key = f"{{{i};0}}"
+            value = [
+                {
+                    "type": "Rhino.Geometry.Curve",
+                    "data": serialized_curve
+                }
+            ]
+            curves_data[0]["InnerTree"][key] = value
+
+        geo_payload = {
+            "algo": gh_interpolate_decoded,
+            "pointer": None,
+            "values": curves_data
+        }
+        counter = 0
+        while True:
+            res = requests.post(compute_url + "grasshopper",
+                                json=geo_payload, headers=headers)
+            if res.status_code == 200:
+                break
+            else:
+                counter += 1
+                if counter >= 3:
+                    return jsonify({'error': True})
+                time.sleep(0)
+
+        response_object = json.loads(res.content)['values']
+        for val in response_object:
+            paramName = val['ParamName']
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = layerIndex
+                        model.Objects.AddCurve(geo, att)
 
 transformer2 = Transformer.from_crs("EPSG:4326", "EPSG:32756", always_xy=True)
 transformer = Transformer.from_crs("EPSG:3857", "EPSG:32756")
@@ -377,65 +438,6 @@ def get_planning():
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
     zoom = 16
-
-    def add_curves_to_model(data, transformer, layerIndex, model):
-        curves = []
-        for feature in data['features']:
-            geometry_type = feature['geometry']['type']
-            if geometry_type == 'Polygon':
-                geometry = feature['geometry']['coordinates']
-                for ring in geometry:
-                    points = []
-                    for coord in ring:
-                        iso_x, iso_y = coord[0], coord[1]
-                        iso_x, iso_y = transformer.transform(iso_x, iso_y)
-                        point = rh.Point3d(iso_x, iso_y, 0)
-                        points.append(point)
-                    polyline = rh.Polyline(points)
-                    curve = polyline.ToNurbsCurve()
-                    curves.append(curve)
-
-        curves_data = [{"ParamName": "Curves", "InnerTree": {}}]
-        for i, curve in enumerate(curves):
-            serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
-            key = f"{{{i};0}}"
-            value = [
-                {
-                    "type": "Rhino.Geometry.Curve",
-                    "data": serialized_curve
-                }
-            ]
-            curves_data[0]["InnerTree"][key] = value
-
-        geo_payload = {
-            "algo": gh_interpolate_decoded,
-            "pointer": None,
-            "values": curves_data
-        }
-        counter = 0
-        while True:
-            res = requests.post(compute_url + "grasshopper",
-                                json=geo_payload, headers=headers)
-            if res.status_code == 200:
-                break
-            else:
-                counter += 1
-                if counter >= 3:
-                    return jsonify({'error': True})
-                time.sleep(0)
-
-        response_object = json.loads(res.content)['values']
-        for val in response_object:
-            paramName = val['ParamName']
-            innerTree = val['InnerTree']
-            for key, innerVals in innerTree.items():
-                for innerVal in innerVals:
-                    if 'data' in innerVal:
-                        data = json.loads(innerVal['data'])
-                        geo = rh.CommonObject.Decode(data)
-                        att = rh.ObjectAttributes()
-                        att.LayerIndex = layerIndex
-                        model.Objects.AddCurve(geo, att)
 
     z_params = {
         'where': '1=1',
@@ -2678,13 +2680,12 @@ def get_qld_planning():
     profile3 = 'mapbox/driving'
     longitude_iso = lon
     latitude_iso = lat
-    time_iso = '15'
 
-    iso_url_w = f'https://api.mapbox.com/isochrone/v1/{profile1}/{longitude_iso},{latitude_iso}?contours_minutes={time_iso}&polygons=true&access_token={mapbox_access_token}'
+    iso_url_w = f'https://api.mapbox.com/isochrone/v1/{profile1}/{longitude_iso},{latitude_iso}?contours_minutes=5&polygons=true&access_token={mapbox_access_token}'
 
-    iso_url_c = f'https://api.mapbox.com/isochrone/v1/{profile2}/{longitude_iso},{latitude_iso}?contours_minutes={time_iso}&polygons=true&access_token={mapbox_access_token}'
+    iso_url_c = f'https://api.mapbox.com/isochrone/v1/{profile2}/{longitude_iso},{latitude_iso}?contours_minutes=10&polygons=true&access_token={mapbox_access_token}'
 
-    iso_url_d = f'https://api.mapbox.com/isochrone/v1/{profile3}/{longitude_iso},{latitude_iso}?contours_minutes={time_iso}&polygons=true&access_token={mapbox_access_token}'
+    iso_url_d = f'https://api.mapbox.com/isochrone/v1/{profile3}/{longitude_iso},{latitude_iso}?contours_minutes=15&polygons=true&access_token={mapbox_access_token}'
 
     counter = 0
     while True:
@@ -2695,6 +2696,8 @@ def get_qld_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
+
     walking_data = json.loads(iso_response_w.content.decode())
 
     counter = 0
@@ -2706,6 +2709,7 @@ def get_qld_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     cycling_data = json.loads(iso_response_c.content.decode())
 
     counter = 0
@@ -2717,28 +2721,15 @@ def get_qld_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     driving_data = json.loads(iso_response_d.content.decode())
 
-    def add_curves_to_model(data, transformer, layerIndex, model):
-        curves = []
-        for feature in data['features']:
-            geometry_type = feature['geometry']['type']
-            if geometry_type == 'Polygon':
-                geometry = feature['geometry']['coordinates']
-                for ring in geometry:
-                    points = []
-                    for coord in ring:
-                        iso_x, iso_y = coord[0], coord[1]
-                        iso_x, iso_y = transformer.transform(iso_x, iso_y)
-                        point = rh.Point3d(iso_x, iso_y, 0)
-                        points.append(point)
-                    polyline = rh.Polyline(points)
-                    curve = polyline.ToNurbsCurve()
-                    curves.append(curve)
-
-    add_curves_to_model(walking_data, transformer2, walking_layerIndex, qld)
-    add_curves_to_model(cycling_data, transformer2, cycling_layerIndex, qld)
-    add_curves_to_model(driving_data, transformer2, driving_layerIndex, qld)
+    add_curves_to_model(walking_data, transformer2,
+                        walking_layerIndex, qld)
+    add_curves_to_model(cycling_data, transformer2,
+                        cycling_layerIndex, qld)
+    add_curves_to_model(driving_data, transformer2,
+                        driving_layerIndex, qld)
 
     bushfire_curves = []
     bushfire_numbers = []
