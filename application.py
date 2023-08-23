@@ -2687,6 +2687,14 @@ def get_qld_planning():
 
     iso_url_d = f'https://api.mapbox.com/isochrone/v1/{profile3}/{longitude_iso},{latitude_iso}?contours_minutes=15&polygons=true&access_token={mapbox_access_token}'
 
+    iso_url_w_10 = f'https://api.mapbox.com/isochrone/v1/{profile1}/{longitude_iso},{latitude_iso}?contours_minutes=10&polygons=true&access_token={mapbox_access_token}'
+
+    iso_url_w_15 = f'https://api.mapbox.com/isochrone/v1/{profile1}/{longitude_iso},{latitude_iso}?contours_minutes=15&polygons=true&access_token={mapbox_access_token}'
+
+    iso_url_c_15 = f'https://api.mapbox.com/isochrone/v1/{profile2}/{longitude_iso},{latitude_iso}?contours_minutes=15&polygons=true&access_token={mapbox_access_token}'
+
+    iso_url_c_5 = f'https://api.mapbox.com/isochrone/v1/{profile2}/{longitude_iso},{latitude_iso}?contours_minutes=5&polygons=true&access_token={mapbox_access_token}'
+
     counter = 0
     while True:
         iso_response_w = requests.get(iso_url_w)
@@ -2724,12 +2732,68 @@ def get_qld_planning():
             time.sleep(0)
     driving_data = json.loads(iso_response_d.content.decode())
 
+    counter = 0
+    while True:
+        iso_response_c_5 = requests.get(iso_url_c_5)
+        if iso_response_c_5.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+    cycling_data_5 = json.loads(iso_response_c_5.content.decode())
+
+    counter = 0
+    while True:
+        iso_response_c_15 = requests.get(iso_url_c_15)
+        if iso_response_c_15.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+    cycling_data_15 = json.loads(iso_response_c_15.content.decode())
+
+    counter = 0
+    while True:
+        iso_response_w_10 = requests.get(iso_url_w_10)
+        if iso_response_w_10.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+    walking_data_10 = json.loads(iso_response_w_10.content.decode())
+
+    counter = 0
+    while True:
+        iso_response_w_15 = requests.get(iso_url_w_15)
+        if iso_response_w_15.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+    walking_data_15 = json.loads(iso_response_w_15.content.decode())
+
     add_curves_to_model(walking_data, transformer2,
                         walking_layerIndex, qld)
     add_curves_to_model(cycling_data, transformer2,
                         cycling_layerIndex, qld)
     add_curves_to_model(driving_data, transformer2,
                         driving_layerIndex, qld)
+    add_curves_to_model(walking_data_10, transformer2,
+                        walking_layerIndex, qld)
+    add_curves_to_model(walking_data_15, transformer2,
+                        walking_layerIndex, qld)
+    add_curves_to_model(cycling_data_5, transformer2,
+                        cycling_layerIndex, qld)
+    add_curves_to_model(cycling_data_15, transformer2,
+                        cycling_layerIndex, qld)
 
     bushfire_curves = []
     bushfire_numbers = []
