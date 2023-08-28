@@ -4907,15 +4907,15 @@ def carbon():
     previous_gwp = session.get('previous_gwp')
     gwp_status = session.get('gwp_status')
     delta = session.get('delta')
-    color_1 = session.get('color_1')
-    color_2 = session.get('color_2')
-    color_3 = session.get('color_3')
-    color_4 = session.get('color_4')
-    color_5 = session.get('color_5')
-    color_6 = session.get('color_6')
-    color_7 = session.get('color_7')
+    color1 = session.get('color1')
+    color2 = session.get('color2')
+    color3 = session.get('color3')
+    color4 = session.get('color4')
+    color5 = session.get('color5')
+    color6 = session.get('color6')
+    color7 = session.get('color7')
 
-    return render_template('carbon.html', total_carbon=total_carbon, warehouse_carbon=warehouse_carbon, office_carbon=office_carbon, gwp=gwp, file_path=file_path, landscaping_carbon=landscaping_carbon, road_cars_carbon=road_cars_carbon, parking_cars_carbon=parking_cars_carbon, road_trucks_carbon=road_trucks_carbon, parking_trucks_carbon=parking_trucks_carbon, previous_gwp=previous_gwp, gwp_status=gwp_status, delta=delta, color_1=color_1, color_2=color_2, color_3=color_3, color4=color_4, color5=color_5, color_6=color_6, color_7=color_7)
+    return render_template('carbon.html', total_carbon=total_carbon, warehouse_carbon=warehouse_carbon, office_carbon=office_carbon, gwp=gwp, file_path=file_path, landscaping_carbon=landscaping_carbon, road_cars_carbon=road_cars_carbon, parking_cars_carbon=parking_cars_carbon, road_trucks_carbon=road_trucks_carbon, parking_trucks_carbon=parking_trucks_carbon, previous_gwp=previous_gwp, gwp_status=gwp_status, delta=delta, color1=color1, color2=color2, color3=color3, color4=color4, color5=color5, color6=color6, color7=color7)
 
 @application.route('/get_carbon', methods=['POST', 'GET'])
 def get_carbon():
@@ -5323,13 +5323,55 @@ def get_carbon():
                     if 'data' in innerVal:
                         parking_trucks_carbon = round(float(json.loads(innerVal['data'])), 2)
                         session['parking_trucks_carbon'] = parking_trucks_carbon
-        if paramName == "RH_OUT:Colors":
+        if paramName == "RH_OUT:Color1":
             innerTree = val['InnerTree']
             for key, innerVals in innerTree.items():
                 for innerVal in innerVals:
                     if 'data' in innerVal:
-                        colors_list = json.loads(innerVal['data'])
-                        print(colors_list)
+                        color1 = json.loads(innerVal['data'])
+                        session['color1'] = color1
+        if paramName == "RH_OUT:Color2":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        color2 = json.loads(innerVal['data'])
+                        session['color2'] = color2
+        if paramName == "RH_OUT:Color3":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        color3 = json.loads(innerVal['data'])
+                        session['color3'] = color3
+        if paramName == "RH_OUT:Color4":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        color4 = json.loads(innerVal['data'])
+                        session['color4'] = color4
+        if paramName == "RH_OUT:Color5":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        color5 = json.loads(innerVal['data'])
+                        session['color5'] = color5
+        if paramName == "RH_OUT:Color6":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        color6 = json.loads(innerVal['data'])
+                        session['color6'] = color6
+        if paramName == "RH_OUT:Color7":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        color7 = json.loads(innerVal['data'])
+                        session['color7'] = color7
         if paramName == 'RH_OUT:MeshWarehouse':
                 innerTree = val['InnerTree']
                 for key, innerVals in innerTree.items():

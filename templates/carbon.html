@@ -347,7 +347,26 @@
             
     <script>
       var ctx = document.getElementById('resultsChart').getContext('2d');
-    
+
+      var color1 = '{{color1}}'
+      var color2 = '{{color2}}'
+      var color3 = '{{color3}}'
+      var color4 = '{{color4}}'
+      var color5 = '{{color5}}'
+      var color6 = '{{color6}}'
+      var color7 = '{{color7}}'
+
+      var backgroundColors = [
+    'rgb(' + color1 + ')',
+    'rgb(' + color2 + ')',
+    'rgb(' + color3 + ')',
+    'rgb(' + color4 + ')',
+    'rgb(' + color5 + ')',
+    'rgb(' + color6 + ')',
+    'rgb(' + color7 + ')'
+  ];
+      console.log(backgroundColors)
+      
       var labels = ['Warehouse Carbon', 'Office Carbon', 'Landscaping Carbon', 'Road Cars Carbon', 'Road Trucks Carbon', 'Parking Cars Carbon', 'Parking Trucks Carbon'];
       var data = [
     '{{ warehouse_carbon }}',
@@ -365,15 +384,7 @@
           labels: labels,
           datasets: [{
             data: data,
-            backgroundColor: [
-              'rgb(255, 0, 0)',
-              'rgb(158, 205, 0)',
-              'rgb(0, 128, 0)', 
-              'rgb(26, 141, 0)', 
-              'rgb(142, 199, 0)',
-              'rgb(255, 231, 0)',
-              'rgb(232, 244, 0)',
-            ],
+            backgroundColor: backgroundColors,
             borderWidth: 2
           }],
         },
