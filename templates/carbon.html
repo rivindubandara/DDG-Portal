@@ -276,20 +276,6 @@
         { value: "0.87", text: "Steel sheets, generic, 100% recycled content"},
       ]
 
-      var rebarOptions = [
-        { value: "2.6", text: "Steel Reinforcement Bar" },
-      ];
-
-      var steelOptions = [
-        { value: "4.6", text: "Steel Hollow Section" },
-        { value: "2.9", text: "Steel Universal Section" },
-      ];
-
-      var timberOptions = [
-        { value: "6.77", text: "Timber CLT" },
-        { value: "1718", text: "Timber Glu-lam" },
-        { value: "1059", text: "Timber LVL" },
-      ];
 
       function addOptions(selectId, options) {
         var selectBox = document.getElementById(selectId);
@@ -313,6 +299,45 @@
 
       addOptions("parkingCarsChoice", roadOptions)
       addOptions("parkingTrucksChoice", roadOptions)
+    </script>
+
+    <script>
+      $(document).ready(function() {
+        $('select').on('change', function() {
+            var selectId = $(this).attr('id');
+            var selectedValue = $(this).val();
+            sessionStorage.setItem(selectId, selectedValue);
+        });
+    });
+
+      $(document).ready(function() {
+        $('select').each(function() {
+            var selectId = $(this).attr('id');
+            var selectedValue = sessionStorage.getItem(selectId);
+            if (selectedValue) {
+                $(this).val(selectedValue);
+            }
+        });
+      });
+
+      $(document).ready(function() {
+
+          $('select').on('change', function() {
+              var selectId = $(this).attr('id');
+              var selectedValue = $(this).val();
+              sessionStorage.setItem(selectId, selectedValue);
+          });
+
+          $('select').each(function() {
+              var selectId = $(this).attr('id');
+              var selectedValue = sessionStorage.getItem(selectId);
+              if (selectedValue) {
+                  $(this).val(selectedValue);
+              }
+          });
+      });
+
+
     </script>
 
     <script>
