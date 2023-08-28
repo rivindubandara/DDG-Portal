@@ -170,13 +170,13 @@ input[type="range"]::after {
   left: auto;
 }
 
-#submitBtn {
+#submitEnvBtn {
   position: relative;
   display: inline-block;
   text-transform: uppercase;
   color: var(--color-white);
   background: var(--black-300);
-  margin-top: 10px;
+  margin-top: 200px;
   margin-left: 25px;
   text-align: center;
   padding: 10px 40px;
@@ -190,7 +190,7 @@ input[type="range"]::after {
   border: none; 
 }
 
-#submitBtn:active{
+#submitEnvBtn:active{
   transform: scale(0.9);
 }
 
@@ -288,7 +288,7 @@ input[type="range"]::after {
   }
 }
 
-.submitContainer i{
+.submitEnvContainer i{
   padding: 5px;
 }
 

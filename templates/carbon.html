@@ -86,7 +86,7 @@
       <nav class="sidebar__nav">
         <form id="carbonForm" action="./get_carbon" method="POST" enctype="multipart/form-data">
           <input type="file" id="uploadCarbonFile" name="uploadCarbonFile" />
-          <label for="uploadCarbonFile" class="uploadLabel"
+          <label for="uploadCarbonFile" class="uploadCarbonLabel"
             ><i class="ri-upload-line"></i>Upload 3DM</label>
             {% if carbon_file_data %}
             <div class="uploadedFileData">
@@ -157,8 +157,8 @@
             </div>
           </div>
 
-        <div class="submitContainer">
-          <button id="submitBtn" type="submit">
+        <div class="submitCarbonContainer">
+          <button id="submitCarbonBtn" type="submit">
             <i class="ri-send-plane-line"></i>Compute
           </button>
         </div>
@@ -365,7 +365,6 @@
     'rgb(' + color6 + ')',
     'rgb(' + color7 + ')'
   ];
-      console.log(backgroundColors)
       
       var labels = ['Warehouse Carbon', 'Office Carbon', 'Landscaping Carbon', 'Road Cars Carbon', 'Road Trucks Carbon', 'Parking Cars Carbon', 'Parking Trucks Carbon'];
       var data = [

@@ -23,7 +23,7 @@
   width: 300px;
 }
 
-.uploadLabel{
+.uploadCarbonLabel{
   position: fixed;
   display: inline-block;
   text-transform: uppercase;
@@ -204,4 +204,32 @@ button:hover {
 
 .gwp-info p {
   margin: 0 0px;
+}
+
+#submitCarbonBtn {
+  position: relative;
+  display: inline-block;
+  text-transform: uppercase;
+  color: var(--color-white);
+  background: var(--black-300);
+  margin-top: 10px;
+  margin-left: 25px;
+  text-align: center;
+  padding: 10px 40px;
+  font-size: 18px;
+  letter-spacing: 1.5px;
+  user-select: none;
+  cursor: pointer;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 3px;
+  width: 300px;
+  border: none; 
+}
+
+#submitCarbonBtn:active{
+  transform: scale(0.9);
+}
+
+.submitContainer i{
+  padding: 5px;
 }
