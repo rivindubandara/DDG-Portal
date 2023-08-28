@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>early planning</title>
+    <title>Carbon</title>
     <link
       rel="icon"
       type="image/svg"
@@ -15,6 +15,7 @@
       rel="stylesheet"
     />
   </head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script
     async
     src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
@@ -39,6 +40,10 @@
       <p class="thirdLine">PLEASE TRY AGAIN OR CONTACT DDG</p>
     </div>
 
+    <div class="titleLabel">
+      Industrial Building Carbon Calculator
+    </div>
+
     <div class="spinner" id="spinner">
       <div></div>
       <div></div>
@@ -52,37 +57,23 @@
     </div>
 
     {% if gwp is not none %}
-    <div class="gwpContainer">
+    <div class="gwpContainer {% if gwp_status == 'increase' %}red{% elif gwp_status == 'decrease' %}green{% else %}gray{% endif %}">
       <h3>GWP</h3>
       <p>{{ gwp }} kgCO2e/m2</p>
+      <div class="gwp-info">
+        {% if delta is not none %}
+        <i class="ri-arrow-up-down-line"></i>
+        <p>{{ delta }}</p>
+        {% endif %}
+      </div>
     </div>
     {% endif %}
 
+    <div class="chartBox">
+      <canvas id="resultsChart" class="chartCanvas"></canvas>
+    </div>
+
     <div class="resultsContainer">
-      {% if roof_carbon is not none %}
-      <h3>Roof Carbon</h3>
-      <p>{{ roof_carbon }}</p>
-      {% endif %}
-      {% if wall_carbon is not none %}
-      <h3>Wall Carbon</h3>
-      <p>{{ wall_carbon }}</p>
-      {% endif %}
-      {% if slab_carbon is not none %}
-      <h3>Slab Carbon</h3>
-      <p>{{ slab_carbon }}</p>
-      {% endif %}
-      {% if beam_carbon is not none %}
-      <h3>Beam Carbon</h3>
-      <p>{{ beam_carbon }}</p>
-      {% endif %}
-      {% if column_carbon is not none %}
-      <h3>Column Carbon</h3>
-      <p>{{ column_carbon }}</p>
-      {% endif %}
-      {% if total_carbon is not none %}
-      <h3>Total Carbon</h3>
-      <p>{{ total_carbon }}</p>
-      {% endif %}
     </div>
 
     <div class="sidebar">
@@ -109,35 +100,16 @@
             <p>Wall Selection</p>
 
             <div class="selectionContainer">
-              <label for="wallConcrete">Concrete:</label>
+              <label for="wallConcrete">Warehouse:</label>
               <select id="wallConcrete" name="wallConcrete"></select>
             </div>
 
             <div class="selectionContainer">
-              <label for="wallRebar">Rebar:</label>
-              <select id="wallRebar" name="wallRebar"></select>
+              <label for="wallOffice">Office:</label>
+              <select id="wallOffice" name="wallOffice"></select>
             </div>
           </div>
 
-          <div class="columnSelector">
-            <p>Column Selection</p>
-
-            <div class="selectionContainer">
-              <label for="columnChoice">Column:</label>
-              <select id="columnChoice" name="columnChoice"></select>
-            </div>
-
-          </div>
-
-          <div class="beamSelector">
-            <p>Beam Selection</p>
-
-            <div class="selectionContainer">
-              <label for="beamChoice">Beam:</label>
-              <select id="beamChoice" name="beamChoice"></select>
-            </div>
-
-          </div>
 
           <div class="slabSelector">
             <p>Slab Selection</p>
@@ -145,16 +117,6 @@
             <div class="selectionContainer">
               <label for="slabConcrete">Concrete:</label>
               <select id="slabConcrete" name="slabConcrete"></select>
-            </div>
-
-            <div class="selectionContainer">
-              <label for="slabRebar">Rebar:</label>
-              <select id="slabRebar" name="slabRebar"></select>
-            </div>
-
-            <div class="selectionContainer">
-              <label for="slabTimber">Structural Timber:</label>
-              <select id="slabTimber" name="slabTimber"></select>
             </div>
           </div>
 
@@ -167,30 +129,33 @@
             </div>
           </div>
 
-          <div class="gridSelector">
-            <p>Grid Configuration</p>
+          <div class="roadSelector">
+            <p>Road Selection</p>
 
-            <div class="gridContainer">
-              <span class="gridSliderText">Grid U</span>
-            <input
-              type="range"
-              min="3"
-              max="10"
-              id="gridU"
-              name="gridU"
-            />
+            <div class="selectionContainer">
+              <label for="roadCarsChoice">Road Cars:</label>
+              <select id="roadCarsChoice" name="roadCarsChoice"></select>
+            </div>
 
-            <span class="gridSliderText">Grid V</span>
-            <input
-              type="range"
-              min="3"
-              max="10"
-              id="gridV"
-              name="gridV"
-            />
+            <div class="selectionContainer">
+              <label for="roadTrucksChoice">Road Trucks:</label>
+              <select id="roadTrucksChoice" name="roadTrucksChoice"></select>
             </div>
           </div>
-        </div>
+
+          <div class="parkingSelector">
+            <p>Parking Selection</p>
+
+            <div class="selectionContainer">
+              <label for="parkingCarsChoice">Parking Cars:</label>
+              <select id="parkingCarsChoice" name="parkingCarsChoice"></select>
+            </div>
+
+            <div class="selectionContainer">
+              <label for="parkingTrucksChoice">Parking Trucks:</label>
+              <select id="parkingTrucksChoice" name="parkingTrucksChoice"></select>
+            </div>
+          </div>
 
         <div class="submitContainer">
           <button id="submitBtn" type="submit">
@@ -287,21 +252,29 @@
 
     <script>
       var concOptions = [
-        { value: "492", text: "Concrete 50 MPa - GGBS" },
-        { value: "467", text: "Concrete 50 MPa - Fly Ash" },
-        { value: "600", text: "Concrete 50 MPa" },
-        { value: "392", text: "Concrete 40 MPa - GGBS" },
-        { value: "373", text: "Concrete 40 MPa - Fly Ash" },
-        { value: "497", text: "Concrete 40 MPa" },
-        { value: "331", text: "Concrete 32 MPa - GGBS" },
-        { value: "314", text: "Concrete 32 MPa - Fly Ash" },
-        { value: "416", text: "Concrete 32 MPa" },
+        { value: "176", text: "Ready-mix concrete, C32, TBlend (Holcim (NSW and ACT plant))" },
+        { value: "170", text: "Ready-mix concrete, 32 MPa, ViroDecs NE322E5 (Holcim)" },
+        { value: "225", text: "Ready-mix concrete, 32 Mpa, NE322E164, NZ322E164 (Holcim, New South Wales plants (Illawarra and Nowra))" },
+        { value: "215", text: "Ready-mix concrete, lower carbon, 32 Mpa, LC40 32MPa (Concrite, Auburn plant)" },
+        { value: "283", text: "Ready-mix concrete, C32, NN322TR53 (Holcim)" },
+        { value: "338", text: "Ready-mix concrete, 32 MPa, ENVIROCRETE 30% 32 MPa (Boral, Mallee/Murray North Region)" },
+        { value: "333", text: "Ready-mix concrete, C32, NS322FJKH (Holcim)" },
       ];
 
-      var colbeamOptions = [
-        { value: "492", text: "Timber Framing" },
-        { value: "467", text: "Steel Framing" },
+      var roadOptions = [
+        { value: "0.0468", text: "Asphalt, 2% virgin bitumen" },
+        { value: "0.0558", text: "Asphalt, 3% virgin bitumen" },
+        { value: "0.0647", text: "Asphalt, 4% virgin bitumen" },
+        { value: "0.0737", text: "Asphalt, 5% virgin bitumen" },
+        { value: "0.0781", text: "Asphalt, standard mix, 5.5% virgin bitumen" },
       ];
+
+      var roofOptions = [
+        { value: "3.91", text: "Steel sheets, generic, 0% recycled content"},
+        { value: "2.6", text: "Steel sheets, generic, 30% recycled content"},
+        { value: "1.51", text: "Steel sheets, generic, 80% recycled content"},
+        { value: "0.87", text: "Steel sheets, generic, 100% recycled content"},
+      ]
 
       var rebarOptions = [
         { value: "2.6", text: "Steel Reinforcement Bar" },
@@ -329,16 +302,17 @@
       }
 
       addOptions("wallConcrete", concOptions);
-      addOptions("wallRebar", rebarOptions);
+      addOptions("wallOffice", concOptions);
 
       addOptions("slabConcrete", concOptions);
-      addOptions("slabRebar", rebarOptions);
-      addOptions("slabTimber", timberOptions);
 
-      addOptions("columnChoice", colbeamOptions);
-      addOptions("beamChoice", colbeamOptions);
+      addOptions("roofChoice", roofOptions);
 
-      addOptions("roofChoice", colbeamOptions);
+      addOptions("roadCarsChoice", roadOptions)
+      addOptions("roadTrucksChoice", roadOptions)
+
+      addOptions("parkingCarsChoice", roadOptions)
+      addOptions("parkingTrucksChoice", roadOptions)
     </script>
 
     <script>
@@ -368,6 +342,51 @@
         $(".errorPopup").click(function () {
           $(this).hide();
         });
+      });
+    </script>
+            
+    <script>
+      var ctx = document.getElementById('resultsChart').getContext('2d');
+    
+      var labels = ['Warehouse Carbon', 'Office Carbon', 'Landscaping Carbon', 'Road Cars Carbon', 'Road Trucks Carbon', 'Parking Cars Carbon', 'Parking Trucks Carbon'];
+      var data = [
+    '{{ warehouse_carbon }}',
+    '{{ office_carbon }}',
+    '{{ landscaping_carbon }}',
+    '{{ road_cars_carbon }}',
+    '{{ road_trucks_carbon }}',
+    '{{ parking_cars_carbon }}',
+    '{{ parking_trucks_carbon }}',
+  ];
+    
+      var myPieChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: labels,
+          datasets: [{
+            data: data,
+            backgroundColor: [
+              'rgb(255, 0, 0)',
+              'rgb(158, 205, 0)',
+              'rgb(0, 128, 0)', 
+              'rgb(26, 141, 0)', 
+              'rgb(142, 199, 0)',
+              'rgb(255, 231, 0)',
+              'rgb(232, 244, 0)',
+            ],
+            borderWidth: 2
+          }],
+        },
+        options: {
+            plugins: {
+              legend: {
+                position: 'left',
+                labels: {
+                  color: 'rgb(255, 255, 255)'
+                }
+              }
+            }
+          },
       });
     </script>
             

@@ -25,6 +25,7 @@ application.secret_key = 'nettletontribe_secret_key'
 mapbox_access_token = 'pk.eyJ1Ijoicml2aW5kdWIiLCJhIjoiY2xmYThkcXNjMHRkdDQzcGU4Mmh2a3Q3MSJ9.dXlhamKyYyGusL3PWqDD9Q'
 
 compute_url = "http://13.54.229.195:80/"
+#compute_url = "http://localhost:6500/"
 headers = {
     "RhinoComputeKey": "8c96f7d9-5a62-4bbf-ad3f-6e976b94ea1e"
 }
@@ -4894,45 +4895,68 @@ def get_vic_elevated():
 @application.route('/carbon', methods=['GET', 'POST'])
 def carbon():
     total_carbon = session.get('total_carbon')
-    roof_carbon = session.get('roof_carbon')
-    wall_carbon = session.get('wall_carbon')
-    slab_carbon = session.get('slab_carbon')
-    column_carbon = session.get('column_carbon')
-    beam_carbon = session.get('beam_carbon')
+    warehouse_carbon = session.get('warehouse_carbon')
+    office_carbon = session.get('office_carbon')
+    landscaping_carbon = session.get('landscaping_carbon')
+    road_cars_carbon = session.get('road_cars_carbon')
+    parking_cars_carbon = session.get('parking_cars_carbon')
+    road_trucks_carbon = session.get('road_trucks_carbon')
+    parking_trucks_carbon = session.get('parking_trucks_carbon')
     gwp = session.get('gwp')
-    carbon_file_data = session.get('carbon_file_data')
+    file_path = session.get('file_path')
+    previous_gwp = session.get('previous_gwp')
+    gwp_status = session.get('gwp_status')
+    delta = session.get('delta')
 
-    return render_template('carbon.html', total_carbon=total_carbon, roof_carbon=roof_carbon, wall_carbon=wall_carbon, slab_carbon=slab_carbon, column_carbon=column_carbon, beam_carbon=beam_carbon, gwp=gwp,carbon_file_data=carbon_file_data)
+    return render_template('carbon.html', total_carbon=total_carbon, warehouse_carbon=warehouse_carbon, office_carbon=office_carbon, gwp=gwp, file_path=file_path, landscaping_carbon=landscaping_carbon, road_cars_carbon=road_cars_carbon, parking_cars_carbon=parking_cars_carbon, road_trucks_carbon=road_trucks_carbon, parking_trucks_carbon=parking_trucks_carbon, previous_gwp=previous_gwp, gwp_status=gwp_status, delta=delta)
 
 @application.route('/get_carbon', methods=['POST'])
 def get_carbon():
 
-    file = request.files['uploadCarbonFile']
-    if file:
-        file_path = 'tmp/files/' + file.filename
-        file.save(file_path)
-        file_data = file.read() 
-        session['carbon_file_data'] = file_data
-    else:
-        return jsonify({'error': True})
-    
-    gridU = int(request.form['gridU'])
-    gridV = int(request.form['gridV'])
-    
+    file_path = session.get('file_path')
+    if file_path is None:
+        file = request.files['uploadCarbonFile']
+        if file:
+            file_path = 'tmp/files/' + file.filename
+            file.save(file_path)
+            session['file_path'] = file_path
+        else:
+            return jsonify({'error': True})
+
     rhFile = rh.File3dm.Read(file_path)
     layers = rhFile.Layers
 
     shed = []
     office = []
+    landscaping = []
+    parking_trucks = []
+    road_trucks = []
+    parking_cars = []
+    road_cars = []
     for obj in rhFile.Objects:
         layer_index = obj.Attributes.LayerIndex
-        if layers[layer_index].Name == "INDUSTRIAL SHED":
+        if layers[layer_index].Name == "WAREHOUSE":
             shed.append(obj)
-        if layers[layer_index].Name == "INDUSTRIAL OFFICE":
+        if layers[layer_index].Name == "OFFICE":
             office.append(obj)
+        if layers[layer_index].Name == "LANDSCAPING":
+            landscaping.append(obj)
+        if layers[layer_index].Name == "ROAD CARS":
+            road_cars.append(obj)
+        if layers[layer_index].Name == "PARKING CARS":
+            parking_cars.append(obj)
+        if layers[layer_index].Name == "ROAD TRUCKS":
+            road_trucks.append(obj)
+        if layers[layer_index].Name == "PARKING TRUCKS":
+            parking_trucks.append(obj)
 
     shed_breps = [obj.Geometry for obj in shed]
     office_breps = [obj.Geometry for obj in office]
+    landscaping_breps = [obj.Geometry for obj in landscaping]
+    road_cars_breps = [obj.Geometry for obj in road_cars]
+    road_trucks_breps = [obj.Geometry for obj in road_trucks]
+    parking_cars_breps = [obj.Geometry for obj in parking_cars]
+    parking_trucks_breps = [obj.Geometry for obj in parking_trucks]
 
     serialized_shed = []
     for brep in shed_breps:
@@ -4943,6 +4967,31 @@ def get_carbon():
     for brep in office_breps:
         serialized_brep = json.dumps(brep, cls=__Rhino3dmEncoder)
         serialized_office.append(serialized_brep)
+
+    serialized_landscaping = []
+    for brep in landscaping_breps:
+        serialized_brep = json.dumps(brep, cls=__Rhino3dmEncoder)
+        serialized_landscaping.append(serialized_brep)
+
+    serialized_road_cars = []
+    for brep in road_cars_breps:
+        serialized_brep = json.dumps(brep, cls=__Rhino3dmEncoder)
+        serialized_road_cars.append(serialized_brep)
+
+    serialized_road_trucks = []
+    for brep in road_trucks_breps:
+        serialized_brep = json.dumps(brep, cls=__Rhino3dmEncoder)
+        serialized_road_trucks.append(serialized_brep)
+
+    serialized_parking_cars = []
+    for brep in parking_cars_breps:
+        serialized_brep = json.dumps(brep, cls=__Rhino3dmEncoder)
+        serialized_parking_cars.append(serialized_brep)
+
+    serialized_parking_trucks = []
+    for brep in parking_trucks_breps:
+        serialized_brep = json.dumps(brep, cls=__Rhino3dmEncoder)
+        serialized_parking_trucks.append(serialized_brep)
 
     shed_list = [{"ParamName": "Shed", "InnerTree": {}}]
     for i, brep in enumerate(serialized_shed):
@@ -4966,49 +5015,137 @@ def get_carbon():
         ]
         office_list[0]["InnerTree"][key] = value
 
-    office_floors_list = []
-    office_floors_list.append(2)
-
-    send_office_floors = [{"ParamName": "Office Floors", "InnerTree": {}}]
-    for i, num in enumerate(office_floors_list):
+    landscaping_list = [{"ParamName": "Landscaping", "InnerTree": {}}]
+    for i, brep in enumerate(serialized_landscaping):
         key = f"{{{i};0}}"
         value = [
             {
-                "type": "System.Int32",
-                "data": num
+                "type": "Rhino.Geometry.Brep",
+                "data": brep
             }
         ]
-        send_office_floors[0]["InnerTree"][key] = value
+        landscaping_list[0]["InnerTree"][key] = value
 
-    gridU_list = []
-    gridU_list.append(gridU)
-
-    send_gridU_list = [{"ParamName": "Grid U", "InnerTree": {}}]
-    for i, num in enumerate(gridU_list):
+    road_cars_list = [{"ParamName": "Road Cars", "InnerTree": {}}]
+    for i, brep in enumerate(serialized_road_cars):
         key = f"{{{i};0}}"
         value = [
             {
-                "type": "System.Int32",
-                "data": num
+                "type": "Rhino.Geometry.Brep",
+                "data": brep
             }
         ]
-        send_gridU_list[0]["InnerTree"][key] = value
+        road_cars_list[0]["InnerTree"][key] = value
 
-    gridV_list = []
-    gridV_list.append(gridV)
-
-    send_gridV_list = [{"ParamName": "Grid V", "InnerTree": {}}]
-    for i, num in enumerate(gridV_list):
+    road_trucks_list = [{"ParamName": "Road Trucks", "InnerTree": {}}]
+    for i, brep in enumerate(serialized_road_trucks):
         key = f"{{{i};0}}"
         value = [
             {
-                "type": "System.Int32",
+                "type": "Rhino.Geometry.Brep",
+                "data": brep
+            }
+        ]
+        road_trucks_list[0]["InnerTree"][key] = value
+
+    parking_trucks_list = [{"ParamName": "Parking Trucks", "InnerTree": {}}]
+    for i, brep in enumerate(serialized_parking_trucks):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Brep",
+                "data": brep
+            }
+        ]
+        parking_trucks_list[0]["InnerTree"][key] = value
+    
+    parking_cars_list = [{"ParamName": "Parking Cars", "InnerTree": {}}]
+    for i, brep in enumerate(serialized_parking_cars):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Brep",
+                "data": brep
+            }
+        ]
+        parking_cars_list[0]["InnerTree"][key] = value
+    
+    landscaping_c = int(12)
+    landscaping_c_list = []
+    landscaping_c_list.append(landscaping_c)
+
+    send_landscaping_c_list = [{"ParamName": "Landscaping Carbon", "InnerTree": {}}]
+    for i, num in enumerate(landscaping_c_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Float",
                 "data": num
             }
         ]
-        send_gridV_list[0]["InnerTree"][key] = value
+        send_landscaping_c_list[0]["InnerTree"][key] = value
 
-    roof_c = int(request.form['roofChoice'])
+    road_cars_c = float(request.form['roadCarsChoice'])
+    road_cars_c_list = []
+    road_cars_c_list.append(road_cars_c)
+
+    send_road_cars_c_list = [{"ParamName": "Road Cars Carbon", "InnerTree": {}}]
+    for i, num in enumerate(road_cars_c_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Float",
+                "data": num
+            }
+        ]
+        send_road_cars_c_list[0]["InnerTree"][key] = value
+
+    road_trucks_c = float(request.form['roadTrucksChoice'])
+    road_trucks_c_list = []
+    road_trucks_c_list.append(road_trucks_c)
+
+    send_road_trucks_c_list = [{"ParamName": "Road Trucks Carbon", "InnerTree": {}}]
+    for i, num in enumerate(road_trucks_c_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Float",
+                "data": num
+            }
+        ]
+        send_road_trucks_c_list[0]["InnerTree"][key] = value
+
+    parking_cars_c = float(request.form['parkingCarsChoice'])
+    parking_cars_c_list = []
+    parking_cars_c_list.append(parking_cars_c)
+
+    send_parking_cars_c_list = [{"ParamName": "Parking Cars Carbon", "InnerTree": {}}]
+    for i, num in enumerate(road_cars_c_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Float",
+                "data": num
+            }
+        ]
+        send_parking_cars_c_list[0]["InnerTree"][key] = value
+
+    parking_trucks_c = road_cars_c = float(request.form['parkingTrucksChoice'])
+    parking_trucks_c_list = []
+    parking_trucks_c_list.append(parking_trucks_c)
+
+    send_parking_trucks_c_list = [{"ParamName": "Parking Trucks Carbon", "InnerTree": {}}]
+    for i, num in enumerate(parking_trucks_c_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Float",
+                "data": num
+            }
+        ]
+        send_parking_trucks_c_list[0]["InnerTree"][key] = value
+
+    roof_c = float(request.form['roofChoice'])
     roof_c_list = []
     roof_c_list.append(roof_c)
 
@@ -5053,12 +5190,12 @@ def get_carbon():
         ]
         send_wall_c_list[0]["InnerTree"][key] = value
 
-    column_c = int(request.form['columnChoice'])
-    column_c_list = []
-    column_c_list.append(column_c)
+    wall_office_c = int(request.form['wallConcrete'])
+    wall_office_c_list = []
+    wall_office_c_list.append(wall_office_c)
 
-    send_column_c_list = [{"ParamName": "Column Carbon", "InnerTree": {}}]
-    for i, num in enumerate(column_c_list):
+    send_wall_office_c_list = [{"ParamName": "Wall Office Carbon", "InnerTree": {}}]
+    for i, num in enumerate(wall_office_c_list):
         key = f"{{{i};0}}"
         value = [
             {
@@ -5066,22 +5203,8 @@ def get_carbon():
                 "data": num
             }
         ]
-        send_column_c_list[0]["InnerTree"][key] = value
+        send_wall_office_c_list[0]["InnerTree"][key] = value
 
-    beam_c = int(request.form['beamChoice'])
-    beam_c_list = []
-    beam_c_list.append(beam_c)
-
-    send_beam_c_list = [{"ParamName": "Beam Carbon", "InnerTree": {}}]
-    for i, num in enumerate(beam_c_list):
-        key = f"{{{i};0}}"
-        value = [
-            {
-                "type": "System.Float",
-                "data": num
-            }
-        ]
-        send_beam_c_list[0]["InnerTree"][key] = value
 
     gh_carbon = open(r"./gh_scripts/carbon.ghx", mode="r",
                         encoding="utf-8-sig").read()
@@ -5092,35 +5215,42 @@ def get_carbon():
     geo_payload = {
         "algo": gh_carbon_decoded,
         "pointer": None,
-        "values": shed_list + office_list + send_office_floors + send_gridV_list + send_gridU_list + send_roof_c_list + send_beam_c_list + send_slab_c_list + send_wall_c_list + send_column_c_list
+        "values": shed_list + office_list + send_roof_c_list + send_slab_c_list + send_wall_c_list + send_landscaping_c_list + send_parking_cars_c_list + send_parking_trucks_c_list + send_road_cars_c_list + send_road_trucks_c_list + landscaping_list + parking_cars_list + parking_trucks_list + road_trucks_list + road_cars_list + send_wall_office_c_list
     }
 
     res = requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
     response_object = json.loads(res.content)['values']
 
-
     new_rhFile = rh.File3dm()
     new_rhFile.Settings.ModelUnitSystem = rh.UnitSystem.Meters
 
-    roof_layer = rh.Layer()
-    roof_layer.Name = "Roof"
-    roof_layerIndex = new_rhFile.Layers.Add(roof_layer)
+    warehouse_layer = rh.Layer()
+    warehouse_layer.Name = "Warehouse"
+    warehouse_layerIndex = new_rhFile.Layers.Add(warehouse_layer)
 
-    slab_layer = rh.Layer()
-    slab_layer.Name = "Slab"
-    slab_layerIndex = new_rhFile.Layers.Add(slab_layer)
+    office_layer = rh.Layer()
+    office_layer.Name = "Office"
+    office_layerIndex = new_rhFile.Layers.Add(office_layer)
 
-    wall_layer = rh.Layer()
-    wall_layer.Name = "Wall"
-    wall_layerIndex = new_rhFile.Layers.Add(wall_layer)
+    landscape_layer = rh.Layer()
+    landscape_layer.Name = "Landscaping"
+    landscape_layerIndex = new_rhFile.Layers.Add(landscape_layer)
 
-    column_layer = rh.Layer()
-    column_layer.Name = "Column"
-    column_layerIndex = new_rhFile.Layers.Add(column_layer)
+    road_cars_layer = rh.Layer()
+    road_cars_layer.Name = "Road Cars"
+    road_cars_layerIndex = new_rhFile.Layers.Add(road_cars_layer)
 
-    beam_layer = rh.Layer()
-    beam_layer.Name = "Beam"
-    beam_layerIndex = new_rhFile.Layers.Add(beam_layer)
+    road_trucks_layer = rh.Layer()
+    road_trucks_layer.Name = "Road Trucks"
+    road_trucks_layerIndex = new_rhFile.Layers.Add(road_trucks_layer)
+
+    parking_cars_layer = rh.Layer()
+    parking_cars_layer.Name = "Parking Cars"
+    parking_cars_layerIndex = new_rhFile.Layers.Add(parking_cars_layer)
+
+    parking_trucks_layer = rh.Layer()
+    parking_trucks_layer.Name = "Parking Trucks"
+    parking_trucks_layerIndex = new_rhFile.Layers.Add(parking_trucks_layer)
 
     for val in response_object:
         paramName = val['ParamName']
@@ -5130,41 +5260,20 @@ def get_carbon():
                 for innerVal in innerVals:
                     if 'data' in innerVal:
                         gfa = round(float(json.loads(innerVal['data'])), 2)
-        if paramName == "RH_OUT:Roof":
+        if paramName == "RH_OUT:Warehouse":
             innerTree = val['InnerTree']
             for key, innerVals in innerTree.items():
                 for innerVal in innerVals:
                     if 'data' in innerVal:
-                        roof_carbon = round(float(json.loads(innerVal['data'])), 2)
-                        session['roof_carbon'] = roof_carbon
-        if paramName == "RH_OUT:Slabs":
+                        warehouse_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['warehouse_carbon'] = warehouse_carbon
+        if paramName == "RH_OUT:Office":
             innerTree = val['InnerTree']
             for key, innerVals in innerTree.items():
                 for innerVal in innerVals:
                     if 'data' in innerVal:
-                        slab_carbon = round(float(json.loads(innerVal['data'])), 2)
-                        session['slab_carbon'] = slab_carbon
-        if paramName == "RH_OUT:Walls":
-            innerTree = val['InnerTree']
-            for key, innerVals in innerTree.items():
-                for innerVal in innerVals:
-                    if 'data' in innerVal:
-                        wall_carbon = round(float(json.loads(innerVal['data'])), 2)
-                        session['wall_carbon'] = wall_carbon
-        if paramName == "RH_OUT:Columns":
-            innerTree = val['InnerTree']
-            for key, innerVals in innerTree.items():
-                for innerVal in innerVals:
-                    if 'data' in innerVal:
-                        column_carbon = round(float(json.loads(innerVal['data'])), 2)
-                        session['column_carbon'] = column_carbon
-        if paramName == "RH_OUT:Beams":
-            innerTree = val['InnerTree']
-            for key, innerVals in innerTree.items():
-                for innerVal in innerVals:
-                    if 'data' in innerVal:
-                        beam_carbon = round(float(json.loads(innerVal['data'])), 2)
-                        session['beam_carbon'] = beam_carbon
+                        office_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['office_carbon'] = office_carbon
         if paramName == "RH_OUT:TotalCarbon":
             innerTree = val['InnerTree']
             for key, innerVals in innerTree.items():
@@ -5172,7 +5281,42 @@ def get_carbon():
                     if 'data' in innerVal:
                         total_carbon = round(float(json.loads(innerVal['data'])), 2)
                         session['total_carbon'] = total_carbon
-        if paramName == 'RH_OUT:MeshRoof':
+        if paramName == "RH_OUT:Landscaping":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        landscaping_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['landscaping_carbon'] = landscaping_carbon
+        if paramName == "RH_OUT:RoadCars":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        road_cars_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['road_cars_carbon'] = road_cars_carbon
+        if paramName == "RH_OUT:RoadTrucks":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        road_trucks_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['road_trucks_carbon'] = road_trucks_carbon
+        if paramName == "RH_OUT:ParkingCars":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        parking_cars_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['parking_cars_carbon'] = parking_cars_carbon
+        if paramName == "RH_OUT:ParkingTrucks":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        parking_trucks_carbon = round(float(json.loads(innerVal['data'])), 2)
+                        session['parking_trucks_carbon'] = parking_trucks_carbon
+        if paramName == 'RH_OUT:MeshWarehouse':
                 innerTree = val['InnerTree']
                 for key, innerVals in innerTree.items():
                     for innerVal in innerVals:
@@ -5180,9 +5324,9 @@ def get_carbon():
                             data = json.loads(innerVal['data'])
                             geo = rh.CommonObject.Decode(data)
                             att = rh.ObjectAttributes()
-                            att.LayerIndex = roof_layerIndex
+                            att.LayerIndex = warehouse_layerIndex
                             new_rhFile.Objects.AddMesh(geo, att)
-        if paramName == 'RH_OUT:MeshSlab':
+        if paramName == 'RH_OUT:MeshOffice':
                 innerTree = val['InnerTree']
                 for key, innerVals in innerTree.items():
                     for innerVal in innerVals:
@@ -5190,9 +5334,9 @@ def get_carbon():
                             data = json.loads(innerVal['data'])
                             geo = rh.CommonObject.Decode(data)
                             att = rh.ObjectAttributes()
-                            att.LayerIndex = slab_layerIndex
+                            att.LayerIndex = office_layerIndex
                             new_rhFile.Objects.AddMesh(geo, att)
-        if paramName == 'RH_OUT:MeshWall':
+        if paramName == 'RH_OUT:MeshLandscaping':
                 innerTree = val['InnerTree']
                 for key, innerVals in innerTree.items():
                     for innerVal in innerVals:
@@ -5200,9 +5344,9 @@ def get_carbon():
                             data = json.loads(innerVal['data'])
                             geo = rh.CommonObject.Decode(data)
                             att = rh.ObjectAttributes()
-                            att.LayerIndex = wall_layerIndex
+                            att.LayerIndex = landscape_layerIndex
                             new_rhFile.Objects.AddMesh(geo, att)
-        if paramName == 'RH_OUT:MeshColumn':
+        if paramName == 'RH_OUT:MeshRoadCars':
                 innerTree = val['InnerTree']
                 for key, innerVals in innerTree.items():
                     for innerVal in innerVals:
@@ -5210,9 +5354,9 @@ def get_carbon():
                             data = json.loads(innerVal['data'])
                             geo = rh.CommonObject.Decode(data)
                             att = rh.ObjectAttributes()
-                            att.LayerIndex = column_layerIndex
+                            att.LayerIndex = road_cars_layerIndex
                             new_rhFile.Objects.AddMesh(geo, att)
-        if paramName == 'RH_OUT:MeshBeam':
+        if paramName == 'RH_OUT:MeshRoadTrucks':
                 innerTree = val['InnerTree']
                 for key, innerVals in innerTree.items():
                     for innerVal in innerVals:
@@ -5220,11 +5364,43 @@ def get_carbon():
                             data = json.loads(innerVal['data'])
                             geo = rh.CommonObject.Decode(data)
                             att = rh.ObjectAttributes()
-                            att.LayerIndex = beam_layerIndex
+                            att.LayerIndex = road_trucks_layerIndex
+                            new_rhFile.Objects.AddMesh(geo, att)
+        if paramName == 'RH_OUT:MeshParkingCars':
+                innerTree = val['InnerTree']
+                for key, innerVals in innerTree.items():
+                    for innerVal in innerVals:
+                        if 'data' in innerVal:
+                            data = json.loads(innerVal['data'])
+                            geo = rh.CommonObject.Decode(data)
+                            att = rh.ObjectAttributes()
+                            att.LayerIndex = parking_cars_layerIndex
+                            new_rhFile.Objects.AddMesh(geo, att)
+        if paramName == 'RH_OUT:MeshParkingTrucks':
+                innerTree = val['InnerTree']
+                for key, innerVals in innerTree.items():
+                    for innerVal in innerVals:
+                        if 'data' in innerVal:
+                            data = json.loads(innerVal['data'])
+                            geo = rh.CommonObject.Decode(data)
+                            att = rh.ObjectAttributes()
+                            att.LayerIndex = parking_trucks_layerIndex
                             new_rhFile.Objects.AddMesh(geo, att)
     
     gwp = round(float(total_carbon)/float(gfa),2)
     session['gwp'] = gwp
+
+    previous_gwp = session.get('previous_gwp')
+    if previous_gwp is not None:
+        delta = round(gwp-previous_gwp,2)
+        session['delta'] = delta
+        if delta > 0:
+            session['gwp_status'] = 'increase'
+        elif delta < 0:
+            session['gwp_status'] = 'decrease'
+        else:
+            session['gwp_status'] = 'unchanged'
+    session['previous_gwp'] = gwp
 
     filename = "carbon_output.3dm"
     new_rhFile.Write('./tmp/files/' + str(filename))
