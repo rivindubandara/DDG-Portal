@@ -528,7 +528,7 @@ def get_planning():
     gh_mls_decoded = encode_ghx_file(r"./gh_scripts/mls.ghx")
     gh_zoning_decoded = encode_ghx_file(r"./gh_scripts/zoning.ghx")
     gh_acid_decoded = encode_ghx_file(r"./gh_scripts/acid.ghx")
-    gh_parks_decoded = encode_ghx_file(r"./gh_scripts/parks.ghx")
+    # gh_parks_decoded = encode_ghx_file(r"./gh_scripts/parks.ghx")
     gh_bushfire_decoded = encode_ghx_file(r"./gh_scripts/bushfire.ghx")
     gh_flood_decoded = encode_ghx_file(r"./gh_scripts/flood.ghx")
     gh_interpolate_decoded = encode_ghx_file(
@@ -4907,10 +4907,17 @@ def carbon():
     previous_gwp = session.get('previous_gwp')
     gwp_status = session.get('gwp_status')
     delta = session.get('delta')
+    color_1 = session.get('color_1')
+    color_2 = session.get('color_2')
+    color_3 = session.get('color_3')
+    color_4 = session.get('color_4')
+    color_5 = session.get('color_5')
+    color_6 = session.get('color_6')
+    color_7 = session.get('color_7')
 
-    return render_template('carbon.html', total_carbon=total_carbon, warehouse_carbon=warehouse_carbon, office_carbon=office_carbon, gwp=gwp, file_path=file_path, landscaping_carbon=landscaping_carbon, road_cars_carbon=road_cars_carbon, parking_cars_carbon=parking_cars_carbon, road_trucks_carbon=road_trucks_carbon, parking_trucks_carbon=parking_trucks_carbon, previous_gwp=previous_gwp, gwp_status=gwp_status, delta=delta)
+    return render_template('carbon.html', total_carbon=total_carbon, warehouse_carbon=warehouse_carbon, office_carbon=office_carbon, gwp=gwp, file_path=file_path, landscaping_carbon=landscaping_carbon, road_cars_carbon=road_cars_carbon, parking_cars_carbon=parking_cars_carbon, road_trucks_carbon=road_trucks_carbon, parking_trucks_carbon=parking_trucks_carbon, previous_gwp=previous_gwp, gwp_status=gwp_status, delta=delta, color_1=color_1, color_2=color_2, color_3=color_3, color4=color_4, color5=color_5, color_6=color_6, color_7=color_7)
 
-@application.route('/get_carbon', methods=['POST'])
+@application.route('/get_carbon', methods=['POST', 'GET'])
 def get_carbon():
 
     file_path = session.get('file_path')
@@ -5316,6 +5323,21 @@ def get_carbon():
                     if 'data' in innerVal:
                         parking_trucks_carbon = round(float(json.loads(innerVal['data'])), 2)
                         session['parking_trucks_carbon'] = parking_trucks_carbon
+        if paramName == "RH_OUT:Colors":
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        colors_list = json.loads(innerVal['data'])
+                        session['color_1'] = colors_list[0]
+                        session['color_2'] = colors_list[1]
+                        session['color_3'] = colors_list[2]
+                        session['color_4'] = colors_list[3]
+                        session['color_5'] = colors_list[4]
+                        session['color_6'] = colors_list[5]
+                        session['color_7'] = colors_list[6]
+
+                        print(colors_list)
         if paramName == 'RH_OUT:MeshWarehouse':
                 innerTree = val['InnerTree']
                 for key, innerVals in innerTree.items():
