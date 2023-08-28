@@ -4917,7 +4917,7 @@ def carbon():
 
     return render_template('carbon.html', total_carbon=total_carbon, warehouse_carbon=warehouse_carbon, office_carbon=office_carbon, gwp=gwp, file_path=file_path, landscaping_carbon=landscaping_carbon, road_cars_carbon=road_cars_carbon, parking_cars_carbon=parking_cars_carbon, road_trucks_carbon=road_trucks_carbon, parking_trucks_carbon=parking_trucks_carbon, previous_gwp=previous_gwp, gwp_status=gwp_status, delta=delta, color1=color1, color2=color2, color3=color3, color4=color4, color5=color5, color6=color6, color7=color7)
 
-@application.route('/get_carbon', methods=['POST', 'GET'])
+@application.route('/get_carbon', methods=['POST'])
 def get_carbon():
 
     file_path = session.get('file_path')
