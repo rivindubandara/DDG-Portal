@@ -5329,14 +5329,6 @@ def get_carbon():
                 for innerVal in innerVals:
                     if 'data' in innerVal:
                         colors_list = json.loads(innerVal['data'])
-                        session['color_1'] = colors_list[0]
-                        session['color_2'] = colors_list[1]
-                        session['color_3'] = colors_list[2]
-                        session['color_4'] = colors_list[3]
-                        session['color_5'] = colors_list[4]
-                        session['color_6'] = colors_list[5]
-                        session['color_7'] = colors_list[6]
-
                         print(colors_list)
         if paramName == 'RH_OUT:MeshWarehouse':
                 innerTree = val['InnerTree']
