@@ -528,9 +528,9 @@ def get_planning():
     gh_mls_decoded = encode_ghx_file(r"./gh_scripts/mls.ghx")
     gh_zoning_decoded = encode_ghx_file(r"./gh_scripts/zoning.ghx")
     gh_acid_decoded = encode_ghx_file(r"./gh_scripts/acid.ghx")
-    # gh_parks_decoded = encode_ghx_file(r"./gh_scripts/parks.ghx")
-    # gh_bushfire_decoded = encode_ghx_file(r"./gh_scripts/bushfire.ghx")
-    # gh_flood_decoded = encode_ghx_file(r"./gh_scripts/flood.ghx")
+    gh_parks_decoded = encode_ghx_file(r"./gh_scripts/parks.ghx")
+    gh_bushfire_decoded = encode_ghx_file(r"./gh_scripts/bushfire.ghx")
+    gh_flood_decoded = encode_ghx_file(r"./gh_scripts/flood.ghx")
     gh_interpolate_decoded = encode_ghx_file(
         r"./gh_scripts/interpolate.ghx")
     gh_roads_decoded = encode_ghx_file(r"./gh_scripts/roads.ghx")
@@ -1025,8 +1025,8 @@ def get_planning():
     add_to_model(acid_data, acid_layerIndex,
                  "LAY_CLASS", "Acid Class", planning_model)
 
-    add_to_model(bushfire_data, bushfire_layerIndex,
-                 "d_Category", "Bushfire", planning_model)
+    add_mesh_to_model(bushfire_data, bushfire_layerIndex,
+                 "d_Category", "Bushfire", gh_bushfire_decoded, planning_model)
 
     add_to_model(flood_data, flood_layerIndex,
                  "LAY_CLASS", "Flood", planning_model)
