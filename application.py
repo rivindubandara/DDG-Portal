@@ -4920,15 +4920,20 @@ def carbon():
 @application.route('/get_carbon', methods=['POST'])
 def get_carbon():
 
+    new_file = request.files.get('uploadCarbonFile')
+
+    stored_file_path = session.get('file_path')
+
+    if new_file:
+        new_file_path = 'tmp/files/' + new_file.filename
+        new_file.save(new_file_path)
+
+        if stored_file_path != new_file_path:
+            session['file_path'] = new_file_path
+
     file_path = session.get('file_path')
     if file_path is None:
-        file = request.files['uploadCarbonFile']
-        if file:
-            file_path = 'tmp/files/' + file.filename
-            file.save(file_path)
-            session['file_path'] = file_path
-        else:
-            return jsonify({'error': True})
+        return jsonify({'error': True})
 
     rhFile = rh.File3dm.Read(file_path)
     layers = rhFile.Layers
