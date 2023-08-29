@@ -72,6 +72,7 @@
 
     <div class="barBox">
       <canvas id="resultsBox" class="boxCanvas"></canvas>
+      <div id="arrow" style="display: none; position: absolute; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-bottom: 20px solid white;"></div>
     </div>
 
     <div class="chartBox">
@@ -502,7 +503,6 @@
     </script>
 
     <script>
-      console.log('{{percentage_change}}')
       var ctx2 = document.getElementById('resultsBox').getContext('2d');
 
       var labels2 = ['Good', 'Average', 'Bad'];
@@ -536,6 +536,17 @@
           },
         },
       });
+
+      myBarChart.options.animation.onComplete = function() {
+      // Calculate the x position of the tick
+      var xPos = myBarChart.scales.x.getPixelForTick(arrowPosition);
+
+      // Manually set the position of the arrow div
+      var arrowDiv = document.getElementById("arrow");
+      arrowDiv.style.left = (xPos - 10) + 'px';  // 10 is half the width of the arrow
+      arrowDiv.style.bottom = '200px';  // Positioned at the bottom of the canvas
+      arrowDiv.style.display = 'block';  // Make the arrow visible
+    };
 
     </script>
             
