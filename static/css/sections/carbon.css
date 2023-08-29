@@ -70,6 +70,7 @@ label:active{
   background: var(--black-300);
   margin-top: 5px;
   margin-left: 25px;
+  top: 80px;
   margin-bottom: 10px;
   text-align: left;
   padding: 10px 10px;
@@ -131,6 +132,22 @@ button:hover {
 
 .gridSliderText {
   font-size: 0.8rem;
+}
+
+.chartBox {
+  position: fixed;
+  bottom: -50px;
+  right: 10px;
+  width: 500px !important;
+  height: 500px !important;
+}
+
+.barBox {
+  position: fixed;
+  bottom: 350px;
+  right: 10px;
+  width: 400px !important;
+  height: 400px !important;
 }
 
 .chartBox {
@@ -213,6 +230,7 @@ button:hover {
   color: var(--color-white);
   background: var(--black-300);
   margin-top: 10px;
+  bottom: 100px;
   margin-left: 25px;
   text-align: center;
   padding: 10px 40px;
@@ -232,4 +250,62 @@ button:hover {
 
 .submitContainer i{
   padding: 5px;
+}
+
+.ratingSelector {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  bottom: 90px;
+  right: 10px;
+  margin-left: 25px;
+}
+
+.ratingButton {
+  background-color: var(--black-300, black);
+  color: var(--color-white, white); 
+  border: none;
+  justify-content: center;
+  align-items: center;
+  display: flex; 
+  border-radius: 3px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  width: 87px;
+  height: 70px;
+  transition: background-color 0.3s ease;
+  font-size: 14px; 
+}
+
+.ratingButton:hover {
+  background-color: var(--black-200, grey); 
+}
+
+.ratingButton:active {
+  transform: scale(0.9);
+}
+
+#goodRating {
+  background-color: green;
+  color: black;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#averageRating {
+  background-color: yellow;
+  color: black;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+#badRating {
+  background-color: red;
+  color: black;
+  text-transform: uppercase;
+  font-weight: bold;
 }

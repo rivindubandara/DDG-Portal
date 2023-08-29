@@ -16,6 +16,7 @@
     />
   </head>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
   <script
     async
     src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
@@ -63,11 +64,15 @@
       <div class="gwp-info">
         {% if delta is not none %}
         <i class="ri-arrow-up-down-line"></i>
-        <p>{{ delta }}</p>
+        <p>{{ percentage_change }} %</p>
         {% endif %}
       </div>
     </div>
     {% endif %}
+
+    <div class="barBox">
+      <canvas id="resultsBox" class="boxCanvas"></canvas>
+    </div>
 
     <div class="chartBox">
       <canvas id="resultsChart" class="chartCanvas"></canvas>
@@ -95,6 +100,12 @@
             </div>
             {% endif %}
 
+        <div class="ratingSelector">
+          <button id="goodRating" class="ratingButton">Good</button>
+          <button id="averageRating" class="ratingButton">Average</button>
+          <button id="badRating" class="ratingButton">Bad</button>
+        </div>
+            
         <div class="selectors">
           <div class="wallSelector">
             <p>Wall Selection</p>
@@ -251,6 +262,97 @@
     </script>
 
     <script>
+      document.addEventListener("DOMContentLoaded", function() {
+
+      initializeOptions();
+      var goodBtn = document.getElementById("goodRating");
+      var averageBtn = document.getElementById("averageRating");
+      var badBtn = document.getElementById("badRating");
+
+      goodBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+        selectSpecificOption("wallConcrete", concOptions, 0);
+        selectSpecificOption("wallOffice", concOptions, 0);
+        selectSpecificOption("slabConcrete", concOptions, 0);
+        selectSpecificOption("roofChoice", roofOptions, 3);
+        selectSpecificOption("roadCarsChoice", roadOptions, 0);
+        selectSpecificOption("roadTrucksChoice", roadOptions, 0);
+        selectSpecificOption("parkingCarsChoice", roadOptions, 0);
+        selectSpecificOption("parkingTrucksChoice", roadOptions, 0);
+
+      });
+
+      averageBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+        selectSpecificOption("wallConcrete", concOptions, 2);
+        selectSpecificOption("wallOffice", concOptions, 2);
+        selectSpecificOption("slabConcrete", concOptions, 2);
+        selectSpecificOption("roofChoice", roofOptions, 1);
+        selectSpecificOption("roadCarsChoice", roadOptions, 2);
+        selectSpecificOption("roadTrucksChoice", roadOptions, 2);
+        selectSpecificOption("parkingCarsChoice", roadOptions, 2);
+        selectSpecificOption("parkingTrucksChoice", roadOptions, 2);
+      });
+
+      badBtn.addEventListener("click", function(event) {
+        event.preventDefault();
+        selectSpecificOption("wallConcrete", concOptions, 6);
+        selectSpecificOption("wallOffice", concOptions, 6);
+        selectSpecificOption("slabConcrete", concOptions, 6);
+        selectSpecificOption("roofChoice", roofOptions, 0);
+        selectSpecificOption("roadCarsChoice", roadOptions, 4);
+        selectSpecificOption("roadTrucksChoice", roadOptions, 4);
+        selectSpecificOption("parkingCarsChoice", roadOptions, 4);
+        selectSpecificOption("parkingTrucksChoice", roadOptions, 4);
+      });
+
+      $('select').each(function() {
+        var selectId = $(this).attr('id');
+        var selectedValue = sessionStorage.getItem(selectId);
+        if (selectedValue) {
+            $(this).val(selectedValue);
+        }
+      });
+    });
+
+    function initializeOptions() {
+      addOptions("wallConcrete", concOptions);
+      addOptions("wallOffice", concOptions);
+      addOptions("slabConcrete", concOptions);
+      addOptions("roofChoice", roofOptions);
+      addOptions("roadCarsChoice", roadOptions)
+      addOptions("roadTrucksChoice", roadOptions)
+      addOptions("parkingCarsChoice", roadOptions)
+      addOptions("parkingTrucksChoice", roadOptions)
+  }
+
+    function addOptions(selectId, options) {
+      var selectBox = document.getElementById(selectId);
+      options.forEach(function(option) {
+        var opt = document.createElement("option");
+        opt.value = option.value;
+        opt.text = option.text;
+        selectBox.appendChild(opt);
+      });
+    }
+
+    function selectSpecificOption(selectId, options, index) {
+      var selectBox = document.getElementById(selectId);
+      selectBox.value = options[index].value;
+      sessionStorage.setItem(selectId, selectBox.value);
+    }
+
+    $(document).ready(function() {
+      $('select').on('change', function() {
+        var selectId = $(this).attr('id');
+        var selectedValue = $(this).val();
+        sessionStorage.setItem(selectId, selectedValue);
+      });
+    });
+
+    </script>
+
+    <script>
       var concOptions = [
         { value: "176", text: "Ready-mix concrete, C32, TBlend (Holcim (NSW and ACT plant))" },
         { value: "170", text: "Ready-mix concrete, 32 MPa, ViroDecs NE322E5 (Holcim)" },
@@ -275,30 +377,6 @@
         { value: "1.51", text: "Steel sheets, generic, 80% recycled content"},
         { value: "0.87", text: "Steel sheets, generic, 100% recycled content"},
       ]
-
-
-      function addOptions(selectId, options) {
-        var selectBox = document.getElementById(selectId);
-        options.forEach(function (option) {
-          var opt = document.createElement("option");
-          opt.value = option.value;
-          opt.text = option.text;
-          selectBox.appendChild(opt);
-        });
-      }
-
-      addOptions("wallConcrete", concOptions);
-      addOptions("wallOffice", concOptions);
-
-      addOptions("slabConcrete", concOptions);
-
-      addOptions("roofChoice", roofOptions);
-
-      addOptions("roadCarsChoice", roadOptions)
-      addOptions("roadTrucksChoice", roadOptions)
-
-      addOptions("parkingCarsChoice", roadOptions)
-      addOptions("parkingTrucksChoice", roadOptions)
     </script>
 
     <script>
@@ -336,8 +414,6 @@
               }
           });
       });
-
-
     </script>
 
     <script>
@@ -423,6 +499,44 @@
             }
           },
       });
+    </script>
+
+    <script>
+      console.log('{{percentage_change}}')
+      var ctx2 = document.getElementById('resultsBox').getContext('2d');
+
+      var labels2 = ['Good', 'Average', 'Bad'];
+      var data2 = [440, 620, 890];
+
+      var gwpValue = '{{ gwp }}';
+      var arrowPosition = labels2.indexOf('Average');
+      if (gwpValue < 300) {
+        arrowPosition = labels2.indexOf('Good');
+      } else if (gwpValue > 900) {
+        arrowPosition = labels2.indexOf('Bad');
+      }
+
+      var myBarChart = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: labels2,
+          datasets: [{
+            label: 'Carbon Rating',
+            data: data2,
+            backgroundColor: ['rgb(0,255,0)', 'rgb(255,255,0)', 'rgb(255,0,0)'],
+            borderWidth: 2,
+            borderColor: 'rgb(255,255,255)'
+          }],
+        },
+        options: {
+          plugins: {
+            legend: {
+              display: false,
+            }
+          },
+        },
+      });
+
     </script>
             
   </body>

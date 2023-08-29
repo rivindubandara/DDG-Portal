@@ -4903,6 +4903,7 @@ def carbon():
     road_trucks_carbon = session.get('road_trucks_carbon')
     parking_trucks_carbon = session.get('parking_trucks_carbon')
     gwp = session.get('gwp')
+    percentage_change = session.get('percentage_change')
     file_path = session.get('file_path')
     previous_gwp = session.get('previous_gwp')
     gwp_status = session.get('gwp_status')
@@ -4915,7 +4916,7 @@ def carbon():
     color6 = session.get('color6')
     color7 = session.get('color7')
 
-    return render_template('carbon.html', total_carbon=total_carbon, warehouse_carbon=warehouse_carbon, office_carbon=office_carbon, gwp=gwp, file_path=file_path, landscaping_carbon=landscaping_carbon, road_cars_carbon=road_cars_carbon, parking_cars_carbon=parking_cars_carbon, road_trucks_carbon=road_trucks_carbon, parking_trucks_carbon=parking_trucks_carbon, previous_gwp=previous_gwp, gwp_status=gwp_status, delta=delta, color1=color1, color2=color2, color3=color3, color4=color4, color5=color5, color6=color6, color7=color7)
+    return render_template('carbon.html', total_carbon=total_carbon, warehouse_carbon=warehouse_carbon, office_carbon=office_carbon, gwp=gwp, file_path=file_path, landscaping_carbon=landscaping_carbon, road_cars_carbon=road_cars_carbon, parking_cars_carbon=parking_cars_carbon, road_trucks_carbon=road_trucks_carbon, parking_trucks_carbon=parking_trucks_carbon, previous_gwp=previous_gwp, gwp_status=gwp_status, delta=delta, color1=color1, color2=color2, color3=color3, color4=color4, color5=color5, color6=color6, color7=color7, percentage_change=percentage_change)
 
 @application.route('/get_carbon', methods=['POST'])
 def get_carbon():
@@ -5452,8 +5453,11 @@ def get_carbon():
     session['gwp'] = gwp
 
     previous_gwp = session.get('previous_gwp')
-    if previous_gwp is not None:
-        delta = round(gwp-previous_gwp,2)
+    if previous_gwp is not None and previous_gwp != 0:
+        delta = round(gwp - previous_gwp, 2)
+        percentage_change = abs(round(((gwp - previous_gwp) / previous_gwp) * 100, 1))
+        session['percentage_change'] = percentage_change
+
         session['delta'] = delta
         if delta > 0:
             session['gwp_status'] = 'increase'
@@ -5461,6 +5465,7 @@ def get_carbon():
             session['gwp_status'] = 'decrease'
         else:
             session['gwp_status'] = 'unchanged'
+
     session['previous_gwp'] = gwp
 
     filename = "carbon_output.3dm"
