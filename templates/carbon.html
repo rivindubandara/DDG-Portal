@@ -151,7 +151,7 @@
 
           <div class="parkingSelector">
             <p>Parking Selection</p>
-
+            
             <div class="selectionContainer">
               <label for="parkingCarsChoice">Parking Cars:</label>
               <select id="parkingCarsChoice" name="parkingCarsChoice"></select>
@@ -504,9 +504,9 @@
 
       var gwpValue = '{{ gwp }}';
       var arrowPosition = labels2.indexOf('Average');
-      if (gwpValue < 300) {
+      if (gwpValue < 440) {
         arrowPosition = labels2.indexOf('Good');
-      } else if (gwpValue > 900) {
+      } else if (gwpValue > 890) {
         arrowPosition = labels2.indexOf('Bad');
       }
 
