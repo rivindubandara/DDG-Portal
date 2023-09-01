@@ -187,7 +187,7 @@ def process_feature(feature, p_key, curves, numbers):
             numbers.append(number)
 
 
-def add_bound_curve_to_model(data, model, layerIndex):
+def add_bound_curve_to_model(data, model, layerIndex, address):
     curve = None
     counter = 0
     while True:
@@ -203,6 +203,7 @@ def add_bound_curve_to_model(data, model, layerIndex):
                     curve = polyline.ToNurbsCurve()
                     att = rh.ObjectAttributes()
                     att.LayerIndex = layerIndex
+                    att.SetUserString('Address', str(address))
                     model.Objects.AddCurve(curve, att)
                     return curve
         else:
@@ -637,7 +638,7 @@ def get_planning():
 
     boundary_data = get_data(boundary_url, boundary_params)
     bound_curve = add_bound_curve_to_model(
-        boundary_data, planning_model, boundary_layerIndex)
+        boundary_data, planning_model, boundary_layerIndex, address)
 
     counter = 0
     while True:
@@ -1390,7 +1391,7 @@ def get_planning():
             obj.Geometry.Translate(translation_vector)
 
     filename = "planning.3dm"
-    planning_model.Write('./tmp/files/' + str(filename))
+    planning_model.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -1470,7 +1471,7 @@ def get_geometry():
     boundary_data = data_dict.get('boundary_data')
 
     bound_curve = add_bound_curve_to_model(
-        boundary_data, geometry_model, boundary_layerIndex)
+        boundary_data, geometry_model, boundary_layerIndex, address)
 
     for tile in tiles:
         mb_data = concurrent_fetching(zoom, tile)
@@ -1690,7 +1691,7 @@ def get_geometry():
             obj.Geometry.Translate(translation_vector)
 
     filename = "geometry.3dm"
-    geometry_model.Write('./tmp/files/' + str(filename))
+    geometry_model.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -1777,7 +1778,7 @@ def get_elevated():
     boundary_data = data_dict.get('boundary_data')
 
     bound_curve = add_bound_curve_to_model(
-        boundary_data, elevated_model, boundary_layerEIndex)
+        boundary_data, elevated_model, boundary_layerEIndex, address)
 
     buildings = []
     for tile in tiles:
@@ -2124,7 +2125,7 @@ def get_elevated():
             obj.Geometry.Translate(translation_vector)
 
     filename = "elevated.3dm"
-    elevated_model.Write('./tmp/files/' + str(filename))
+    elevated_model.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -2325,7 +2326,7 @@ def get_qld_planning():
 
     boundary_data = get_data(boundary_url, boundary_params)
     bound_curve = add_bound_curve_to_model(
-        boundary_data, qld, boundary_layerIndex)
+        boundary_data, qld, boundary_layerIndex, address)
 
     counter = 0
     while True:
@@ -3003,7 +3004,7 @@ def get_qld_planning():
             obj.Geometry.Translate(translation_vector)
 
     filename = "qld_planning.3dm"
-    qld.Write('./tmp/files/' + str(filename))
+    qld.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -3084,7 +3085,7 @@ def get_qld_geometry():
     zoom = 16
 
     bound_curve = add_bound_curve_to_model(
-        boundary_data, qld_g, boundary_layerIndex)
+        boundary_data, qld_g, boundary_layerIndex, address)
 
     for tile in tiles:
         mb_data = concurrent_fetching(zoom, tile)
@@ -3206,7 +3207,7 @@ def get_qld_geometry():
             obj.Geometry.Translate(translation_vector)
 
     filename = "qld_geometry.3dm"
-    qld_g.Write('./tmp/files/' + str(filename))
+    qld_g.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -3289,7 +3290,7 @@ def get_qld_elevated():
     boundary_data = data_dict.get('boundary_data')
 
     bound_curve = add_bound_curve_to_model(
-        boundary_data, qld_e, boundary_layerEIndex)
+        boundary_data, qld_e, boundary_layerEIndex, address)
 
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
@@ -3566,7 +3567,7 @@ def get_qld_elevated():
             obj.Geometry.Translate(translation_vector)
 
     filename = "qld_elevated.3dm"
-    qld_e.Write('./tmp/files/' + str(filename))
+    qld_e.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -3686,7 +3687,7 @@ def get_vic_planning():
 
     boundary_data = get_data(
         boundary_url, boundary_params)
-    bound_curve = add_bound_curve_to_model(boundary_data, vic, boundary_layerIndex)
+    bound_curve = add_bound_curve_to_model(boundary_data, vic, boundary_layerIndex, address)
 
     counter = 0
     while True:
@@ -4313,7 +4314,7 @@ def get_vic_planning():
             obj.Geometry.Translate(translation_vector)
 
     filename = "vic_planning.3dm"
-    vic.Write('./tmp/files/' + str(filename))
+    vic.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -4364,7 +4365,7 @@ def get_vic_geometry():
 
     boundary_data = get_data(boundary_url, boundary_params)
     bound_curve = add_bound_curve_to_model(
-        boundary_data, vic_g, boundary_layerIndex)
+        boundary_data, vic_g, boundary_layerIndex, address)
 
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
@@ -4525,7 +4526,7 @@ def get_vic_geometry():
             obj.Geometry.Translate(translation_vector)
 
     filename = "vic_geometry.3dm"
-    vic_g.Write('./tmp/files/' + str(filename))
+    vic_g.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -4580,7 +4581,7 @@ def get_vic_elevated():
 
     boundary_data = get_data(boundary_url, boundary_params)
     bound_curve = add_bound_curve_to_model(
-        boundary_data, vic_e, boundary_layerIndex)
+        boundary_data, vic_e, boundary_layerIndex, address)
 
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
@@ -4593,7 +4594,7 @@ def get_vic_elevated():
     bound_curves_list = []
     boundary_data = get_data(boundary_url, boundary_params)
     bound_curve = add_bound_curve_to_model(
-        boundary_data, vic_e, boundary_layerIndex)
+        boundary_data, vic_e, boundary_layerIndex, address)
     bound_curves_list.append(bound_curve)
 
     buildings = []
@@ -4887,7 +4888,7 @@ def get_vic_elevated():
             obj.Geometry.Translate(translation_vector)
 
     filename = "vic_elevated.3dm"
-    vic_e.Write('./tmp/files/' + str(filename))
+    vic_e.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -5469,8 +5470,8 @@ def get_carbon():
     session['previous_gwp'] = gwp
 
     filename = "carbon_output.3dm"
-    new_rhFile.Write('./tmp/files/' + str(filename))
-    new_rhFile.Write('./static/' + str(filename))
+    new_rhFile.Write('./tmp/files/' + str(filename), 7)
+    new_rhFile.Write('./static/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -5509,7 +5510,7 @@ def merge_3dms():
             merged_model.Objects.Add(geometry, attributes)
 
     filename = "merged.3dm"
-    merged_model.Write('./tmp/files/' + str(filename))
+    merged_model.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -5754,9 +5755,9 @@ def submit_environmental():
 
     filename = "environmental.3dm"
     filename_2 = "environmental_2.3dm"
-    new_rhFile.Write('./tmp/files/' + str(filename))
-    new_rhFile.Write('./static/' + str(filename))
-    legendrhFile.Write('./static/' + str(filename_2))
+    new_rhFile.Write('./tmp/files/' + str(filename), 7)
+    new_rhFile.Write('./static/' + str(filename), 7)
+    legendrhFile.Write('./static/' + str(filename_2), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -6685,7 +6686,7 @@ def tas_planning():
 
     boundary_data = get_data(
         boundary_url, boundary_params)
-    bound_curve = add_bound_curve_to_model(boundary_data, tas_planning, boundary_layerIndex)
+    bound_curve = add_bound_curve_to_model(boundary_data, tas_planning, boundary_layerIndex, address)
 
     counter = 0
     while True:
@@ -7195,7 +7196,7 @@ def tas_planning():
             obj.Geometry.Translate(translation_vector)
 
     filename = "tas_planning.3dm"
-    tas_planning.Write('./tmp/files/' + str(filename))
+    tas_planning.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -7274,7 +7275,7 @@ def tas_geometry():
     zoom = 16
 
     bound_curve = add_bound_curve_to_model(
-        boundary_data, tas_g, boundary_layerIndex)
+        boundary_data, tas_g, boundary_layerIndex, address)
 
     for tile in tiles:
         mb_data = concurrent_fetching(zoom, tile)
@@ -7396,7 +7397,7 @@ def tas_geometry():
             obj.Geometry.Translate(translation_vector)
 
     filename = "tas_geometry.3dm"
-    tas_g.Write('./tmp/files/' + str(filename))
+    tas_g.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
@@ -7478,7 +7479,7 @@ def tas_elevated():
     boundary_data = data_dict.get('boundary_data')
 
     bound_curve = add_bound_curve_to_model(
-        boundary_data, tas_e, boundary_layerEIndex)
+        boundary_data, tas_e, boundary_layerEIndex, address)
 
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
@@ -7755,7 +7756,7 @@ def tas_elevated():
             obj.Geometry.Translate(translation_vector)
 
     filename = "tas_elevated.3dm"
-    tas_e.Write('./tmp/files/' + str(filename))
+    tas_e.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 
