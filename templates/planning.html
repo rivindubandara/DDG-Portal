@@ -241,6 +241,12 @@
             </div>
           </div>
 
+          <div id="valuationToggle" class="toggle">
+            <div class="toggle-button" onclick="Animatedtoggle(this)">
+              <div class="toggle-text">Valuation</div>
+            </div>
+          </div>
+
         </div>
 
         <ul class="sidebar__menu">
@@ -1009,6 +1015,26 @@
           },
         });
 
+        map.addSource("Property Sales public/Valuation", {
+          type: "raster",
+          tiles: [
+          "https://maps.six.nsw.gov.au/arcgis/rest/services/public/Valuation/MapServer//export?f=image&dpi=96&transparent=true&format=png32&bboxSR=3857&imageSR=3857&size=256%2C256&layers=show%3A1%2C2%2C3&bbox={bbox-epsg-3857}",
+          ],
+          tileSize: 256,
+        });
+
+        map.addLayer({
+          id: "Property Sales public/Valuation",
+          type: "raster",
+          slot: 'top',
+          source: "Property Sales public/Valuation",
+          minzoom: 0,
+          maxzoom: 22,
+          layout: {
+            visibility: "none",
+          },
+        });
+
         map.addLayer({
           id: "3d-buildings",
           source: "composite",
@@ -1142,6 +1168,7 @@
       const buildingsToggleBtn = document.getElementById("buildingsToggle");
       const nativelandsToggleBtn = document.getElementById("nativelandsToggle");
       const satelliteToggleBtn = document.getElementById("satelliteToggle");
+      const valuationToggleBtn = document.getElementById("valuationToggle");
 
       cadastreToggleBtn.addEventListener("click", function () {
         const layerId = "cadastre-raster-layer";
@@ -1198,6 +1225,11 @@
       satelliteToggleBtn.addEventListener("click", function () {
         const layerId = "mapbox-satellite-layer";
         toggleLayerVisibility(layerId, satelliteToggleBtn);
+      });
+
+      valuationToggleBtn.addEventListener("click", function () {
+        const layerId = "Property Sales public/Valuation";
+        toggleLayerVisibility(layerId, valuationToggleBtn);
       });
 
       function toggleLayerVisibility(layerId, toggleBtn) {
