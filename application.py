@@ -18,7 +18,6 @@ from specklepy.api.client import get_account_from_token
 
 Image.MAX_IMAGE_PIXELS = None
 
-
 application = Flask(__name__, static_url_path='/static', static_folder='static')
 application.secret_key = 'nettletontribe_secret_key'
 
