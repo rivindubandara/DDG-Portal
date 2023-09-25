@@ -36,7 +36,6 @@ class __Rhino3dmEncoder(json.JSONEncoder):
             return o.Encode()
         return json.JSONEncoder.default(self, o)
 
-
 def create_boundary(lat, lon, distance):
     R = 6371.0
     lat_r = radians(lat)
@@ -501,6 +500,8 @@ def get_planning():
         planning_model, "Plan Extent", (178, 255, 0, 255))
     road_layerIndex = create_layer(
         planning_model, "Roads", (145, 145, 145, 255))
+    road_raw_layerIndex = create_layer(
+        planning_model, "Roads (RAW)", (145, 145, 145, 255))
     walking_layerIndex = create_layer(
         planning_model, "Walking Isochrone", (129, 168, 0, 255))
     cycling_layerIndex = create_layer(
@@ -519,8 +520,6 @@ def get_planning():
         planning_model, "Airport", (255, 128, 227, 255))
     parks_layerIndex = create_layer(
         planning_model, "Parks", (0, 204, 0, 255))
-    procedural_layerIndex = create_layer(
-        planning_model, "Geometry", (0, 204, 0, 255))
     raster_layerIndex = create_layer(
         planning_model, "Raster", (0, 204, 0, 255))
 
@@ -535,7 +534,6 @@ def get_planning():
     gh_interpolate_decoded = encode_ghx_file(
         r"./gh_scripts/interpolate.ghx")
     gh_roads_decoded = encode_ghx_file(r"./gh_scripts/roads.ghx")
-    # gh_procedural_decoded = encode_ghx_file(r"./gh_scripts/procedural.ghx")
     gh_raster_decoded = encode_ghx_file(r"./gh_scripts/image.ghx")
 
     adminboundaries_url = 'https://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Administrative_Boundaries/MapServer/0/query'
@@ -1074,6 +1072,7 @@ def get_planning():
             geometry_type = feature['geometry']['type']
             if geometry_type == 'LineString':
                 geometry = feature['geometry']['coordinates']
+                road_class = feature['properties']['class']
                 points = []
                 for ring in geometry:
                     x_val, y_val = ring[0], ring[1]
@@ -1090,10 +1089,16 @@ def get_planning():
 
                 polyline = rh.Polyline(points)
                 curve = polyline.ToNurbsCurve()
+                att = rh.ObjectAttributes()
+                att.LayerIndex = road_raw_layerIndex
+                att.SetUserString("Road Class", str(road_class))
+                planning_model.Objects.AddCurve(
+                curve, att)
                 road_curves.append(curve)
 
             elif geometry_type == 'MultiLineString':
                 geometry = feature['geometry']['coordinates']
+                road_class = feature['properties']['class']
                 for line_string in geometry:
                     points = []
                     for ring in line_string:
@@ -1111,6 +1116,11 @@ def get_planning():
                         points.append(point)
                     polyline = rh.Polyline(points)
                     curve = polyline.ToNurbsCurve()
+                    att = rh.ObjectAttributes()
+                    att.LayerIndex = road_raw_layerIndex
+                    att.SetUserString("Road Class", str(road_class))
+                    planning_model.Objects.AddCurve(
+                    curve, att)
                     road_curves.append(curve)
 
     curves_list_roads = [{"ParamName": "Curves", "InnerTree": {}}]
@@ -1147,87 +1157,6 @@ def get_planning():
                         att.LayerIndex = road_layerIndex
                         planning_model.Objects.AddCurve(geo, att)
 
-    # hob_data = get_data(hob_url, boundary_params)
-    # if "features" in hob_data:
-    #     for feature in hob_data["features"]:
-    #         hob_num = feature['attributes']['MAX_B_H']
-    #         if hob_num is None:
-    #             hob_num = 3
-    # else:
-    #     time.sleep(0)
-
-    # fsr_data = get_data(fsr_url, boundary_params)
-    # if "features" in fsr_data:
-    #     for feature in fsr_data["features"]:
-    #         fsr_num = feature['attributes']['FSR']
-    #         if fsr_num is None:
-    #             fsr_num = 0.5
-    # else:
-    #     time.sleep(0)
-
-    # hob_list = [{"ParamName": "HOB", "InnerTree": {}}]
-    # hobs_list = []
-    # hobs_list.append(hob_num)
-
-    # fsr_list = [{"ParamName": "FSR", "InnerTree": {}}]
-    # fsrs_list = []
-    # fsrs_list.append(fsr_num)
-
-    # bound_list = [{"ParamName": "Boundary", "InnerTree": {}}]
-    # bounds_list = []
-    # bounds_list.append(bound_curve)
-
-    # for i, num in enumerate(hobs_list):
-    #     key = f"{{{i};0}}"
-    #     value = [
-    #         {
-    #             "type": "System.Float",
-    #             "data": num
-    #         }
-    #     ]
-    #     hob_list[0]["InnerTree"][key] = value
-
-    # for i, num in enumerate(fsrs_list):
-    #     key = f"{{{i};0}}"
-    #     value = [
-    #         {
-    #             "type": "System.Float",
-    #             "data": num
-    #         }
-    #     ]
-    #     fsr_list[0]["InnerTree"][key] = value
-
-    # for i, curve in enumerate(bounds_list):
-    #     serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
-    #     key = f"{{{i};0}}"
-    #     value = [
-    #         {
-    #             "type": "Rhino.Geometry.Curve",
-    #             "data": serialized_curve
-    #         }
-    #     ]
-    #     bound_list[0]["InnerTree"][key] = value
-
-    # geo_payload = {
-    #     "algo": gh_procedural_decoded,
-    #     "pointer": None,
-    #     "values": bound_list + fsr_list + hob_list
-    # }
-
-    # res = send_compute_post(geo_payload)
-    # response_object = json.loads(res.content)['values']
-    # for val in response_object:
-    #     paramName = val['ParamName']
-    #     if paramName == 'RH_OUT:Geometry':
-    #         innerTree = val['InnerTree']
-    #         for key, innerVals in innerTree.items():
-    #             for innerVal in innerVals:
-    #                 if 'data' in innerVal:
-    #                     data = json.loads(innerVal['data'])
-    #                     geo = rh.CommonObject.Decode(data)
-    #                     att = rh.ObjectAttributes()
-    #                     att.LayerIndex = procedural_layerIndex
-    #                     planning_model.Objects.AddBrep(geo, att)
 
     profile1 = 'mapbox/walking'
     profile2 = 'mapbox/cycling'
@@ -1400,6 +1329,9 @@ def get_geometry():
 
     boundary_url = 'https://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Cadastre/MapServer/9/query'
     topo_url = 'https://portal.spatial.nsw.gov.au/server/rest/services/NSW_Elevation_and_Depth_Theme/MapServer/2/query'
+    hob_url = "https://mapprod3.environment.nsw.gov.au/arcgis/rest/services/Planning/EPI_Primary_Planning_Layers/MapServer/5/query"
+
+    gh_procedural_decoded = encode_ghx_file(r"./gh_scripts/PropertyOffsets.ghx")
 
     address = request.form.get('address')
     endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
@@ -1419,7 +1351,7 @@ def get_geometry():
     else:
         return jsonify({'error': True})
 
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 15000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 30000)
     boundary_params = create_parameters(
@@ -1439,9 +1371,9 @@ def get_geometry():
         geometry_model, "Buildings", (99, 99, 99, 255))
     contours_layerIndex = create_layer(
         geometry_model, "Contours", (191, 191, 191, 255))
-    geometry_layerIndex = create_layer(
-        geometry_model, "Geometry", (191, 191, 191, 255))
     buildingfootprint_LayerIndex = create_layer(geometry_model, "Building Footprint",(191, 191, 191, 255) )
+    procedural_layerIndex = create_layer(geometry_model, "Geometry", (0, 204, 0, 255))
+    proceduralbuildings_layerIndex = create_layer(geometry_model, "Culled Geometry", (99, 99, 99, 255))
 
     params_dict = {
         boundary_url: boundary_params,
@@ -1472,7 +1404,8 @@ def get_geometry():
 
     bound_curve = add_bound_curve_to_model(
         boundary_data, geometry_model, boundary_layerIndex, address)
-
+    
+    buildings = []
     for tile in tiles:
         mb_data = concurrent_fetching(zoom, tile)
         tiles1 = mapbox_vector_tile.decode(mb_data)
@@ -1522,6 +1455,7 @@ def get_geometry():
                             "Building Height", str(height))
                         geometry_model.Objects.AddExtrusion(
                             extrusion, att)
+                        buildings.append(extrusion)
                 elif geometry_type == 'MultiPolygon':
                     geometry = feature['geometry']['coordinates']
                     for polygon in geometry:
@@ -1558,6 +1492,7 @@ def get_geometry():
                                 "Building Height", str(height))
                             geometry_model.Objects.AddExtrusion(
                                 extrusion, att)
+                            buildings.append(extrusion)
         else:
             time.sleep(0)
 
@@ -1580,6 +1515,160 @@ def get_geometry():
                 geometry_model.Objects.AddCurve(curve, att)
     else:
         time.sleep(0)
+
+    hob_data = get_data(hob_url, boundary_params)
+    if "features" in hob_data:
+        for feature in hob_data["features"]:
+            hob_num = feature['attributes']['MAX_B_H']
+            if hob_num is None:
+                hob_num = 3
+    else:
+        time.sleep(0)
+
+    hob_list = [{"ParamName": "HOB", "InnerTree": {}}]
+    hobs_list = []
+    hobs_list.append(hob_num)
+
+    bound_list = [{"ParamName": "Boundary", "InnerTree": {}}]
+    bounds_list = []
+    bounds_list.append(bound_curve)
+
+    roads = []
+    for tile in tiles:
+        mb_data = concurrent_fetching(zoom, tile)
+        tiles1 = mapbox_vector_tile.decode(mb_data)
+
+        if 'road' not in tiles1:
+            continue
+
+        road_layer = tiles1['road']
+
+        tile1 = mercantile.Tile(tile.x, tile.y, 16)
+        bbox = mercantile.bounds(tile1)
+        lon1, lat1, lon2, lat2 = bbox
+
+        for feature in road_layer['features']:
+            geometry_type = feature['geometry']['type']
+            if geometry_type == 'LineString':
+                geometry = feature['geometry']['coordinates']
+                road_class = feature['properties']['class']
+                points = []
+                for ring in geometry:
+                    x_val, y_val = ring[0], ring[1]
+                    x_prop = (x_val / 4096)
+                    y_prop = (y_val / 4096)
+                    lon_delta = lon2 - lon1
+                    lat_delta = lat2 - lat1
+                    lon_mapped = lon1 + (x_prop * lon_delta)
+                    lat_mapped = lat1 + (y_prop * lat_delta)
+                    lon_mapped, lat_mapped = transformer2.transform(
+                        lon_mapped, lat_mapped)
+                    point = rh.Point3d(lon_mapped, lat_mapped, 0)
+                    points.append(point)
+
+                polyline = rh.Polyline(points)
+                curve = polyline.ToNurbsCurve()
+                roads.append(curve)
+
+            elif geometry_type == 'MultiLineString':
+                geometry = feature['geometry']['coordinates']
+                road_class = feature['properties']['class']
+                for line_string in geometry:
+                    points = []
+                    for ring in line_string:
+                        x_val, y_val = ring[0], ring[1]
+                        x_prop = (x_val / 4096)
+                        y_prop = (y_val / 4096)
+                        lon_delta = lon2 - lon1
+                        lat_delta = lat2 - lat1
+                        lon_mapped = lon1 + (x_prop * lon_delta)
+                        lat_mapped = lat1 + (y_prop * lat_delta)
+                        lon_mapped, lat_mapped = transformer2.transform(
+                            lon_mapped, lat_mapped)
+                        point = rh.Point3d(
+                            lon_mapped, lat_mapped, 0)
+                        points.append(point)
+                    polyline = rh.Polyline(points)
+                    curve = polyline.ToNurbsCurve()
+                    roads.append(curve)
+
+    road_list = [{"ParamName": "Roads", "InnerTree": {}}]
+
+    building_list = [{"ParamName": "Buildings", "InnerTree": {}}]
+
+    for i, num in enumerate(hobs_list):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Float",
+                "data": num
+            }
+        ]
+        hob_list[0]["InnerTree"][key] = value
+
+    for i, curve in enumerate(bounds_list):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        bound_list[0]["InnerTree"][key] = value
+
+    for i, curve in enumerate(roads):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        road_list[0]["InnerTree"][key] = value
+    
+    for i, brep in enumerate(buildings):
+        serialized_brep = json.dumps(brep, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Brep",
+                "data": serialized_brep
+            }
+        ]
+        building_list[0]["InnerTree"][key] = value
+
+    geo_payload = {
+        "algo": gh_procedural_decoded,
+        "pointer": None,
+        "values": bound_list + hob_list + road_list + building_list
+    }
+
+    res = send_compute_post(geo_payload)
+    response_object = json.loads(res.content)['values']
+    for val in response_object:
+        paramName = val['ParamName']
+        if paramName == 'RH_OUT:Geometry':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = procedural_layerIndex
+                        geometry_model.Objects.AddBrep(geo, att)
+        if paramName == 'RH_OUT:Existing':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = proceduralbuildings_layerIndex
+                        geometry_model.Objects.AddBrep(geo, att)
 
     giraffe_file = request.files['uploadGiraffeBtn']
     if giraffe_file:
@@ -5552,7 +5641,7 @@ def submit_environmental():
     geometry_list = []
     for obj in rhFile.Objects:
         layer_index = obj.Attributes.LayerIndex
-        if layers[layer_index].Name == "Buildings":
+        if layers[layer_index].Name == "Culled Geometry":
             context_list.append(obj)
         if layers[layer_index].Name == "Geometry":
             geometry_list.append(obj)
