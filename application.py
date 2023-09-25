@@ -24,7 +24,7 @@ application.secret_key = 'nettletontribe_secret_key'
 mapbox_access_token = 'pk.eyJ1Ijoicml2aW5kdWIiLCJhIjoiY2xmYThkcXNjMHRkdDQzcGU4Mmh2a3Q3MSJ9.dXlhamKyYyGusL3PWqDD9Q'
 
 compute_url = "http://13.54.229.195:80/"
-#compute_url = "http://localhost:6500/"
+# compute_url = "http://localhost:6500/"
 headers = {
     "RhinoComputeKey": "8c96f7d9-5a62-4bbf-ad3f-6e976b94ea1e"
 }
@@ -726,8 +726,18 @@ def get_planning():
         "values": val_to_send + curves_to_send
     }
 
-    res = requests.post(compute_url + "grasshopper",
-                    json=geo_payload, headers=headers)
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
     response_object = json.loads(res.content)['values']
 
     colors = []
@@ -816,8 +826,17 @@ def get_planning():
         "pointer": None,
         "values": curves_zoning + names_zoning
     }
-    res = requests.post(compute_url + "grasshopper",
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
                     json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
 
     colors = []
@@ -936,8 +955,17 @@ def get_planning():
         "values": curves_hob + numbers_hob
     }
 
-    res = requests.post(compute_url + "grasshopper",
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
                     json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
 
     colors = []
@@ -1291,6 +1319,7 @@ def get_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
 
     for val in response_object:
@@ -2034,7 +2063,7 @@ def get_elevated():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
-        time.sleep(0)
+            time.sleep(0)
 
     response_object = json.loads(res.content)['values']
     for val in response_object:
@@ -2425,6 +2454,7 @@ def get_qld_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     native_data = native_response.json()
     for feature in native_data:
         geometry = feature['geometry']
@@ -2503,6 +2533,7 @@ def get_qld_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -2596,6 +2627,7 @@ def get_qld_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -2666,6 +2698,7 @@ def get_qld_planning():
                 counter += 1
                 if counter >= 3:
                     return jsonify({'error': True})
+                time.sleep(0)
         mb_data = mb_response.content
         tiles1 = mapbox_vector_tile.decode(mb_data)
 
@@ -2751,6 +2784,7 @@ def get_qld_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -2795,7 +2829,6 @@ def get_qld_planning():
             if counter >= 3:
                 return jsonify({'error': True})
             time.sleep(0)
-
     walking_data = json.loads(iso_response_w.content.decode())
 
     counter = 0
@@ -2897,6 +2930,7 @@ def get_qld_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     bushfire_data = json.loads(bushfire_response.text)
     if "features" in bushfire_data:
         for feature in bushfire_data["features"]:
@@ -2957,6 +2991,7 @@ def get_qld_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -3064,6 +3099,7 @@ def get_qld_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
 
     for val in response_object:
@@ -3545,6 +3581,7 @@ def get_qld_elevated():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -3617,6 +3654,7 @@ def get_qld_elevated():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -3786,6 +3824,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     native_data = native_response.json()
     for feature in native_data:
         geometry = feature['geometry']
@@ -3816,6 +3855,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     admin_data = json.loads(admin_response.text)
     if "features" in admin_data:
         for feature in admin_data["features"]:
@@ -3874,6 +3914,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -3913,6 +3954,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     zoning_data = json.loads(zoning_response.text)
     if "features" in zoning_data:
         for feature in zoning_data["features"]:
@@ -3969,6 +4011,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -4007,6 +4050,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     lots_data = json.loads(lots_response.text)
     if "features" in lots_data:
         for feature in lots_data["features"]:
@@ -4050,6 +4094,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -4095,6 +4140,7 @@ def get_vic_planning():
                 counter += 1
                 if counter >= 3:
                     return jsonify({'error': True})
+                time.sleep(0)
         mb_data = mb_response.content
         tiles1 = mapbox_vector_tile.decode(mb_data)
 
@@ -4180,6 +4226,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -4212,6 +4259,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     walking_data = json.loads(iso_response_w.content.decode())
 
     counter = 0
@@ -4223,6 +4271,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     cycling_data = json.loads(iso_response_c.content.decode())
 
     counter = 0
@@ -4234,6 +4283,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     driving_data = json.loads(iso_response_d.content.decode())
 
     def add_curves_to_model(data, transformer, layerIndex, model):
@@ -4280,6 +4330,7 @@ def get_vic_planning():
                 counter += 1
                 if counter >= 3:
                     return jsonify({'error': True})
+                time.sleep(0)
         response_object = json.loads(res.content)['values']
         for val in response_object:
             paramName = val['ParamName']
@@ -4376,6 +4427,7 @@ def get_vic_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
 
     for val in response_object:
@@ -4470,6 +4522,7 @@ def get_vic_geometry():
                 counter += 1
                 if counter >= 3:
                     return jsonify({'error': True})
+                time.sleep(0)
         mb_data = mb_response.content
         tiles1 = mapbox_vector_tile.decode(mb_data)
 
@@ -4581,6 +4634,7 @@ def get_vic_geometry():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     topography_data = json.loads(topography_response.text)
     if "features" in topography_data:
         for feature in topography_data["features"]:
@@ -4698,6 +4752,7 @@ def get_vic_elevated():
                 counter += 1
                 if counter >= 3:
                     return jsonify({'error': True})
+                time.sleep(0)
         mb_data = mb_response.content
         tiles1 = mapbox_vector_tile.decode(mb_data)
 
@@ -4781,6 +4836,7 @@ def get_vic_elevated():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     topography_data = json.loads(topography_response.text)
     if "features" in topography_data:
         for feature in topography_data["features"]:
@@ -4870,6 +4926,7 @@ def get_vic_elevated():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -4939,6 +4996,7 @@ def get_vic_elevated():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -5320,7 +5378,16 @@ def get_carbon():
         "values": shed_list + office_list + send_roof_c_list + send_slab_c_list + send_wall_c_list + send_landscaping_c_list + send_parking_cars_c_list + send_parking_trucks_c_list + send_road_cars_c_list + send_road_trucks_c_list + landscaping_list + parking_cars_list + parking_trucks_list + road_trucks_list + road_cars_list + send_wall_office_c_list
     }
 
-    res = requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
 
     new_rhFile = rh.File3dm()
@@ -6193,7 +6260,17 @@ def submitTopo():
         "values": topo_to_send + url_to_send + buildings_to_send + elevated_buildings_to_send + contours_to_send + roads_to_send + lots_to_send + isochrones_to_send + parks_to_send + heritage_to_send + flood_to_send + admin_to_send + native_to_send + bushfire_to_send + boundary_to_send
     }
 
-    requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+    
     stream_url = 'https://speckle.xyz/streams/' + str(new_stream_id)
 
     session['stream_url'] = stream_url
@@ -6444,8 +6521,16 @@ def submitImages():
             "values":  list + filename_send + foldername_send
         }
 
-        res = requests.post(compute_url + "grasshopper",
-                            json=geo_payload, headers=headers)
+        counter = 0
+        while True:
+            res = requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
+            if res.status_code == 200:
+                break
+            else:
+                counter += 1
+                if counter >= 3:
+                    return jsonify({'error': True})
+                time.sleep(0)
         response_object = json.loads(res.content)['values']
         for val in response_object:
             paramName = val['ParamName']
@@ -6528,8 +6613,16 @@ def submitImages():
             "values":  list + val_list_send + filename_send + foldername_send
         }
 
-        res = requests.post(compute_url + "grasshopper",
-                            json=geo_payload, headers=headers)
+        counter = 0
+        while True:
+            res = requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
+            if res.status_code == 200:
+                break
+            else:
+                counter += 1
+                if counter >= 3:
+                    return jsonify({'error': True})
+                time.sleep(0)
         response_object = json.loads(res.content)['values']
         for val in response_object:
             paramName = val['ParamName']
@@ -6603,8 +6696,16 @@ def submitImages():
             "values": list_send + filename_send + foldername_send
         }
 
-        res = requests.post(compute_url + "grasshopper",
-                            json=geo_payload, headers=headers)
+        counter = 0
+        while True:
+            res = requests.post(compute_url + "grasshopper", json=geo_payload, headers=headers)
+            if res.status_code == 200:
+                break
+            else:
+                counter += 1
+                if counter >= 3:
+                    return jsonify({'error': True})
+                time.sleep(0)
         response_object = json.loads(res.content)['values']
         for val in response_object:
             paramName = val['ParamName']
@@ -6785,6 +6886,7 @@ def tas_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     native_data = native_response.json()
     for feature in native_data:
         geometry = feature['geometry']
@@ -6813,6 +6915,7 @@ def tas_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     admin_data = json.loads(admin_response.text)
     if "features" in admin_data:
         for feature in admin_data["features"]:
@@ -6844,6 +6947,7 @@ def tas_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     zoning_data = json.loads(zoning_response.text)
     if "features" in zoning_data:
         for feature in zoning_data["features"]:
@@ -6900,6 +7004,7 @@ def tas_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -6937,6 +7042,7 @@ def tas_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     lots_data = json.loads(lots_response.text)
     if "features" in lots_data:
         for feature in lots_data["features"]:
@@ -6978,6 +7084,7 @@ def tas_planning():
                 counter += 1
                 if counter >= 3:
                     return jsonify({'error': True})
+                time.sleep(0)
         mb_data = mb_response.content
         tiles1 = mapbox_vector_tile.decode(mb_data)
 
@@ -7063,6 +7170,7 @@ def tas_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -7095,6 +7203,7 @@ def tas_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     walking_data = json.loads(iso_response_w.content.decode())
 
     counter = 0
@@ -7106,6 +7215,7 @@ def tas_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     cycling_data = json.loads(iso_response_c.content.decode())
 
     counter = 0
@@ -7117,6 +7227,7 @@ def tas_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     driving_data = json.loads(iso_response_d.content.decode())
 
     def add_curves_to_model(data, transformer, layerIndex, model):
@@ -7163,6 +7274,7 @@ def tas_planning():
                 counter += 1
                 if counter >= 3:
                     return jsonify({'error': True})
+                time.sleep(0)
         response_object = json.loads(res.content)['values']
         for val in response_object:
             paramName = val['ParamName']
@@ -7258,6 +7370,7 @@ def tas_planning():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
 
     for val in response_object:
@@ -7734,6 +7847,7 @@ def tas_elevated():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
@@ -7806,6 +7920,7 @@ def tas_elevated():
             counter += 1
             if counter >= 3:
                 return jsonify({'error': True})
+            time.sleep(0)
     response_object = json.loads(res.content)['values']
     for val in response_object:
         paramName = val['ParamName']
