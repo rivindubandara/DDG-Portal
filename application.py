@@ -1673,30 +1673,40 @@ def get_geometry():
         "values": bound_list + hob_list + road_list + building_list
     }
 
-    res = send_compute_post(geo_payload)
-    response_object = json.loads(res.content)['values']
-    for val in response_object:
-        paramName = val['ParamName']
-        if paramName == 'RH_OUT:Geometry':
-            innerTree = val['InnerTree']
-            for key, innerVals in innerTree.items():
-                for innerVal in innerVals:
-                    if 'data' in innerVal:
-                        data = json.loads(innerVal['data'])
-                        geo = rh.CommonObject.Decode(data)
-                        att = rh.ObjectAttributes()
-                        att.LayerIndex = procedural_layerIndex
-                        geometry_model.Objects.AddBrep(geo, att)
-        if paramName == 'RH_OUT:Existing':
-            innerTree = val['InnerTree']
-            for key, innerVals in innerTree.items():
-                for innerVal in innerVals:
-                    if 'data' in innerVal:
-                        data = json.loads(innerVal['data'])
-                        geo = rh.CommonObject.Decode(data)
-                        att = rh.ObjectAttributes()
-                        att.LayerIndex = proceduralbuildings_layerIndex
-                        geometry_model.Objects.AddBrep(geo, att)
+    # counter = 0
+    # while True:
+    #     res = requests.post(compute_url + "grasshopper",
+    #                         json=geo_payload, headers=headers)
+    #     if res.status_code == 200:
+    #         break
+    #     else:
+    #         counter += 1
+    #         if counter >= 3:
+    #             return jsonify({'error': True})
+    #         time.sleep(0)
+    # response_object = json.loads(res.content)['values']
+    # for val in response_object:
+    #     paramName = val['ParamName']
+    #     if paramName == 'RH_OUT:Geometry':
+    #         innerTree = val['InnerTree']
+    #         for key, innerVals in innerTree.items():
+    #             for innerVal in innerVals:
+    #                 if 'data' in innerVal:
+    #                     data = json.loads(innerVal['data'])
+    #                     geo = rh.CommonObject.Decode(data)
+    #                     att = rh.ObjectAttributes()
+    #                     att.LayerIndex = procedural_layerIndex
+    #                     geometry_model.Objects.AddBrep(geo, att)
+    #     if paramName == 'RH_OUT:Existing':
+    #         innerTree = val['InnerTree']
+    #         for key, innerVals in innerTree.items():
+    #             for innerVal in innerVals:
+    #                 if 'data' in innerVal:
+    #                     data = json.loads(innerVal['data'])
+    #                     geo = rh.CommonObject.Decode(data)
+    #                     att = rh.ObjectAttributes()
+    #                     att.LayerIndex = proceduralbuildings_layerIndex
+    #                     geometry_model.Objects.AddBrep(geo, att)
 
     giraffe_file = request.files['uploadGiraffeBtn']
     if giraffe_file:
