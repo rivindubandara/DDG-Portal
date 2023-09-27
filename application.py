@@ -7447,11 +7447,11 @@ def tas_geometry():
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 30000)
 
-    boundary_params = create_parameters(
+    boundary_params = create_parameters_vic(
         f'{lon},{lat}', 'esriGeometryPoint', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
-    params = create_parameters(
+    params = create_parameters_vic(
         '', 'esriGeometryEnvelope', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
-    topo_params = create_parameters(
+    topo_params = create_parameters_vic(
         '', 'esriGeometryEnvelope', t_xmin_LL, t_ymin_LL, t_xmax_LL, t_ymax_LL)
 
     params_dict = {
@@ -7514,7 +7514,7 @@ def tas_geometry():
                             lat_delta = lat2 - lat1
                             lon_mapped = lon1 + (x_prop * lon_delta)
                             lat_mapped = lat1 + (y_prop * lat_delta)
-                            lon_mapped, lat_mapped = transformer2.transform(
+                            lon_mapped, lat_mapped = transformer2_vic.transform(
                                 lon_mapped, lat_mapped)
                             point = rh.Point3d(
                                 lon_mapped, lat_mapped, 0)
@@ -7550,7 +7550,7 @@ def tas_geometry():
                                     (x_prop * lon_delta)
                                 lat_mapped = lat1 + \
                                     (y_prop * lat_delta)
-                                lon_mapped, lat_mapped = transformer2.transform(
+                                lon_mapped, lat_mapped = transformer2_vic.transform(
                                     lon_mapped, lat_mapped)
                                 point = rh.Point3d(
                                     lon_mapped, lat_mapped, 0)
@@ -7593,18 +7593,17 @@ def tas_geometry():
                 tas_g.Objects.AddCurve(curve, att)
     else:
         time.sleep(0)
+        
 
     cen_x, cen_y = transformer2_vic.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
+    translation_vector = rh.Vector3d(-centroid.X, -centroid.Y, -centroid.Z)
 
-    translation_vector = rh.Vector3d(-centroid.X, -
-                                     centroid.Y, -centroid.Z)
-
-    if bound_curve is not None:  # Check if bound_curve is not None
+    if bound_curve is not None:
         bound_curve.Translate(translation_vector)
 
     for obj in tas_g.Objects:
-        if obj.Geometry != bound_curve and obj.Geometry is not None:  # Check if obj.Geometry is not None
+        if obj.Geometry != bound_curve and obj.Geometry is not None:
             obj.Geometry.Translate(translation_vector)
 
     filename = "tas_geometry.3dm"
@@ -7655,11 +7654,11 @@ def tas_elevated():
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 30000)
 
-    boundary_params = create_parameters(
+    boundary_params = create_parameters_vic(
         f'{lon},{lat}', 'esriGeometryPoint', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
-    params = create_parameters(
+    params = create_parameters_vic(
         '', 'esriGeometryEnvelope', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
-    topo_params = create_parameters(
+    topo_params = create_parameters_vic(
         '', 'esriGeometryEnvelope', t_xmin_LL, t_ymin_LL, t_xmax_LL, t_ymax_LL)
 
     params_dict = {
@@ -7723,7 +7722,7 @@ def tas_elevated():
                             lat_delta = lat2 - lat1
                             lon_mapped = lon1 + (x_prop * lon_delta)
                             lat_mapped = lat1 + (y_prop * lat_delta)
-                            lon_mapped, lat_mapped = transformer2.transform(
+                            lon_mapped, lat_mapped = transformer2_vic.transform(
                                 lon_mapped, lat_mapped)
                             point = rh.Point3d(
                                 lon_mapped, lat_mapped, 0)
@@ -7751,7 +7750,7 @@ def tas_elevated():
                                     (x_prop * lon_delta)
                                 lat_mapped = lat1 + \
                                     (y_prop * lat_delta)
-                                lon_mapped, lat_mapped = transformer2.transform(
+                                lon_mapped, lat_mapped = transformer2_vic.transform(
                                     lon_mapped, lat_mapped)
                                 point = rh.Point3d(
                                     lon_mapped, lat_mapped, 0)
@@ -7825,7 +7824,7 @@ def tas_elevated():
         elevations_list_terrain[0]["InnerTree"][key] = value
 
     centre_list = []
-    cen_x, cen_y = transformer2.transform(lon, lat)
+    cen_x, cen_y = transformer2_vic.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
     centre_list.append(centroid)
 
@@ -7957,9 +7956,7 @@ def tas_elevated():
 
     cen_x, cen_y = transformer2_vic.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
-
-    translation_vector = rh.Vector3d(-centroid.X, -
-                                     centroid.Y, -centroid.Z)
+    translation_vector = rh.Vector3d(-centroid.X, -centroid.Y, -centroid.Z)
 
     if bound_curve is not None:
         bound_curve.Translate(translation_vector)
