@@ -7594,7 +7594,7 @@ def tas_geometry():
     else:
         time.sleep(0)
 
-    cen_x, cen_y = transformer2.transform(lon, lat)
+    cen_x, cen_y = transformer2_vic.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
 
     translation_vector = rh.Vector3d(-centroid.X, -
@@ -7955,7 +7955,7 @@ def tas_elevated():
                         att.LayerIndex = boundary_layerEIndex
                         tas_e.Objects.AddCurve(geo, att)
 
-    cen_x, cen_y = transformer2.transform(lon, lat)
+    cen_x, cen_y = transformer2_vic.transform(lon, lat)
     centroid = rh.Point3d(cen_x, cen_y, 0)
 
     translation_vector = rh.Vector3d(-centroid.X, -
