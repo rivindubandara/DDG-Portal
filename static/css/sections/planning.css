@@ -406,8 +406,8 @@ button {
 }
 
 .feature-container {
-  margin: 2px;
-  padding: 5px;
+  margin: 1px;
+  padding: 2px;
   padding-left: 10px;
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
   border-radius: 5px;
