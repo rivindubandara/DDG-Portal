@@ -185,32 +185,6 @@ def process_feature(feature, p_key, curves, numbers):
             numbers.append(number)
 
 
-def add_bound_curve_to_model(data, model, layerIndex, address):
-    curve = None
-    counter = 0
-    while True:
-        if 'features' in data:
-            for feature in data["features"]:
-                geometry = feature["geometry"]
-                for ring in geometry["rings"]:
-                    points = []
-                    for coord in ring:
-                        point = rh.Point3d(coord[0], coord[1], 0)
-                        points.append(point)
-                    polyline = rh.Polyline(points)
-                    curve = polyline.ToNurbsCurve()
-                    att = rh.ObjectAttributes()
-                    att.LayerIndex = layerIndex
-                    att.SetUserString('Address', str(address))
-                    model.Objects.AddCurve(curve, att)
-                    return curve
-        else:
-            counter += 1
-            if counter >= 3:
-                return jsonify({'error': True})
-            time.sleep(0)
-
-
 def add_mesh_to_model(data, layerIndex, p_key, paramName, gh_algo, model):
     curves = []
     numbers = []
@@ -633,9 +607,31 @@ def get_planning():
     airport_data = data_dict.get('airport_data')
     parks_data = data_dict.get('parks_data')
 
-    boundary_data = get_data(boundary_url, boundary_params)
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, planning_model, boundary_layerIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerIndex
+            att.SetUserString("Address", str(address))
+            planning_model.Objects.AddCurve(bound_curve, att)
 
     counter = 0
     while True:
@@ -1404,12 +1400,10 @@ def get_geometry():
     proceduralbuildings_layerIndex = create_layer(geometry_model, "Culled Geometry", (99, 99, 99, 255))
 
     params_dict = {
-        boundary_url: boundary_params,
         topo_url: topo_params
     }
 
     urls = [
-        boundary_url,
         topo_url
     ]
 
@@ -1428,10 +1422,32 @@ def get_geometry():
                     data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
-    boundary_data = data_dict.get('boundary_data')
 
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, geometry_model, boundary_layerIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerIndex
+            att.SetUserString("Address", str(address))
+            geometry_model.Objects.AddCurve(bound_curve, att)
     
     buildings = []
     for tile in tiles:
@@ -1878,12 +1894,10 @@ def get_elevated():
     gh_mapboxContours_decoded = encode_ghx_file(r"./gh_scripts/mapboxContours.ghx")
 
     params_dict = {
-        boundary_url: boundary_params,
         topo_url: topo_params
     }
 
     urls = [
-        boundary_url,
         topo_url
     ]
 
@@ -1902,10 +1916,32 @@ def get_elevated():
                     data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
-    boundary_data = data_dict.get('boundary_data')
 
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, elevated_model, boundary_layerEIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerEIndex
+            att.SetUserString("Address", str(address))
+            elevated_model.Objects.AddCurve(bound_curve, att)
 
     buildings = []
     for tile in tiles:
@@ -2451,9 +2487,31 @@ def get_qld_planning():
     river_data = data_dict.get('river_data')
     lots_data = data_dict.get('lots_data')
 
-    boundary_data = get_data(boundary_url, boundary_params)
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, qld, boundary_layerIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerIndex
+            att.SetUserString("Address", str(address))
+            qld.Objects.AddCurve(bound_curve, att)
 
     counter = 0
     while True:
@@ -3212,14 +3270,36 @@ def get_qld_geometry():
                     data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
-    boundary_data = data_dict.get('boundary_data')
 
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
     zoom = 16
 
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, qld_g, boundary_layerIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerIndex
+            att.SetUserString("Address", str(address))
+            qld_g.Objects.AddCurve(bound_curve, att)
 
     for tile in tiles:
         mb_data = concurrent_fetching(zoom, tile)
@@ -3421,10 +3501,32 @@ def get_qld_elevated():
                     data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
-    boundary_data = data_dict.get('boundary_data')
 
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, qld_e, boundary_layerEIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerEIndex
+            att.SetUserString("Address", str(address))
+            qld_e.Objects.AddCurve(bound_curve, att)
 
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
@@ -3821,9 +3923,31 @@ def get_vic_planning():
     params = create_parameters_vic(
         '', 'esriGeometryEnvelope', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
 
-    boundary_data = get_data(
-        boundary_url, boundary_params)
-    bound_curve = add_bound_curve_to_model(boundary_data, vic, boundary_layerIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerIndex
+            att.SetUserString("Address", str(address))
+            vic.Objects.AddCurve(bound_curve, att)
 
     counter = 0
     while True:
@@ -4513,9 +4637,31 @@ def get_vic_geometry():
     t_params = create_parameters_vic(
         '', 'esriGeometryEnvelope', t_xmin_LL, t_ymin_LL, t_xmax_LL, t_ymax_LL)
 
-    boundary_data = get_data(boundary_url, boundary_params)
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, vic_g, boundary_layerIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerIndex
+            att.SetUserString("Address", str(address))
+            vic_g.Objects.AddCurve(bound_curve, att)
 
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
@@ -4731,9 +4877,31 @@ def get_vic_elevated():
         vic_e, "Contours Elevated", (191, 191, 191, 255))
 
 
-    boundary_data = get_data(boundary_url, boundary_params)
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, vic_e, boundary_layerIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerEIndex
+            att.SetUserString("Address", str(address))
+            vic_e.Objects.AddCurve(bound_curve, att)
 
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
@@ -4744,9 +4912,6 @@ def get_vic_elevated():
         r"./gh_scripts/elevate_buildings.ghx")
 
     bound_curves_list = []
-    boundary_data = get_data(boundary_url, boundary_params)
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, vic_e, boundary_layerIndex, address)
     bound_curves_list.append(bound_curve)
 
     buildings = []
@@ -6883,9 +7048,31 @@ def tas_planning():
     params = create_parameters_vic(
         '', 'esriGeometryEnvelope', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
 
-    boundary_data = get_data(
-        boundary_url, boundary_params)
-    bound_curve = add_bound_curve_to_model(boundary_data, tas_planning, boundary_layerIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerIndex
+            att.SetUserString("Address", str(address))
+            tas_planning.Objects.AddCurve(bound_curve, att)
 
     counter = 0
     while True:
@@ -7479,14 +7666,36 @@ def tas_geometry():
                     data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
-    boundary_data = data_dict.get('boundary_data')
 
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
     zoom = 16
 
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, tas_g, boundary_layerIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerIndex
+            att.SetUserString("Address", str(address))
+            tas_g.Objects.AddCurve(bound_curve, att)
 
     for tile in tiles:
         mb_data = concurrent_fetching(zoom, tile)
@@ -7686,10 +7895,32 @@ def tas_elevated():
                     data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
-    boundary_data = data_dict.get('boundary_data')
 
-    bound_curve = add_bound_curve_to_model(
-        boundary_data, tas_e, boundary_layerEIndex, address)
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            break
+        else:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerEIndex
+            att.SetUserString("Address", str(address))
+            tas_e.Objects.AddCurve(bound_curve, att)
 
     tiles = list(mercantile.tiles(
         xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
