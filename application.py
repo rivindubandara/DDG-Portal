@@ -23,10 +23,10 @@ application.secret_key = 'nettletontribe_secret_key'
 
 mapbox_access_token = 'pk.eyJ1Ijoicml2aW5kdWIiLCJhIjoiY2xmYThkcXNjMHRkdDQzcGU4Mmh2a3Q3MSJ9.dXlhamKyYyGusL3PWqDD9Q'
 
-compute_url = "http://13.54.229.195:80/"
-# compute_url = "http://localhost:6500/"
+# compute_url = "http://13.54.229.195:80/"
+compute_url = "http://localhost:6500/"
 headers = {
-    "RhinoComputeKey": "8c96f7d9-5a62-4bbf-ad3f-6e976b94ea1e"
+    # "RhinoComputeKey": "8c96f7d9-5a62-4bbf-ad3f-6e976b94ea1e"
 }
 
 class __Rhino3dmEncoder(json.JSONEncoder):
@@ -370,22 +370,23 @@ def get_planning():
     topo_url = 'https://portal.spatial.nsw.gov.au/server/rest/services/NSW_Elevation_and_Depth_Theme/MapServer/2/query'
 
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
     z_xmin_LL, z_xmax_LL, z_ymin_LL, z_ymax_LL = create_boundary(
@@ -1358,22 +1359,23 @@ def get_geometry():
     # gh_procedural_decoded = encode_ghx_file(r"./gh_scripts/PropertyOffsets.ghx")
 
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 15000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
@@ -1846,22 +1848,23 @@ def get_elevated():
     topo_url = 'https://portal.spatial.nsw.gov.au/server/rest/services/NSW_Elevation_and_Depth_Theme/MapServer/2/query'
 
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
@@ -2313,22 +2316,23 @@ def get_qld_planning():
     boundary_url = 'https://spatial-gis.information.qld.gov.au/arcgis/rest/services/PlanningCadastre/LandParcelPropertyFramework/MapServer/8/query'
 
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     qld = rh.File3dm()
     qld.Settings.ModelUnitSystem = rh.UnitSystem.Meters
@@ -3208,22 +3212,23 @@ def get_qld_geometry():
     topo_url = "https://spatial-gis.information.qld.gov.au/arcgis/rest/services/Elevation/ContoursCache/MapServer/0/query"
 
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     qld_g = rh.File3dm()
     qld_g.Settings.ModelUnitSystem = rh.UnitSystem.Meters
@@ -3433,22 +3438,23 @@ def get_qld_elevated():
     topo_url = "https://spatial-gis.information.qld.gov.au/arcgis/rest/services/Elevation/ContoursCache/MapServer/0/query"
 
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     qld_e = rh.File3dm()
     qld_e.Settings.ModelUnitSystem = rh.UnitSystem.Meters
@@ -3814,22 +3820,23 @@ def get_qld_elevated():
 def get_vic_planning():
 
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     vic = rh.File3dm()
     vic.Settings.ModelUnitSystem = rh.UnitSystem.Meters
@@ -4596,22 +4603,23 @@ def get_vic_planning():
 def get_vic_geometry():
 
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     vic_g = rh.File3dm()
     vic_g.Settings.ModelUnitSystem = rh.UnitSystem.Meters
@@ -4833,22 +4841,23 @@ def get_vic_geometry():
 def get_vic_elevated():
 
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     boundary_url = 'https://enterprise.mapshare.vic.gov.au/server/rest/services/V_PARCEL_MP/MapServer/0/query'
     metro_topo_url = "https://services6.arcgis.com/GB33F62SbDxJjwEL/ArcGIS/rest/services/Vicmap_Elevation_METRO_1_to_5_metre/FeatureServer/1/query"
@@ -6950,22 +6959,23 @@ def tas():
 @application.route('/tas_planning', methods=['POST'])
 def tas_planning():
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     tas_planning = rh.File3dm()
     tas_planning.Settings.ModelUnitSystem = rh.UnitSystem.Meters
@@ -7604,22 +7614,23 @@ def tas_geometry():
     topo_url = "https://services.thelist.tas.gov.au/arcgis/rest/services/Public/TopographyAndRelief/MapServer/13/query"
 
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     tas_g = rh.File3dm()
     tas_g.Settings.ModelUnitSystem = rh.UnitSystem.Meters
@@ -7827,22 +7838,23 @@ def tas_elevated():
     topo_url = "https://services.thelist.tas.gov.au/arcgis/rest/services/Public/TopographyAndRelief/MapServer/13/query"
 
     address = request.form.get('address')
-    endpoint = "https://api.mapbox.com/geocoding/v5/mapbox.places/{address}.json"
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
     params = {
-        "access_token": mapbox_access_token,
-        "autocomplete": False,
-        "limit": 1,
-        "query": address,
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
     }
 
-    response = requests.get(endpoint.format(address=address), params=params)
+    response = requests.get(arcgis_geocoder_url, params=params)
+
     if response.status_code == 200:
-        result = response.json()["features"][0]
-        longitude, latitude = result["center"]
-        lon = float(longitude)
-        lat = float(latitude)
-    else:
-        return jsonify({'error': True})
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
 
     tas_e = rh.File3dm()
     tas_e.Settings.ModelUnitSystem = rh.UnitSystem.Meters
