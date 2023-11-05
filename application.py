@@ -23,10 +23,10 @@ application.secret_key = 'nettletontribe_secret_key'
 
 mapbox_access_token = 'pk.eyJ1Ijoicml2aW5kdWIiLCJhIjoiY2xmYThkcXNjMHRkdDQzcGU4Mmh2a3Q3MSJ9.dXlhamKyYyGusL3PWqDD9Q'
 
-# compute_url = "http://13.54.229.195:80/"
-compute_url = "http://localhost:6500/"
+compute_url = "http://13.54.229.195:80/"
+# compute_url = "http://localhost:6500/"
 headers = {
-    # "RhinoComputeKey": "8c96f7d9-5a62-4bbf-ad3f-6e976b94ea1e"
+    "RhinoComputeKey": "8c96f7d9-5a62-4bbf-ad3f-6e976b94ea1e"
 }
 
 class __Rhino3dmEncoder(json.JSONEncoder):
