@@ -613,10 +613,11 @@ def get_planning():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
@@ -1420,8 +1421,6 @@ def get_geometry():
             if data is not None:
                 if url == topo_url:
                     data_dict['topography_data'] = data
-                elif url == boundary_url:
-                    data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
 
@@ -1430,10 +1429,11 @@ def get_geometry():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
@@ -1915,8 +1915,6 @@ def get_elevated():
             if data is not None:
                 if url == topo_url:
                     data_dict['topography_data'] = data
-                elif url == boundary_url:
-                    data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
 
@@ -1925,10 +1923,11 @@ def get_elevated():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
@@ -2496,10 +2495,11 @@ def get_qld_planning():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
@@ -3271,8 +3271,6 @@ def get_qld_geometry():
             if data is not None:
                 if url == topo_url:
                     data_dict['topography_data'] = data
-                elif url == boundary_url:
-                    data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
 
@@ -3285,10 +3283,11 @@ def get_qld_geometry():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
@@ -3503,8 +3502,6 @@ def get_qld_elevated():
             if data is not None:
                 if url == topo_url:
                     data_dict['topography_data'] = data
-                elif url == boundary_url:
-                    data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
 
@@ -3513,10 +3510,11 @@ def get_qld_elevated():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
@@ -3935,10 +3933,11 @@ def get_vic_planning():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
@@ -4650,10 +4649,11 @@ def get_vic_geometry():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
@@ -4891,10 +4891,11 @@ def get_vic_elevated():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
@@ -4908,7 +4909,7 @@ def get_vic_elevated():
             polyline = rh.Polyline(points)
             bound_curve = polyline.ToNurbsCurve()
             att = rh.ObjectAttributes()
-            att.LayerIndex = boundary_layerEIndex
+            att.LayerIndex = boundary_layerIndex
             att.SetUserString("Address", str(address))
             vic_e.Objects.AddCurve(bound_curve, att)
 
@@ -7063,10 +7064,11 @@ def tas_planning():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
@@ -7673,8 +7675,6 @@ def tas_geometry():
             if data is not None:
                 if url == topo_url:
                     data_dict['topography_data'] = data
-                elif url == boundary_url:
-                    data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
 
@@ -7687,10 +7687,11 @@ def tas_geometry():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
@@ -7903,8 +7904,6 @@ def tas_elevated():
             if data is not None:
                 if url == topo_url:
                     data_dict['topography_data'] = data
-                elif url == boundary_url:
-                    data_dict['boundary_data'] = data
 
     topography_data = data_dict.get('topography_data')
 
@@ -7913,10 +7912,11 @@ def tas_elevated():
         response = requests.get(boundary_url, boundary_params)
         if response.status_code == 200:
             boundary_data = json.loads(response.text)
-            break
+            if boundary_data["features"]:
+                break
         else:
             counter += 1
-            if counter >= 3:
+            if counter >= 5:
                 return jsonify({'error': True})
             time.sleep(0)
 
