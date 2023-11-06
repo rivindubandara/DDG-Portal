@@ -23,10 +23,10 @@ application.secret_key = 'nettletontribe_secret_key'
 
 mapbox_access_token = 'pk.eyJ1Ijoicml2aW5kdWIiLCJhIjoiY2xmYThkcXNjMHRkdDQzcGU4Mmh2a3Q3MSJ9.dXlhamKyYyGusL3PWqDD9Q'
 
-compute_url = "http://13.54.229.195:80/"
-# compute_url = "http://localhost:6500/"
+# compute_url = "http://13.54.229.195:80/"
+compute_url = "http://localhost:6500/"
 headers = {
-    "RhinoComputeKey": "8c96f7d9-5a62-4bbf-ad3f-6e976b94ea1e"
+    # "RhinoComputeKey": "8c96f7d9-5a62-4bbf-ad3f-6e976b94ea1e"
 }
 
 class __Rhino3dmEncoder(json.JSONEncoder):
@@ -2291,6 +2291,443 @@ def get_elevated():
 
     filename = "elevated.3dm"
     elevated_model.Write('./tmp/files/' + str(filename), 7)
+
+    return send_from_directory('./tmp/files/', filename, as_attachment=True)
+
+
+@application.route('/submit/lite', methods=['POST'])
+def lite():
+    boundary_url = 'https://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Cadastre/MapServer/9/query'
+    topo_url = 'https://portal.spatial.nsw.gov.au/server/rest/services/NSW_Elevation_and_Depth_Theme/MapServer/2/query'
+    address = request.form.get('address')
+    arcgis_geocoder_url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer/find"
+    params = {
+        "text": address,
+        "f": "json",
+        "outFields": "Location"
+    }
+
+    response = requests.get(arcgis_geocoder_url, params=params)
+
+    if response.status_code == 200:
+        data = response.json()
+        if "locations" in data and len(data["locations"]) > 0:
+            location = data["locations"][0]
+            lon = location["feature"]["geometry"]["x"]
+            lat = location["feature"]["geometry"]["y"]
+        else:
+            return jsonify({'error': True})
+        
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
+    boundary_params = create_parameters(
+        f'{lon},{lat}', 'esriGeometryPoint', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
+    t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
+            lat, lon, 30000)
+    topo_params = create_parameters(
+            '', 'esriGeometryEnvelope', t_xmin_LL, t_ymin_LL, t_xmax_LL, t_ymax_LL)
+    params = create_parameters('', 'esriGeometryEnvelope',
+                                xmin_LL, ymin_LL, xmax_LL, ymax_LL)
+    tiles = list(mercantile.tiles(
+        xmin_LL, ymin_LL, xmax_LL, ymax_LL, zooms=16))
+    zoom = 16
+
+    lite_model = rh.File3dm()
+    lite_model.Settings.ModelUnitSystem = rh.UnitSystem.Meters
+
+    boundary_layerIndex = create_layer(
+        lite_model, "Boundary", (237, 0, 194, 255))
+    lots_layerIndex = create_layer(
+        lite_model, "Lots", (255, 106, 0, 255))
+    road_layerIndex = create_layer(
+        lite_model, "Roads", (145, 145, 145, 255))
+    building_layerIndex = create_layer(
+        lite_model, "Buildings", (99, 99, 99, 255))
+    contours_layerIndex = create_layer(
+        lite_model, "Contours", (191, 191, 191, 255))
+    topography_layerIndex = create_layer(
+        lite_model, "Topography", (191, 191, 191, 255))
+    gh_topography_decoded = encode_ghx_file(
+        r"./gh_scripts/topography.ghx")
+
+    gh_roads_decoded = encode_ghx_file(r"./gh_scripts/roads.ghx")
+
+    lots_url = 'https://maps.six.nsw.gov.au/arcgis/rest/services/public/NSW_Cadastre/MapServer/9/query'
+
+    params_dict = {
+        lots_url: params,
+        topo_url: topo_params
+    }
+    urls = [
+        lots_url,
+        topo_url
+    ]
+    data_dict = {}
+
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_to_url = {executor.submit(
+            get_data, url, params=params_dict[url]): url for url in urls}
+        for future in concurrent.futures.as_completed(future_to_url):
+            url = future_to_url[future]
+            data = future.result()
+            if data is not None:
+                if url == lots_url:
+                    data_dict['lots_data'] = data
+                elif url == topo_url:
+                    data_dict['topography_data'] = data
+
+    lots_data = data_dict.get('lots_data')
+    topography_data = data_dict.get('topography_data')
+
+    counter = 0
+    while True:
+        response = requests.get(boundary_url, boundary_params)
+        if response.status_code == 200:
+            boundary_data = json.loads(response.text)
+            if boundary_data["features"]:
+                break
+        else:
+            counter += 1
+            if counter >= 5:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    for feature in boundary_data["features"]:
+        geometry = feature["geometry"]
+        for ring in geometry["rings"]:
+            points = []
+            for coord in ring:
+                point = rh.Point3d(coord[0], coord[1], 0)
+                points.append(point)
+            polyline = rh.Polyline(points)
+            bound_curve = polyline.ToNurbsCurve()
+            att = rh.ObjectAttributes()
+            att.LayerIndex = boundary_layerIndex
+            att.SetUserString("Address", str(address))
+            lite_model.Objects.AddCurve(bound_curve, att)
+
+    add_to_model(lots_data, lots_layerIndex,"plannumber", "Lot Number", lite_model)
+
+    road_curves = []
+    for tile in tiles:
+        mb_data = concurrent_fetching(zoom, tile)
+        tiles1 = mapbox_vector_tile.decode(mb_data)
+
+        if 'road' not in tiles1:
+            continue
+
+        road_layer = tiles1['road']
+
+        tile1 = mercantile.Tile(tile.x, tile.y, 16)
+        bbox = mercantile.bounds(tile1)
+        lon1, lat1, lon2, lat2 = bbox
+
+        for feature in road_layer['features']:
+            geometry_type = feature['geometry']['type']
+            if geometry_type == 'LineString':
+                geometry = feature['geometry']['coordinates']
+                road_class = feature['properties']['class']
+                points = []
+                for ring in geometry:
+                    x_val, y_val = ring[0], ring[1]
+                    x_prop = (x_val / 4096)
+                    y_prop = (y_val / 4096)
+                    lon_delta = lon2 - lon1
+                    lat_delta = lat2 - lat1
+                    lon_mapped = lon1 + (x_prop * lon_delta)
+                    lat_mapped = lat1 + (y_prop * lat_delta)
+                    lon_mapped, lat_mapped = transformer2.transform(
+                        lon_mapped, lat_mapped)
+                    point = rh.Point3d(lon_mapped, lat_mapped, 0)
+                    points.append(point)
+
+                polyline = rh.Polyline(points)
+                curve = polyline.ToNurbsCurve()
+                road_curves.append(curve)
+
+            elif geometry_type == 'MultiLineString':
+                geometry = feature['geometry']['coordinates']
+                road_class = feature['properties']['class']
+                for line_string in geometry:
+                    points = []
+                    for ring in line_string:
+                        x_val, y_val = ring[0], ring[1]
+                        x_prop = (x_val / 4096)
+                        y_prop = (y_val / 4096)
+                        lon_delta = lon2 - lon1
+                        lat_delta = lat2 - lat1
+                        lon_mapped = lon1 + (x_prop * lon_delta)
+                        lat_mapped = lat1 + (y_prop * lat_delta)
+                        lon_mapped, lat_mapped = transformer2.transform(
+                            lon_mapped, lat_mapped)
+                        point = rh.Point3d(
+                            lon_mapped, lat_mapped, 0)
+                        points.append(point)
+                    polyline = rh.Polyline(points)
+                    curve = polyline.ToNurbsCurve()
+                    road_curves.append(curve)
+
+    curves_list_roads = [{"ParamName": "Curves", "InnerTree": {}}]
+
+    for i, curve in enumerate(road_curves):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        curves_list_roads[0]["InnerTree"][key] = value
+
+    geo_payload = {
+        "algo": gh_roads_decoded,
+        "pointer": None,
+        "values": curves_list_roads
+    }
+
+    res = send_compute_post(geo_payload)
+    response_object = json.loads(res.content)['values']
+    for val in response_object:
+        paramName = val['ParamName']
+        if paramName == 'RH_OUT:Roads':
+            innerTree = val['InnerTree']
+            for key, innerVals in innerTree.items():
+                for innerVal in innerVals:
+                    if 'data' in innerVal:
+                        data = json.loads(innerVal['data'])
+                        geo = rh.CommonObject.Decode(data)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = road_layerIndex
+                        lite_model.Objects.AddCurve(geo, att)
+
+    buildings = []
+    for tile in tiles:
+        mb_data = concurrent_fetching(zoom, tile)
+        tiles1 = mapbox_vector_tile.decode(mb_data)
+
+        if 'building' in tiles1:
+            building_layerMB = tiles1['building']
+
+            tile1 = mercantile.Tile(tile.x, tile.y, 16)
+            bbox = mercantile.bounds(tile1)
+            lon1, lat1, lon2, lat2 = bbox
+
+            for feature in building_layerMB['features']:
+                geometry_type = feature['geometry']['type']
+                height = feature['properties']['height']
+                if geometry_type == 'Polygon':
+                    geometry = feature['geometry']['coordinates']
+                    for ring in geometry:
+                        points = []
+                        for coord in ring:
+                            x_val, y_val = coord[0], coord[1]
+                            x_prop = (x_val / 4096)
+                            y_prop = (y_val / 4096)
+                            lon_delta = lon2 - lon1
+                            lat_delta = lat2 - lat1
+                            lon_mapped = lon1 + \
+                                (x_prop * lon_delta)
+                            lat_mapped = lat1 + \
+                                (y_prop * lat_delta)
+                            lon_mapped, lat_mapped = transformer2.transform(
+                                lon_mapped, lat_mapped)
+                            point = rh.Point3d(
+                                lon_mapped, lat_mapped, 0)
+                            points.append(point)
+                        polyline = rh.Polyline(points)
+                        curve = polyline.ToNurbsCurve()
+                        orientation = curve.ClosedCurveOrientation()
+                        if str(orientation) == 'CurveOrientation.Clockwise':
+                            curve.Reverse()
+                        extrusion = rh.Extrusion.Create(
+                            curve, height, True)
+                        att = rh.ObjectAttributes()
+                        att.LayerIndex = building_layerIndex
+                        att.SetUserString(
+                            "Building Height", str(height))
+                        lite_model.Objects.AddExtrusion(
+                            extrusion, att)
+                        buildings.append(extrusion)
+                elif geometry_type == 'MultiPolygon':
+                    geometry = feature['geometry']['coordinates']
+                    for polygon in geometry:
+                        for ring in polygon:
+                            points = []
+                            for coord in ring:
+                                x_val, y_val = coord[0], coord[1]
+                                x_prop = (x_val / 4096)
+                                y_prop = (y_val / 4096)
+                                lon_delta = lon2 - lon1
+                                lat_delta = lat2 - lat1
+                                lon_mapped = lon1 + \
+                                    (x_prop * lon_delta)
+                                lat_mapped = lat1 + \
+                                    (y_prop * lat_delta)
+                                lon_mapped, lat_mapped = transformer2.transform(
+                                    lon_mapped, lat_mapped)
+                                point = rh.Point3d(
+                                    lon_mapped, lat_mapped, 0)
+                                points.append(point)
+                            polyline = rh.Polyline(points)
+                            curve = polyline.ToNurbsCurve()
+                            orientation = curve.ClosedCurveOrientation()
+                            if str(orientation) == 'CurveOrientation.Clockwise':
+                                curve.Reverse()
+                            extrusion = rh.Extrusion.Create(
+                                curve, height, True)
+                            att = rh.ObjectAttributes()
+                            att.LayerIndex = building_layerIndex
+                            att.SetUserString(
+                                "Building Height", str(height))
+                            lite_model.Objects.AddExtrusion(
+                                extrusion, att)
+                            buildings.append(extrusion)
+        else:
+            time.sleep(0)
+
+    if "features" in topography_data:
+        for feature in topography_data["features"]:
+            elevation = feature['attributes']['elevation']
+            geometry = feature["geometry"]
+            for ring in geometry["paths"]:
+                points = []
+                for coord in ring:
+                    point = rh.Point3d(
+                        coord[0], coord[1], 0)
+                    points.append(point)
+                polyline = rh.Polyline(points)
+                curve = polyline.ToNurbsCurve()
+                att = rh.ObjectAttributes()
+                att.LayerIndex = contours_layerIndex
+                att.SetUserString(
+                    "Elevation", str(elevation))
+                lite_model.Objects.AddCurve(curve, att)
+    else:
+        time.sleep(0)
+
+    terrain_curves = []
+    terrain_elevations = []
+    if "features" in topography_data:
+        for feature in topography_data["features"]:
+            elevation = feature['attributes']['elevation']
+            geometry = feature["geometry"]
+
+            for ring in geometry["paths"]:
+                points = []
+                points_e = []
+
+                for coord in ring:
+                    point = rh.Point3d(coord[0], coord[1], 0)
+                    point_e = rh.Point3d(
+                        coord[0], coord[1], elevation)
+                    points.append(point)
+                    points_e.append(point_e)
+
+                polyline = rh.Polyline(points)
+                polyline_e = rh.Polyline(points_e)
+                curve = polyline.ToNurbsCurve()
+                curve_e = polyline_e.ToNurbsCurve()
+
+                terrain_curves.append(curve)
+                terrain_elevations.append(int(elevation))
+
+    else:
+        time.sleep(0)
+
+    mesh_geo_list = []
+    curves_list_terrain = [
+        {"ParamName": "Curves", "InnerTree": {}}]
+
+    for i, curve in enumerate(terrain_curves):
+        serialized_curve = json.dumps(curve, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Curve",
+                "data": serialized_curve
+            }
+        ]
+        curves_list_terrain[0]["InnerTree"][key] = value
+
+    elevations_list_terrain = [
+        {"ParamName": "Elevations", "InnerTree": {}}]
+    for i, elevation in enumerate(terrain_elevations):
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "System.Int32",
+                "data": elevation
+            }
+        ]
+        elevations_list_terrain[0]["InnerTree"][key] = value
+
+    centre_list = []
+    cen_x, cen_y = transformer2.transform(lon, lat)
+    centroid = rh.Point3d(cen_x, cen_y, 0)
+    centre_list.append(centroid)
+
+    centre_point_list = [{"ParamName": "Point", "InnerTree": {}}]
+    for i, point in enumerate(centre_list):
+        serialized_point = json.dumps(point, cls=__Rhino3dmEncoder)
+        key = f"{{{i};0}}"
+        value = [
+            {
+                "type": "Rhino.Geometry.Point",
+                "data": serialized_point
+            }
+        ]
+        centre_point_list[0]["InnerTree"][key] = value
+
+    geo_payload = {
+        "algo": gh_topography_decoded,
+        "pointer": None,
+        "values": curves_list_terrain + elevations_list_terrain + centre_point_list
+    }
+
+    counter = 0
+    while True:
+        res = requests.post(compute_url + "grasshopper",
+                            json=geo_payload, headers=headers)
+        if res.status_code == 200:
+            break
+        elif not res.ok:
+            counter += 1
+            if counter >= 3:
+                return jsonify({'error': True})
+            time.sleep(0)
+
+    response_object = json.loads(res.content)['values']
+    for val in response_object:
+        paramName = val['ParamName']
+        innerTree = val['InnerTree']
+
+        for key, innerVals in innerTree.items():
+            for innerVal in innerVals:
+                if 'data' in innerVal:
+                    data = json.loads(innerVal['data'])
+                    mesh_geo = rh.CommonObject.Decode(data)
+                    mesh_geo_list.append(mesh_geo)
+
+                    att = rh.ObjectAttributes()
+                    att.LayerIndex = topography_layerIndex
+                    lite_model.Objects.AddMesh(mesh_geo, att)
+
+
+    cen_x, cen_y = transformer2.transform(lon, lat)
+    centroid = rh.Point3d(cen_x, cen_y, 0)
+
+    translation_vector = rh.Vector3d(-centroid.X, -
+                                        centroid.Y, -centroid.Z)
+
+    if bound_curve is not None:  
+        bound_curve.Translate(translation_vector)
+
+    for obj in lite_model.Objects:
+        if obj.Geometry != bound_curve and obj.Geometry is not None:  
+            obj.Geometry.Translate(translation_vector)
+
+    filename = "lite.3dm"
+    lite_model.Write('./tmp/files/' + str(filename), 7)
 
     return send_from_directory('./tmp/files/', filename, as_attachment=True)
 

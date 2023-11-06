@@ -162,6 +162,22 @@
           </div>
         </form>
 
+        <form id="liteForm" action="/submit/lite" method="POST">
+          <div class="address">
+            <input
+              type="text"
+              id="address_lite"
+              name="address"
+              placeholder="Address will appear here"
+              readonly
+            />
+          </div>
+          <div class="lite_button">
+            <button type="submit" id="lite"></button>
+            <label for="lite" class="liteLabel">LITE</label>
+          </div>
+        </form>
+
         <div class="spinner" id="spinner">
           <div></div>
           <div></div>
@@ -455,6 +471,43 @@
               var link = document.createElement("a");
               link.href = window.URL.createObjectURL(blob);
               link.download = "elevated.3dm";
+              link.click();
+
+              $(".spinner").css("display", "none");
+            },
+            error: function () {
+              $(".spinner").css("display", "none");
+              $(".errorPopup").css("display", "flex");
+            },
+          });
+        });
+      });
+    </script>
+
+    <script>
+      $(document).ready(function () {
+        $("#liteForm").on("submit", function (event) {
+          event.preventDefault();
+
+          $(".spinner").css("display", "block");
+
+          var formData = new FormData(this);
+
+          $.ajax({
+            type: "POST",
+            url: "/submit/lite",
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "binary",
+            xhrFields: {
+              responseType: "blob",
+            },
+            success: function (response) {
+              var blob = new Blob([response]);
+              var link = document.createElement("a");
+              link.href = window.URL.createObjectURL(blob);
+              link.download = "lite.3dm";
               link.click();
 
               $(".spinner").css("display", "none");
@@ -1155,6 +1208,7 @@
         mapClickFn(e.lngLat, "address_planning");
         mapClickFn(e.lngLat, "address_geometry");
         mapClickFn(e.lngLat, "address_elevated");
+        mapClickFn(e.lngLat, "address_lite");
       });
 
       const cadastreToggleBtn = document.getElementById("cadastreToggle");
