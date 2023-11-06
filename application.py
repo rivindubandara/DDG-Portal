@@ -388,9 +388,9 @@ def get_planning():
         else:
             return jsonify({'error': True})
 
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     z_xmin_LL, z_xmax_LL, z_ymin_LL, z_ymax_LL = create_boundary(
-        lat, lon, 20000)
+        lat, lon, 10000)
     b_xmin_LL, b_xmax_LL, b_ymin_LL, b_ymax_LL = create_boundary(
         lat, lon, 50000)
     p_xmin_LL, p_xmax_LL, p_ymin_LL, p_ymax_LL = create_boundary(
@@ -1378,7 +1378,7 @@ def get_geometry():
         else:
             return jsonify({'error': True})
 
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 15000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 30000)
     boundary_params = create_parameters(
@@ -2814,7 +2814,7 @@ def get_qld_planning():
     lots_url = 'https://spatial-gis.information.qld.gov.au/arcgis/rest/services/PlanningCadastre/LandParcelPropertyFramework/MapServer/8/query'
 
     zoom = 16
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     r_xmin_LL, r_xmax_LL, r_ymin_LL, r_ymax_LL = create_boundary(
         lat, lon, 60000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
@@ -3676,7 +3676,7 @@ def get_qld_geometry():
     geometry_layerIndex = create_layer(qld_g, "Geometry", (191, 191, 191, 255))
     buildingfootprint_LayerIndex = create_layer(qld_g, "Building Footprint", (191, 191, 191, 255))
 
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 30000)
 
@@ -3907,7 +3907,7 @@ def get_qld_elevated():
     gh_buildings_elevated_decoded = encode_ghx_file(
         r"./gh_scripts/elevate_buildings.ghx")
 
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 30000)
 
@@ -4312,7 +4312,7 @@ def get_vic_planning():
         vic, "Vegetation", (153, 153, 153, 255))
     raster_layerIndex = create_layer(vic, "Raster", (153, 153, 153, 255))
     
-    l_xmin_LL, l_xmax_LL, l_ymin_LL, l_ymax_LL = create_boundary(lat, lon, 15000)
+    l_xmin_LL, l_xmax_LL, l_ymin_LL, l_ymax_LL = create_boundary(lat, lon, 10000)
     n_xmin_LL, n_xmax_LL, n_ymin_LL, n_ymax_LL = create_boundary(lat, lon, 800000)
 
     l_params = {
@@ -4352,9 +4352,9 @@ def get_vic_planning():
         }
     }
 
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 30000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     l_xmin_LL, l_xmax_LL, l_ymin_LL, l_ymax_LL = create_boundary(
-        lat, lon, 15000)
+        lat, lon, 10000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 200000)
     n_xmin_LL, n_xmax_LL, n_ymin_LL, n_ymax_LL = create_boundary(
@@ -5070,7 +5070,7 @@ def get_vic_geometry():
     geometry_layerIndex = create_layer(vic_g, "Geometry", (191, 191, 191, 255))
     buildingfootprint_LayerIndex = create_layer(vic_g, "Building Footprint", (191, 191, 191, 255))
 
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 30000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 200000)
 
@@ -5300,7 +5300,7 @@ def get_vic_elevated():
     metro_topo_url = "https://services6.arcgis.com/GB33F62SbDxJjwEL/ArcGIS/rest/services/Vicmap_Elevation_METRO_1_to_5_metre/FeatureServer/1/query"
     regional_topo_url = "https://enterprise.mapshare.vic.gov.au/server/rest/services/Vicmap_Elevation_STATEWIDE_10_to_20_metre/MapServer/6/query"
 
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 30000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 200000)
 
@@ -7445,7 +7445,7 @@ def tas_planning():
     heritage_layerIndex = create_layer(tas_planning, "Heritage", (153, 153, 153, 255))
     raster_layerIndex = create_layer(tas_planning, "Raster", (153, 153, 153, 255))
     
-    l_xmin_LL, l_xmax_LL, l_ymin_LL, l_ymax_LL = create_boundary(lat, lon, 15000)
+    l_xmin_LL, l_xmax_LL, l_ymin_LL, l_ymax_LL = create_boundary(lat, lon, 10000)
     n_xmin_LL, n_xmax_LL, n_ymin_LL, n_ymax_LL = create_boundary(lat, lon, 800000)
 
     l_params = {
@@ -7485,9 +7485,9 @@ def tas_planning():
         }
     }
 
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 30000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     l_xmin_LL, l_xmax_LL, l_ymin_LL, l_ymax_LL = create_boundary(
-        lat, lon, 15000)
+        lat, lon, 10000)
     n_xmin_LL, n_xmax_LL, n_ymin_LL, n_ymax_LL = create_boundary(
         lat, lon, 800000)
 
@@ -8080,7 +8080,7 @@ def tas_geometry():
     geometry_layerIndex = create_layer(tas_g, "Geometry", (191, 191, 191, 255))
     buildingfootprint_LayerIndex = create_layer(tas_g, "Building Footprint", (191, 191, 191, 255))
 
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 30000)
 
@@ -8309,7 +8309,7 @@ def tas_elevated():
     gh_buildings_elevated_decoded = encode_ghx_file(
         r"./gh_scripts/elevate_buildings.ghx")
 
-    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 20000)
+    xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
         lat, lon, 30000)
 
