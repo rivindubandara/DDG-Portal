@@ -121,7 +121,7 @@ button {
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
   border-radius: 3px;
   cursor: pointer;
-  background: var(--black-300);
+  background: lightblue;
   color: var(--color-white);
   text-align: center;
 }
