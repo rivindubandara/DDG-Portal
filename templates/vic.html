@@ -26,19 +26,58 @@
     <p class="thirdLine">PLEASE TRY AGAIN OR CONTACT DDG</p>
   </div>
 
-  <form id="rhinoForm" action="/mergeRhino" enctype="multipart/form-data", method="POST">
-    <div class="mergeRhino">
-      <input type="file" id="uploadedMergeFile" name="uploadedMergeFile" multiple onchange="countFiles()"/>
-      <label for="uploadedMergeFile" class="uploadMergeLabel"><i class="ri-upload-line"></i>Upload Rhino Files</label>
-      <span id="fileCount">0</span>
-      <button type="submit" class="mergeLabel">Merge</button>
+  <form
+      id="rhinoForm"
+      action="/mergeRhino"
+      enctype="multipart/form-data"
+      ,
+      method="POST"
+    >
+      <div class="mergeRhino">
+        <input
+          type="file"
+          id="uploadedMergeFile"
+          name="uploadedMergeFile"
+          multiple
+          onchange="countFiles()"
+        />
+        <label for="uploadedMergeFile" class="uploadMergeLabel"
+          ><img src="/static/images/rhino.png" alt="rhino" width="50px"></label
+        >
+        <span id="fileCount">0</span>
+        <button type="submit" class="mergeLabel"><img src="/static/images/merge.png" alt="merge" width="25px" ></button>
+      </div>
+    </form>
+
+  <div class="dd__logo">
+    <a href="https://digitaldesign.nettletontribe.com.au/"
+      ><img src="/static/images/dd_logo.png" alt="dd_logo" width="200px"
+    /></a>
+  </div>
+
+  <div class="nt__logo">
+    <a href="https://www.nettletontribe.com.au/"
+      ><img src="/static/images/nt_logo.png" alt="dd_logo" width="200px"
+    /></a>
+  </div>
+
+  <form id="speckleForm" action="/submit/speckle" method="POST">
+    <div class="address">
+      <input
+        type="text"
+        id="address_speckle"
+        name="address"
+        placeholder="Address will appear here"
+        readonly
+      />
+    </div>
+    <div class="speckle_button">
+      <button type="submit" id="speckle"></button>
+      <label for="speckle" class="speckleLabel"><img src="/static/images/speckle.png" alt="speckle" width="40px"></label>
     </div>
   </form>
 
   <div class="sidebar">
-    <div class="nt__logo">
-      <a href="https://www.nettletontribe.com.au"><img src="/static/images/nt_logo.png" alt="dd_logo" width="300px"></a>
-    </div>
 
     <nav class="sidebar__nav">
       <form id="planningForm" action="/vic_planning" method="POST">
@@ -53,7 +92,8 @@
       <form id="geometryForm" action="/vic_geometry" method="POST">
         <input type="file" id="uploadGiraffeBtn" name="uploadGiraffeBtn" />
           <label for="uploadGiraffeBtn" class="uploadGiraffeLabel"
-            ><i class="ri-upload-line"></i>Upload Giraffe</label>
+          ><img src="/static/images/giraffe.png" alt="giraffe" width="40px"></label
+        >
         <div class="address">
           <input type="text" id="address_geometry" name="address" placeholder="Address will appear here" readonly>
         </div>
@@ -78,49 +118,49 @@
 
         <div id="adminToggle" class="toggle">
           <div class="toggle-button" onclick="Animatedtoggle(this)">
-            <div class="toggle-text">Administrative Boundary</div>
+            <div class="toggle-text">SUBURB</div>
           </div>
         </div>
       
         <div id="cadastreToggle" class="toggle">
           <div class="toggle-button" onclick="Animatedtoggle(this)">
-            <div class="toggle-text">Cadastre</div>
+            <div class="toggle-text">CADASTRE</div>
           </div>
         </div>
 
         <div id="landZoningToggle" class="toggle">
           <div class="toggle-button" onclick="Animatedtoggle(this)">
-            <div class="toggle-text">Land Zoning</div>
+            <div class="toggle-text">ZONING</div>
           </div>
         </div>
 
         <div id="bushfireToggle" class="toggle">
           <div class="toggle-button" onclick="Animatedtoggle(this)">
-            <div class="toggle-text">Bushfire</div>
+            <div class="toggle-text">BUSHFIRE</div>
           </div>
         </div>
 
         <div id="heritageToggle" class="toggle">
           <div class="toggle-button" onclick="Animatedtoggle(this)">
-            <div class="toggle-text">Heritage</div>
+            <div class="toggle-text">HERITAGE</div>
           </div>
         </div>
 
         <div id="buildingsToggle" class="toggle">
           <div class="toggle-button" onclick="Animatedtoggle(this)">
-            <div class="toggle-text">Buildings</div>
+            <div class="toggle-text">BUILDINGS</div>
           </div>
         </div>
 
         <div id="nativelandsToggle" class="toggle">
           <div class="toggle-button" onclick="Animatedtoggle(this)">
-            <div class="toggle-text">Native Land</div>
+            <div class="toggle-text">NATIVE LAND</div>
           </div>
         </div>
 
         <div id="satelliteToggle" class="toggle">
           <div class="toggle-button" onclick="Animatedtoggle(this)">
-            <div class="toggle-text">Satellite</div>
+            <div class="toggle-text">SATELLITE</div>
           </div>
         </div>
   
@@ -235,6 +275,39 @@
             $('.spinner').css('display', 'none');
             $(".errorPopup").css('display', 'flex');
           }
+        });
+      });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $("#speckleForm").on("submit", function (event) {
+        event.preventDefault();
+
+        $(".spinner").css("display", "block");
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            type: "POST",
+            url: "/submit/speckle",
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: "json",
+            success: function (response) {
+                var new_stream_id = response.stream_id;
+                var stream_url = 'https://speckle.xyz/streams/' + new_stream_id;
+
+                window.open(stream_url, '_blank');
+
+                $(".spinner").css("display", "none");
+            },
+            error: function () {
+                $(".spinner").css("display", "none");
+                $(".errorPopup").css("display", "flex");
+            },
         });
       });
     });
@@ -764,8 +837,6 @@
 
     map.addControl(geocoder);
 
-    map.addControl(new mapboxgl.NavigationControl());
-
     var marker;
     function mapClickFn(coordinates, addressFieldId) {
       const url =
@@ -803,6 +874,7 @@
       mapClickFn(e.lngLat, "address_planning");
       mapClickFn(e.lngLat, "address_geometry");
       mapClickFn(e.lngLat, "address_elevated");
+      mapClickFn(e.lngLat, "address_speckle");
     });
 
   const cadastreToggleBtn = document.getElementById('cadastreToggle');

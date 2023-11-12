@@ -38,7 +38,14 @@ html {
 .nt__logo {
   position: absolute;
   z-index: 2;
-  margin-left: 40px;
+  right: 40px; 
+  margin-top: 40px;
+}
+
+.dd__logo {
+  position: absolute;
+  z-index: 2;
+  left: 40px;
   margin-top: 40px;
 }
 
@@ -71,70 +78,18 @@ html {
   color: var(--color-white);
 }
 
- .loader {
-   width: 100vw;
-   height: 100vh;
-   background: var(--black-200);
- }
- 
- .loader-clip {
-   position: absolute;
-   width: 100vw;
-   height: 33.3333vh;
-   overflow: clip;
-   z-index: 10000;
- }
- 
- .clip-top {
-   top: 0;
-   clip-path: inset(0 0 0 0);
-   background: #fff;
- }
- 
- .clip-bottom {
-   bottom: 0;
-   clip-path: inset(0 0 0 0);
-   background: #fff;
- }
- 
- .clip-center {
-   overflow: hidden;
-   position: relative;
-   width: 100vw;
-   height: 33.3vh;
-   top: 33.3vh;
-   z-index: 2;
-   background: var(--black-200);
- }
- 
- .marquee {
-   position: absolute;
-   top: 0%;
-   left: 50%;
-   transform: translate(-50%, -50%);
-   width: 200vw;
-   color: #fff;
-   mix-blend-mode: difference;
-   font-size: 16vw;
- }
- 
- .marquee-container {
-   width: 100%;
-   display: flex;
-   justify-content: space-between;
-   align-items: baseline; 
- }
- 
- .enter {
-  display: none;
-  position: absolute;
-  top: 58%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  text-align: center; 
-  z-index: 2;
+.logo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
- .enter h3 {
-  color: var(--color-white);
-  text-transform: uppercase;
- }
+
+.loader {
+  width: 100vw;
+  height: 100vh;
+  background: var(--black-200);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

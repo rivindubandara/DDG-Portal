@@ -1,103 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>digital design</title>
-    <link rel="icon" type="image/svg" href="/static/images/terminal_icon.svg" />
-    <link type="text/css" rel="stylesheet" href="/static/css/style.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js"></script>
-  </head>
-  <body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>digital design</title>
+  <link rel="icon" type="image/svg" href="/static/images/terminal_icon.svg" />
+  <link type="text/css" rel="stylesheet" href="/static/css/style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js"></script>
+</head>
+<body>
 
-    <div class="loader" id="preloader">
-      <div class="loader-clip clip-top">
-        <div class="marquee">
-          <div class="marquee-container">
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <img src="/static/images/dd_logo.png" alt="">
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-          </div>
-        </div>
-      </div>
-      <div class="loader-clip clip-bottom">
-        <div class="marquee">
-          <div class="marquee-container">
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <img src="/static/images/dd_logo.png" alt="">
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-          </div>
-        </div>
-      </div>
-      <div class="clip-center">
-        <div class="marquee">
-          <div class="marquee-container">
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <a href="{{ url_for('planning') }}"><img src="/static/images/dd_logo.png" alt=""></a>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-            <span><img src="/static/images/dd_logo.png" alt=""></span>
-          </div>
-        </div>
-      </div>
+  <div class="loader" id="preloader">
+    <div class="logo-container">
+      <a href="planning">
+        <img src="/static/images/dd_logo.png" alt="Logo">
+      </a>
     </div>
-
-    <div class="sidebar">
-      <div class="nt__logo">
-        <a href="https://www.nettletontribe.com.au"><img src="/static/images/nt_logo.png" alt="dd_logo" width="300px"></a>
-      </div>
+  </div>
   
-    </div>
-
-    <script>
-      gsap.from(".clip-top, .clip-bottom", 2, {
-        delay: 1,
-        height: "50vh",
-        ease:"power4.inOut",
-      });
-      
-      gsap.to(".marquee", 3.5, {
-        delay: 0.75,
-        height: "50%",
-        ease:"power4.inOut",
-      });
-
-      gsap.from(".clip-top .marquee, .clip-bottom .marquee", 5, {
-        delay: 1,
-        left: "100%",
-        ease:"power3.inOut",
-      });
-
-      gsap.from(".clip-center .marquee", 5, {
-        delay: 1,
-        left: "-50%",
-        ease:"power3.inOut",
-      });
-
-      gsap.to(".clip-top", 2, {
-        delay: 6,
-        clipPath: "inset(0 0 100% 0)",
-        ease:"power4.inOut",
-      });
-
-      gsap.to(".clip-bottom", 2, {
-        delay: 6,
-        clipPath: "inset(100% 0 0 0)",
-        ease: "power4.inOut",
-      });
-
-      gsap.to(".clip-top .marquee, .clip-bottom .marquee, .clip-center .marquee span", 1, {
-        delay: 6,
-        opacity: 0,
-        ease:"power2.inOut",
-      });
-    </script>
-
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>  
-  </body>
+</body>
 </html>

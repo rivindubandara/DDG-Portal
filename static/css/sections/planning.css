@@ -20,14 +20,16 @@ html {
   z-index: 1;
   border-color: var(--color-white);
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
-  border-radius: 3px;
-  background: var(--black-300);
+  border-radius: 5px;
+  background: var(--black-400);
 }
 
 .address input[type="text"] {
-  width: 300px;
+  width: 200px;
   padding: 5px;
   font-weight: bold;
+  background: var(--black-400);
+  color: var(--color-white);
 }
 
 button {
@@ -40,16 +42,16 @@ button {
   margin-top: 120px;
   margin-left: 25px;
   z-index: 1;
-  width: 300px;
-  border-radius: 2px;
+  width: 200px;
+  border-radius: 5px;
   font-size: 18px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
+  font-weight: bold;
+  letter-spacing: 1px;
   user-select: none;
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
   border-radius: 3px;
   cursor: pointer;
-  background: var(--black-300);
+  background: var(--black-400);
   color: var(--color-white);
   text-align: center;
 }
@@ -64,16 +66,16 @@ button {
   margin-top: 10px;
   margin-left: 25px;
   z-index: 1;
-  width: 300px;
-  border-radius: 2px;
+  width: 200px;
+  border-radius: 5px;
   font-size: 18px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
+  font-weight: bold;
+  letter-spacing: 1px;
   user-select: none;
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
   border-radius: 3px;
   cursor: pointer;
-  background: var(--black-300);
+  background: var(--black-400);
   color: var(--color-white);
   text-align: center;
 }
@@ -88,16 +90,16 @@ button {
   margin-top: 10px;
   margin-left: 25px;
   z-index: 1;
-  width: 300px;
-  border-radius: 2px;
+  width: 200px;
+  border-radius: 5px;
   font-size: 18px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
+  font-weight: bold;
+  letter-spacing: 1px;
   user-select: none;
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
   border-radius: 3px;
   cursor: pointer;
-  background: var(--black-300);
+  background: var(--black-400);
   color: var(--color-white);
   text-align: center;
 }
@@ -112,16 +114,16 @@ button {
   margin-top: 10px;
   margin-left: 25px;
   z-index: 1;
-  width: 300px;
-  border-radius: 2px;
+  width: 200px;
+  border-radius: 5px;
   font-size: 18px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
+  font-weight: bold;
+  letter-spacing: 1px;
   user-select: none;
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
   border-radius: 3px;
   cursor: pointer;
-  background: lightblue;
+  background: var(--black-400);
   color: var(--color-white);
   text-align: center;
 }
@@ -138,23 +140,23 @@ button {
   flex-direction: column;
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
   border-radius: 5px;
-  padding-right: 225px;
+  padding-right: 160px;
   padding-left: 0px;
   padding-top: 10px;
   padding-bottom: 5px;
-  color: var(--black-300);
-  width: 300px;
+  color: var(--black-400);
+  width: 200px;
   text-align: left;
   user-select: none;
   cursor: pointer;
-  background: var(--black-300);
+  background: var(--black-400);
   color: var(--color-white);
 }
 
 .togglecontainer .toggle {
   position: relative;
-  width: 40px;
-  height: 20px;
+  width: 20px;
+  height: 10px;
   background-color: #ccc;
   border-radius: 10px;
   margin-right: 0px;
@@ -165,10 +167,10 @@ button {
 
 .togglecontainer .toggle .toggle-button {
   position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 16px;
-  height: 16px;
+  top: 1px;
+  left: 1px;
+  width: 8px;
+  height: 8px;
   background-color: #fff;
   border-radius: 50%;
   transition: transform 0.3s ease;
@@ -179,7 +181,7 @@ button {
 }
 
 .togglecontainer .toggle.active .toggle-button {
-  transform: translateX(20px);
+  transform: translateX(10px);
 }
 
 .togglecontainer .toggle-text {
@@ -188,9 +190,15 @@ button {
   margin-bottom: 10px;
   color: var(--color-white);
   white-space: nowrap;
-  font-size: 14px;
+  font-size: 10px;
   font-weight: bold;
   letter-spacing: 1px;
+}
+
+.mapboxgl-ctrl-geocoder {
+  position: absolute;
+  top: 100px;
+  z-index: 1;
 }
 
 #address_geometry {
@@ -202,6 +210,10 @@ button {
 }
 
 #address_lite {
+  display: none;
+}
+
+#address_speckle {
   display: none;
 }
 
@@ -289,9 +301,9 @@ button {
   transform: translate(-50%, -50%);
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
   border-radius: 5px;
-  background-color: var(--black-300);
-  width: 550px;
-  height: 100px;
+  background-color: var(--black-400);
+  width: 400px;
+  height: 75px;
   z-index: 1;
   transition: opacity 0.3s ease-in-out;
 }
@@ -324,28 +336,36 @@ button {
 }
 
 .nsw-img {
-  width: 80px;
-  height: 60px;
-  margin: 10px;
+  width: 60px;
+  height: 40px;
+  margin: 5px;
   cursor: pointer;
+  filter: grayscale(100%);
+  filter: brightness(100);
 }
 
 .qld-img {
-  width: 60px;
-  height: 65px;
-  margin: 25px;
+  width: 40px;
+  height: 40px;
+  margin: 10px;
+  filter: grayscale(100%);
+  filter: brightness(100);
 }
 
 .vic-img {
-  width: 70px;
-  height: 60px;
-  margin: 25px;
+  width: 50px;
+  height: 40px;
+  margin: 10px;
+  filter: grayscale(100%);
+  filter: brightness(100);
 }
 
 .tas-img {
-  width: 85px;
-  height: 60px;
-  margin: 10px;
+  width: 60px;
+  height: 40px;
+  margin: 5px;
+  filter: grayscale(100%);
+  filter: brightness(100);
 }
 
 .state img {
@@ -355,7 +375,7 @@ button {
   margin-bottom: 10px;
   margin-left: 10px;
   z-index: 1;
-  width: 100px;
+  width: 50px;
   filter: grayscale(100%);
   filter: brightness(100);
 }
@@ -372,7 +392,7 @@ button {
   transform: translate(-50%, -50%);
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
   border-radius: 5px;
-  background-color: var(--black-300);
+  background-color: var(--black-400);
   width: 400px;
   height: 200px;
   transition: opacity 0.3s ease-in-out;
@@ -427,7 +447,7 @@ button {
   position: absolute;
   bottom: 180px;
   left: 40px;
-  width: 250px;
+  width: 200px;
   background-color: none ;
   display: flex;
   flex-direction: column;
@@ -439,35 +459,24 @@ button {
   padding-left: 10px;
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
   border-radius: 5px;
-  background-color: var(--black-300);
+  background-color: var(--black-400);
   color: var(--color-white);
-  font-weight: bold;
+  font-family: var(--montserrat);
+  font-size: 15px;
 }
 
 .uploadMergeLabel {
   display: flex;
-  position: fixed;
-  top: 200px;
-  right: 10px;
-  margin-bottom: 10px;
-  text-transform: uppercase;
+  position: absolute;
+  top: 310px;
+  right: 130px;
   justify-content: center;
-  margin-left: 10px;
   text-align: center;
-  width: 250px;
+  width: 100px;
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
-  border-radius: 2px;
-  background: var(--black-300);
-  color: var(--color-white);
-  font-weight: bold;
+  border-radius: 5px;
+  background: var(--black-400);
   z-index: 1;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-right: 35px;
-  padding-left: 5px;
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
   cursor: pointer;
 }
 
@@ -479,51 +488,22 @@ label:active{
   transform: scale(0.9);
 }
 
-#fileCount {
-  top: 205px;
-  right: 20px;
-  text-transform: uppercase;
-  background-color: yellow;
-  border-radius: 50%;
-  text-align: center;
-  position: fixed;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: black;
-  width: 20px;
-  height: 20px;
-  font-size: 14px;
-  font-weight: bold;
-}
-
-label i{
-  font-size: 20px;
-  margin-right: 10px;
-}
-
 .mergeLabel {
   display: flex;
-  position: fixed;
+  position: absolute;
   justify-content: center;
-  top: 230px;
-  right: 0px;
-  height: 40px;
-  margin-bottom: 10px;
+  top: 300px;
+  right: 5px;
   text-transform: uppercase;
   text-align: center;
   align-items: center;
-  width: 250px;
+  width: 100px;
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
-  border-radius: 2px;
-  background: var(--black-300);
+  border-radius: 5px;
+  background: var(--black-400);
   color: var(--color-white);
   font-weight: bold;
   z-index: 1;
-  padding: 5px 40px;
-  font-size: 18px;
-  font-weight: 500;
   letter-spacing: 1.5px;
   cursor: pointer;
 }
@@ -534,25 +514,54 @@ label i{
 
 .uploadGiraffeLabel{
   position: fixed;
-  display: inline-block;
-  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: var(--color-white);
-  background: var(--black-300);
-  margin-top: 150px;
-  right: 0;
-  margin-right: 10px;
-  text-align: center;
+  background: var(--black-400);
+  margin-top: 190px;
+  right: 15px;
   padding: 10px 10px;
-  font-size: 18px;
-  letter-spacing: 1.5px;
   user-select: none;
   cursor: pointer;
   box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
-  border-radius: 3px;
-  width: 250px;
+  border-radius: 5px;
+  width: 100px;
+  height: 50px;
+}
+
+.speckleLabel{
+  position: fixed;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  background: var(--black-400);
+  margin-top: 352px;
+  right: 130px;
+  padding: 10px 10px;
+  user-select: none;
+  cursor: pointer;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+  width: 100px;
+  height: 50px;
 }
 
 .uploadGiraffeLabel.green {
   background: green;
 }
 
+.planningloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--black-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
