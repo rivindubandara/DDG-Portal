@@ -496,6 +496,7 @@ button {
   font-size: 12px;
   background-color: var(--black-400);
   border-radius: 5px;
+  padding: 2px;
 }
 
 label:active{
@@ -517,7 +518,6 @@ label:active{
   background: var(--black-400);
   color: var(--color-white);
   z-index: 1;
-  letter-spacing: 1.5px;
   cursor: pointer;
 }
 
@@ -529,6 +529,7 @@ label:active{
   font-size: 12px;
   background-color: var(--black-400);
   border-radius: 5px;
+  padding: 2px;
 }
 
 .mergeLabel:active{
@@ -557,11 +558,12 @@ label:active{
   content: "UPLOAD GIRAFFE GEOJSON AND THEN HIT GEOMETRY";
   text-align: center;
   position: absolute;
-  top: -150px;
+  top: -170px;
   color: white;
   font-size: 12px;
   background-color: var(--black-400);
   border-radius: 5px;
+  padding: 2px;
 }
 
 .speckleLabel{
@@ -587,11 +589,12 @@ label:active{
   content: "GENERATE SPECKLE STREAM WITH GEOMETRY";
   text-align: center;
   position: absolute;
-  top: -130px;
+  top: -150px;
   color: white;
   font-size: 12px;
   background-color: var(--black-400);
   border-radius: 5px;
+  padding: 2px;
 }
 
 .imagesLabel{
@@ -622,6 +625,7 @@ label:active{
   font-size: 12px;
   background-color: var(--black-400);
   border-radius: 5px;
+  padding: 2px;
 }
 
 .uploadGiraffeLabel.green {
