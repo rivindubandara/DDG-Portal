@@ -89,6 +89,22 @@
     </div>
   </form>
 
+  <form id="imagesForm" action="/submit/images" method="POST">
+    <div class="address">
+      <input
+        type="text"
+        id="address_images"
+        name="address"
+        placeholder="Address will appear here"
+        readonly
+      />
+    </div>
+    <div class="images_button">
+      <button type="submit" id="images"></button>
+      <label for="images" class="imagesLabel"><img src="/static/images/gallery.png" alt="image" width="40px"></label>
+    </div>
+  </form>
+
   <div class="sidebar">
 
     <nav class="sidebar__nav">
@@ -346,6 +362,44 @@
       });
     });
   </script>
+
+  <script>
+    $(document).ready(function () {
+      $("#imagesForm").on("submit", function (event) {
+        event.preventDefault();
+
+        $(".spinner").css("display", "block");
+
+        var formData = new FormData(this);
+
+        $.ajax({
+          type: "POST",
+          url: "/submit/images",
+          data: formData,
+          processData: false,
+          contentType: false,
+          dataType: "binary",
+          xhrFields: {
+            responseType: "blob",
+          },
+          success: function (response) {
+            var blob = new Blob([response]);
+            var link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            link.download = 'zipfile.zip';
+            link.click();
+
+            $(".spinner").css("display", "none");
+
+          },
+          error: function () {
+            $(".spinner").css("display", "none");
+            $(".errorPopup").css("display", "flex");
+          },
+        });
+      });
+    });
+    </script>
 
   <script>
     $(document).ready(function() {
@@ -940,6 +994,7 @@
       mapClickFn(e.lngLat, "address_geometry");
       mapClickFn(e.lngLat, "address_elevated");
       mapClickFn(e.lngLat, "address_speckle");
+      mapClickFn(e.lngLat, "address_images");
     });
 
   const cadastreToggleBtn = document.getElementById('cadastreToggle');
