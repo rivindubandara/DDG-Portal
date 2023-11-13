@@ -217,6 +217,10 @@ button {
   display: none;
 }
 
+#address_images {
+  display: none;
+}
+
 .spinner {
   display: none;
   position: fixed;
@@ -539,6 +543,25 @@ label:active{
   color: var(--color-white);
   background: var(--black-400);
   margin-top: 352px;
+  right: 130px;
+  padding: 10px 10px;
+  user-select: none;
+  cursor: pointer;
+  box-shadow: 5px 15px 25px rgba(0, 0, 0, 0.35);
+  border-radius: 5px;
+  width: 100px;
+  height: 50px;
+}
+
+.imagesLabel{
+  position: fixed;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  background: var(--black-400);
+  margin-top: 412px;
   right: 130px;
   padding: 10px 10px;
   user-select: none;
