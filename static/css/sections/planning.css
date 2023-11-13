@@ -488,6 +488,16 @@ button {
   background: green;
 }
 
+.uploadMergeLabel:hover::before {
+  content: "UPLOAD RHINO FILES TO MERGE";
+  position: absolute;
+  top: -50px;
+  color: white;
+  font-size: 12px;
+  background-color: var(--black-400);
+  border-radius: 5px;
+}
+
 label:active{
   transform: scale(0.9);
 }
@@ -506,10 +516,19 @@ label:active{
   border-radius: 5px;
   background: var(--black-400);
   color: var(--color-white);
-  font-weight: bold;
   z-index: 1;
   letter-spacing: 1.5px;
   cursor: pointer;
+}
+
+.mergeLabel:hover::before {
+  content: "MERGE YOUR RHINO FILES";
+  position: absolute;
+  top: -50px;
+  color: white;
+  font-size: 12px;
+  background-color: var(--black-400);
+  border-radius: 5px;
 }
 
 .mergeLabel:active{
@@ -534,6 +553,17 @@ label:active{
   height: 50px;
 }
 
+.uploadGiraffeLabel:hover::before {
+  content: "UPLOAD GIRAFFE GEOJSON AND THEN HIT GEOMETRY";
+  text-align: center;
+  position: absolute;
+  top: -150px;
+  color: white;
+  font-size: 12px;
+  background-color: var(--black-400);
+  border-radius: 5px;
+}
+
 .speckleLabel{
   position: fixed;
   z-index: 1;
@@ -553,6 +583,17 @@ label:active{
   height: 50px;
 }
 
+.speckleLabel:hover::before {
+  content: "GENERATE SPECKLE STREAM WITH GEOMETRY";
+  text-align: center;
+  position: absolute;
+  top: -130px;
+  color: white;
+  font-size: 12px;
+  background-color: var(--black-400);
+  border-radius: 5px;
+}
+
 .imagesLabel{
   position: fixed;
   z-index: 1;
@@ -570,6 +611,17 @@ label:active{
   border-radius: 5px;
   width: 100px;
   height: 50px;
+}
+
+.imagesLabel:hover::before {
+  content: "GENERATE IMAGES";
+  text-align: center;
+  position: absolute;
+  top: -170px;
+  color: white;
+  font-size: 12px;
+  background-color: var(--black-400);
+  border-radius: 5px;
 }
 
 .uploadGiraffeLabel.green {
