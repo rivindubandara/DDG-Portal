@@ -649,7 +649,7 @@ label:active{
   display: none;
   position: fixed;
   background: var(--black-400);
-  bottom: 150px;
+  bottom: 120px;
   right: 20px;
   padding: 10px;
   cursor: pointer;
