@@ -5072,7 +5072,7 @@ def get_vic_geometry():
 
     xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
-        lat, lon, 200000)
+        lat, lon, 400000)
 
     boundary_params = create_parameters_vic(
         f'{lon},{lat}', 'esriGeometryPoint', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
@@ -5302,7 +5302,7 @@ def get_vic_elevated():
 
     xmin_LL, xmax_LL, ymin_LL, ymax_LL = create_boundary(lat, lon, 10000)
     t_xmin_LL, t_xmax_LL, t_ymin_LL, t_ymax_LL = create_boundary(
-        lat, lon, 200000)
+        lat, lon, 400000)
 
     boundary_params = create_parameters_vic(
         f'{lon},{lat}', 'esriGeometryPoint', xmin_LL, ymin_LL, xmax_LL, ymax_LL)
