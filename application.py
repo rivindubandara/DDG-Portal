@@ -5224,7 +5224,7 @@ def get_vic_geometry():
     # if regional_toggle == 'Regional':
     #     topo_url = regional_topo_url
     # elif regional_toggle == 'Metro':
-    topo_url = metro_topo_url
+    topo_url = regional_topo_url
 
     counter = 0
     while True:
@@ -5444,7 +5444,7 @@ def get_vic_elevated():
         else:
             time.sleep(0)
 
-    topo_url = metro_topo_url
+    topo_url = regional_topo_url
 
     terrain_curves = []
     terrain_elevations = []
